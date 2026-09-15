@@ -48,6 +48,49 @@ public enum TieDecider
 }
 
 /// <summary>
+/// The parties who may decide an Initiative tie, as the map records them: <c>initiative-ties</c>'
+/// <c>assertedBy</c>, "GM" and "players" (rules-factory decision 0025). A tie break's attribution is
+/// checked against the map's list, not against a list of the engine's own.
+/// </summary>
+public static class TieDeciders
+{
+    /// <summary>
+    /// Every decider a tie break may name: one per party in the map's <c>assertedBy</c> for
+    /// <c>initiative-ties</c>, in the map's order.
+    /// </summary>
+    public static ImmutableArray<TieDecider> Allowed { get; } =
+        [.. MapEntries.InitiativeTies.AssertedBy.Select(Named)];
+
+    /// <summary>The party <paramref name="decider"/> is, in the words of the map's <c>assertedBy</c>.</summary>
+    /// <param name="decider">The decider.</param>
+    /// <returns>"GM" or "players".</returns>
+    public static string AssertedBy(TieDecider decider) => decider switch
+    {
+        TieDecider.Gm => "GM",
+        TieDecider.Players => "players",
+        _ => throw new ArgumentOutOfRangeException(nameof(decider), decider, "not a decider"),
+    };
+
+    /// <summary>The decider for <paramref name="party"/>, which the map's <c>assertedBy</c> for <c>initiative-ties</c> must name.</summary>
+    /// <param name="party">A party, in the map's words.</param>
+    /// <returns>The decider.</returns>
+    /// <exception cref="InvalidOperationException">The map does not name the party, or names one the engine has no decider for.</exception>
+    public static TieDecider Named(string party)
+    {
+        if (!MapEntries.InitiativeTies.AssertedBy.Contains(party, StringComparer.Ordinal))
+        {
+            throw new InvalidOperationException(
+                $"'{MapEntries.InitiativeTies.Id}' is asserted by {string.Join(", ", MapEntries.InitiativeTies.AssertedBy)} [map assertedBy], not {party}");
+        }
+
+        var matching = Enum.GetValues<TieDecider>().Where(d => AssertedBy(d) == party).ToArray();
+        return matching.Length == 1
+            ? matching[0]
+            : throw new InvalidOperationException($"the map's assertedBy for '{MapEntries.InitiativeTies.Id}' names {party}, and the engine has no decider for that party");
+    }
+}
+
+/// <summary>
 /// The caller's statement breaking one Initiative tie: the order the decider chose, attributed, or
 /// (for a tie among characters) that the players did not agree on one. The value of the assertion
 /// <c>initiative-ties</c> is a <see cref="TieBreaks"/> holding one of these per tie.

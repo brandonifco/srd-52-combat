@@ -27,8 +27,9 @@ public static class InitiativeRules
     /// <c>initiative-score-option</c> (p. 184), the gate outside the slice that suspends this entry;</item>
     /// <item>a group of identical creatures, for which the GM makes a single roll:
     /// <see cref="UnresolvedReason.UnsupportedRule"/>, citing <c>group-initiative</c>, which is not built;</item>
-    /// <item>a roll with Advantage or Disadvantage: <see cref="UnresolvedReason.OutsideCurrentScope"/>,
-    /// citing <c>advantage-disadvantage</c> (p. 7).</item>
+    /// <item>a roll with Advantage, Disadvantage, or both: <see cref="UnresolvedReason.OutsideCurrentScope"/>,
+    /// citing <c>advantage-disadvantage</c> (p. 7). Map 2.0.0's <c>draws</c> counts one d20 for a roll with
+    /// both, because they cancel; the cancelling is that <c>scope: out</c> entry's rule (decision 0002).</item>
     /// </list>
     /// </remarks>
     /// <param name="participants">Every participant, as the caller states them.</param>
@@ -99,6 +100,7 @@ public static class InitiativeRules
     /// <summary>
     /// Who the tie rule says decides each tie among <paramref name="counts"/>: the GM among tied
     /// monsters, the players among tied characters, the GM between monsters and player characters.
+    /// Each decider is a party the map's <c>assertedBy</c> for <c>initiative-ties</c> names (0025).
     /// A tie between a monster and a character that is not a player character is assigned to nobody,
     /// and declines <see cref="UnresolvedReason.RequiresInterpretation"/> citing
     /// <c>initiative-ties-uncovered</c>.
@@ -124,7 +126,8 @@ public static class InitiativeRules
 
             // Every tied combatant a monster: the GM. No monster: all characters, the players.
             // Monsters and player characters only: the GM.
-            var decider = monster ? TieDecider.Gm : TieDecider.Players;
+            // Each party is looked up in the map's assertedBy for initiative-ties (0025).
+            var decider = TieDeciders.Named(monster ? "GM" : "players");
             assignments.Add(new TieAssignment(tie[0].Initiative, [.. tie.Select(c => c.CombatantId)], decider, MapEntries.InitiativeTies.Locator));
         }
 
@@ -133,8 +136,8 @@ public static class InitiativeRules
 
     /// <summary>
     /// The tie breaks for <paramref name="counts"/>, checked against the tie rule: one per tie,
-    /// ordering exactly the tied combatants, by the decider the rule names. The statement is demanded
-    /// only when there is a tie, and never inferred.
+    /// ordering exactly the tied combatants, by the decider the rule names, a party the map's
+    /// <c>assertedBy</c> names. The statement is demanded only when there is a tie, and never inferred.
     /// </summary>
     /// <param name="counts">Every combatant's Initiative.</param>
     /// <param name="asserted">Reads the caller's <c>initiative-ties</c> assertion; throws when none was made.</param>
@@ -189,7 +192,17 @@ public static class InitiativeRules
 
             var tieBreak = matching[0];
             remaining.Remove(tieBreak);
-            if (tieBreak.DecidedBy != tie.Decider)
+            // The attribution is checked against the map's assertedBy for initiative-ties (0025): the
+            // stated party must be one the map names, and the one it names for this tie.
+            string statedParty = TieDeciders.AssertedBy(tieBreak.DecidedBy);
+            if (!MapEntries.InitiativeTies.AssertedBy.Contains(statedParty, StringComparer.Ordinal))
+            {
+                throw new ArgumentException(
+                    $"'{MapEntries.InitiativeTies.Id}' is asserted by {string.Join(", ", MapEntries.InitiativeTies.AssertedBy)} [map assertedBy], and the statement says {statedParty} decided the tie at {tie.Initiative}",
+                    nameof(stated));
+            }
+
+            if (statedParty != TieDeciders.AssertedBy(tie.Decider))
             {
                 throw new ArgumentException(
                     $"the tie at {tie.Initiative} among {string.Join(", ", tie.Tied)} is the {tie.Decider}'s to decide [{tie.Authority.Citation}], and the statement says {tieBreak.DecidedBy} decided it",

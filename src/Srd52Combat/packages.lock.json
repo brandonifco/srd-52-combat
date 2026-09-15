@@ -4,9 +4,9 @@
     "net10.0": {
       "RulesFactory.Maps.Srd52Combat": {
         "type": "Direct",
-        "requested": "[1.0.0, 1.0.0]",
-        "resolved": "1.0.0",
-        "contentHash": "0Cnoo7d36rmzeA84CKVCUjT0MfueJSsAQIzKQlWeO1wroRlRWPYQM3dL/C4lKlSlQVXvwCGkT0MbQF5qA4DF/w=="
+        "requested": "[2.0.0, 2.0.0]",
+        "resolved": "2.0.0",
+        "contentHash": "qS/63L5Rx0wu42hvxht+lUkSwxlnNFAsuB2XzO68ZtEkePNHNcpEv3kcE5z2JF06jTAjYGJShOXcBPDtP9g6gA=="
       },
       "RulesKernel": {
         "type": "Direct",
@@ -27,9 +27,9 @@
     "net8.0": {
       "RulesFactory.Maps.Srd52Combat": {
         "type": "Direct",
-        "requested": "[1.0.0, 1.0.0]",
-        "resolved": "1.0.0",
-        "contentHash": "0Cnoo7d36rmzeA84CKVCUjT0MfueJSsAQIzKQlWeO1wroRlRWPYQM3dL/C4lKlSlQVXvwCGkT0MbQF5qA4DF/w=="
+        "requested": "[2.0.0, 2.0.0]",
+        "resolved": "2.0.0",
+        "contentHash": "qS/63L5Rx0wu42hvxht+lUkSwxlnNFAsuB2XzO68ZtEkePNHNcpEv3kcE5z2JF06jTAjYGJShOXcBPDtP9g6gA=="
       },
       "RulesKernel": {
         "type": "Direct",

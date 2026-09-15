@@ -20,21 +20,31 @@ public enum CombatantKind
 }
 
 /// <summary>
-/// How a combatant's Initiative roll is made, as the caller states it. Advantage and Disadvantage
-/// ("Playing the Game / Advantage/Disadvantage / p. 7") are outside this engine's slice, so a roll
-/// stated to have either declines; the caller must still say which, because each of them changes
+/// How a combatant's Initiative roll is made, as the caller states it, from every source: Surprise
+/// ("Combat / Initiative / p. 13"), and the Incapacitated and Invisible conditions ("Rules Glossary /
+/// p. 184", <c>incapacitated-condition</c> and <c>invisible-condition</c>, which map 2.0.0's
+/// <c>initiative-roll</c> names in <c>dependsOn</c>). How Advantage and Disadvantage resolve
+/// ("Playing the Game / Advantage/Disadvantage / p. 7") is outside this engine's slice, so a roll
+/// stated to have either, or both, declines; the caller must still say which, because each changes
 /// how many d20s are drawn. There is no default: <c>default</c> is refused.
 /// </summary>
 public enum D20Mode
 {
-    /// <summary>One d20, neither Advantage nor Disadvantage.</summary>
+    /// <summary>One d20, neither Advantage nor Disadvantage from any source.</summary>
     Straight = 1,
 
-    /// <summary>The roll has Advantage.</summary>
+    /// <summary>The roll has Advantage (an Invisible combatant's does, p. 184).</summary>
     Advantage = 2,
 
-    /// <summary>The roll has Disadvantage (a surprised combatant's does, "Combat / Initiative / p. 13").</summary>
+    /// <summary>The roll has Disadvantage (a surprised or Incapacitated combatant's does, pp. 13 and 184).</summary>
     Disadvantage = 3,
+
+    /// <summary>
+    /// The roll has both Advantage and Disadvantage. Map 2.0.0's <c>draws</c> for <c>initiative-roll</c>
+    /// counts one d20, because they cancel; that cancelling is <c>advantage-disadvantage</c>'s rule,
+    /// <c>scope: out</c>, so the roll declines as the other two do (decision 0002).
+    /// </summary>
+    AdvantageAndDisadvantage = 4,
 }
 
 /// <summary>A participant in the combat, as the caller states it.</summary>
