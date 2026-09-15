@@ -118,6 +118,21 @@ public class InitiativeRollEntryPointTests
     }
 
     [Fact]
+    public void A_roll_with_both_Advantage_and_Disadvantage_declines_citing_page_7_without_drawing()
+    {
+        // Map 2.0.0's draws counts one d20 for this roll, because the two cancel. The cancelling is
+        // advantage-disadvantage's rule, scope: out, so the engine declines it (decision 0002).
+        var source = new CountingSource(Pcg32.FromSeed(7UL, stream: 1));
+
+        var declined = Declined(Roll([Pc("Aria", 3, D20Mode.AdvantageAndDisadvantage), Monster("Goblin", 2)], source));
+
+        Assert.Equal(UnresolvedReason.OutsideCurrentScope, declined.Reason);
+        Assert.Equal(EntryPoints.AdvantageDisadvantage.Registered.Locator, declined.Locator);
+        Assert.Contains("Aria's roll has AdvantageAndDisadvantage", declined.Attempted, StringComparison.Ordinal);
+        Assert.Equal(0, source.Drawn);
+    }
+
+    [Fact]
     public void A_statement_left_out_is_refused_never_inferred()
     {
         var source = Pcg32.FromSeed(7UL, stream: 1);

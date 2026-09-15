@@ -508,7 +508,7 @@
     },
     {
       "path": "corpus-map.overlay.json",
-      "sha256": "4544737fe72587e52f1aec06cadd61bdc9f3a3a343bf778b3763ee1412c71da7"
+      "sha256": "450d03171c3834f0cc0439b3b007a92150f2fce6c3b47dc6e0a040add7066929"
     },
     {
       "path": "src/Srd52Combat/Srd52Combat.csproj",

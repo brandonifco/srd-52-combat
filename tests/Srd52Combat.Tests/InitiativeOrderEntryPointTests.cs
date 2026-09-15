@@ -103,6 +103,37 @@ public class InitiativeOrderEntryPointTests
         Assert.Empty(Value<ImmutableArray<TieBreak>>(Ties([Count("Aria", CombatantKind.PlayerCharacter, 9)], RuleRequest.Empty)));
     }
 
+    [Fact]
+    public void The_deciders_a_tie_break_may_name_are_exactly_the_maps_assertedBy_for_initiative_ties()
+    {
+        // The map, as the entry point registers it: "GM" and "players" (rules-factory decision 0025).
+        string[] mapped = [.. EntryPoints.InitiativeTies.Registered.AssertedBy];
+        Assert.Equal(["GM", "players"], mapped);
+        Assert.Equal(mapped, MapEntries.InitiativeTies.AssertedBy.ToArray());
+
+        // The engine's deciders are the map's parties, one each, and no others.
+        Assert.Equal(mapped, TieDeciders.Allowed.Select(TieDeciders.AssertedBy).ToArray());
+        Assert.Equal(
+            Enum.GetValues<TieDecider>().Select(TieDeciders.AssertedBy).Order(StringComparer.Ordinal).ToArray(),
+            mapped.Order(StringComparer.Ordinal).ToArray());
+
+        // A party the map does not name is not a decider.
+        var unnamed = Assert.Throws<InvalidOperationException>(() => TieDeciders.Named("the table"));
+        Assert.Contains("[map assertedBy]", unnamed.Message, StringComparison.Ordinal);
+
+        // And each tie the entry points assign is decided by a party the map names.
+        InitiativeCount[] counts =
+        [
+            Count("Orc", CombatantKind.Monster, 14),
+            Count("Goblin", CombatantKind.Monster, 14),
+            Count("Aria", CombatantKind.PlayerCharacter, 9),
+            Count("Guide", CombatantKind.NonPlayerCharacter, 9),
+        ];
+        Assert.Equal(
+            ["GM", "players"],
+            Value<ImmutableArray<TieAssignment>>(Assigned(counts)).Select(a => TieDeciders.AssertedBy(a.Decider)).ToArray());
+    }
+
     public static TheoryData<string, TieBreak> WrongTieBreaks => new()
     {
         // A tie among characters is the players' to decide, not the GM's.

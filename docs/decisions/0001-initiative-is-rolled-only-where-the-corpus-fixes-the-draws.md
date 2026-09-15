@@ -1,6 +1,6 @@
 # 0001 — Initiative is rolled only where the corpus fixes the draws, and ties are the caller's statement
 
-**Status:** accepted.
+**Status:** accepted. Amended by [0002](0002-map-2-0-0-deciders-from-assertedby-and-both-advantage-and-disadvantage-declines.md) for map 2.0.0: the replay identity, the decider check and a roll with both Advantage and Disadvantage.
 
 ## Context
 

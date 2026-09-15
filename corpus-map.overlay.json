@@ -3,7 +3,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 1
+      "version": 2
     },
     "tests": [
       {
@@ -27,12 +27,16 @@
         "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll declined only Advantage (`p.Roll == D20Mode.Advantage`), rolling a Disadvantage roll as one d20; this test went red (the Disadvantage case)."
       },
       {
+        "test": "InitiativeRollEntryPointTests.A_roll_with_both_Advantage_and_Disadvantage_declines_citing_page_7_without_drawing",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll rolled a roll with both as one d20, as map 2.0.0's draws counts it (`p.Roll is not (D20Mode.Straight or D20Mode.AdvantageAndDisadvantage)`); this test went red and no other did."
+      },
+      {
         "test": "InitiativeRollEntryPointTests.A_statement_left_out_is_refused_never_inferred",
         "mutation": "In a throwaway copy, net10.0 suite run; the InitiativeRoll handler defaulted a missing ScoreOption to `InitiativeScoreOptionStatement.Rolling(\"default\")`; this test went red. It went red too when a missing IdenticalCreatures defaulted to `IdenticalCreaturesStatement.None(\"default\")`."
       },
       {
         "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
-        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 2; this test went red on the rendered identity and the pinned SHA-256. It went red too under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order."
+        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 3; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order."
       }
     ]
   },
@@ -40,7 +44,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 1
+      "version": 2
     },
     "tests": [
       {
@@ -57,7 +61,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 1
+      "version": 2
     },
     "tests": [
       {
@@ -70,7 +74,11 @@
       },
       {
         "test": "InitiativeOrderEntryPointTests.A_tie_break_by_the_wrong_decider_or_of_other_combatants_is_refused",
-        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules dropped the decider check (`if (false && tieBreak.DecidedBy != tie.Decider)`); this test went red (the two wrong-decider cases). It went red too when a tie break ordering more than the tied set was accepted (`IsSupersetOf` for `SetEquals`), and, after the \"no tie exists\" case was added (it had stayed green without it), when tie breaks for no tie were accepted (`remaining.Count > 99`)."
+        "mutation": "In a throwaway copy, net10.0 suite run, under map 2.0.0; InitiativeRules dropped the check of the stated party against the map's assertedBy party for the tie (`if (false && statedParty != TieDeciders.AssertedBy(tie.Decider))`); this test went red and no other did. Under map 1.0.0 (the check then `tieBreak.DecidedBy != tie.Decider`) it went red the same way (the two wrong-decider cases), when a tie break ordering more than the tied set was accepted (`IsSupersetOf` for `SetEquals`), and, after the \"no tie exists\" case was added (it had stayed green without it), when tie breaks for no tie were accepted (`remaining.Count > 99`)."
+      },
+      {
+        "test": "InitiativeOrderEntryPointTests.The_deciders_a_tie_break_may_name_are_exactly_the_maps_assertedBy_for_initiative_ties",
+        "mutation": "In a throwaway copy, net10.0 suite run; TieDeciders.Named skipped the map's assertedBy and matched the engine's own deciders (`if (false && !MapEntries.InitiativeTies.AssertedBy.Contains(party, ...))`); this test went red and no other did. It went red too when the engine's word for the players was not the map's (`TieDecider.Players => \"the players\"`), and when the generated MapEntries.InitiativeTies.AssertedBy was narrowed to [\"GM\"] (so did every test with a players' tie, and the seeded replay)."
       }
     ]
   },
@@ -78,12 +86,12 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 1
+      "version": 2
     },
     "tests": [
       {
         "test": "InitiativeOrderEntryPointTests.Ties_among_monsters_or_between_monsters_and_player_characters_are_the_GMs_and_among_characters_the_players",
-        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Assign gave the GM only all-monster ties (`tie.All(c => c.Kind == CombatantKind.Monster)`), so a monster tied with a player character went to the players; this test went red, and so did the seeded replay."
+        "mutation": "In a throwaway copy, net10.0 suite run, under map 2.0.0; InitiativeRules.Assign named the GM only for all-monster ties (`TieDeciders.Named(tie.All(c => c.Kind == CombatantKind.Monster) ? \"GM\" : \"players\")`), so a monster tied with a player character went to the players; this test went red, and so did the seeded replay. It had gone red under the same mutation under map 1.0.0."
       },
       {
         "test": "InitiativeOrderEntryPointTests.A_tie_between_a_monster_and_a_non_player_character_declines_citing_page_13",
@@ -91,7 +99,7 @@
       },
       {
         "test": "InitiativeOrderEntryPointTests.Players_who_state_they_did_not_agree_decline_citing_page_13_with_the_statement_recorded",
-        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules resolved a tie the players stated they did not agree on, ordering it as listed (`if (false && tieBreak.PlayersDidNotAgree)`); this test went red and no other did."
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules resolved a tie the players stated they did not agree on, ordering it as listed (`if (false && tieBreak.PlayersDidNotAgree)`); this test went red and no other did. Re-run under map 2.0.0: red again, and no other test."
       }
     ]
   }

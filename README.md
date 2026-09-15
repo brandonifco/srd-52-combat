@@ -7,7 +7,7 @@ corpus map, on [`RulesKernel`](https://www.nuget.org/packages/RulesKernel) 0.2.0
 The corpus is the SRD 5.2.1 as text extracted from the official PDF, pinned in
 `corpus/srd-5.2.1.txt` and hashed on every validation run. The specification is the map in the
 package [`RulesFactory.Maps.Srd52Combat`](https://www.nuget.org/packages/RulesFactory.Maps.Srd52Combat)
-1.0.0: ninety-one entries, seventy in scope.
+2.0.0: ninety-five entries, seventy in scope.
 
 Citations are by heading path and printed page (`Combat / Initiative / p. 13`). The corpus declares
 `randomness: seeded` (rules-factory decision 0019): the engine may draw random values, only through
@@ -58,33 +58,35 @@ var order = EntryPoints.InitiativeOrder.Resolve(
 | Roll, every statement allowing one d20 each | the rolls, drawn from the seeded source in participant order | `Combat / Initiative / p. 13` |
 | Roll, the GM uses Initiative scores | `OutsideCurrentScope`, nothing drawn, the statement recorded | `Rules Glossary / Initiative / p. 184` (`initiative-score-option`) |
 | Roll, a group of identical creatures stated | `UnsupportedRule`, nothing drawn | `group-initiative` (not built) |
-| Roll, a roll with Advantage or Disadvantage | `OutsideCurrentScope`, nothing drawn | `Playing the Game / Advantage/Disadvantage / p. 7` |
+| Roll, a roll with Advantage, Disadvantage, or both (from any source: Surprise, Incapacitated, Invisible) | `OutsideCurrentScope`, nothing drawn | `Playing the Game / Advantage/Disadvantage / p. 7` |
 | Roll, a statement missing | `ArgumentException`: never inferred | |
 | Order | highest to lowest, the same every round, each tie as its tie break states | `Combat / Initiative / p. 13` |
 | Order or ties, a tie and no tie break | `AssertionRequiredException`: never inferred | |
-| Order or ties, a tie break by the wrong decider or of other combatants | `ArgumentException` | |
+| Order or ties, a tie break by the wrong decider or of other combatants | `ArgumentException`; the decider is checked against the map's `assertedBy` for `initiative-ties` | |
 | Who decides a tie | the GM (monsters; monsters and player characters), the players (characters) | `Combat / Initiative / p. 13` |
 | Any of them, a monster tied with a non-player character, or players who did not agree | `RequiresInterpretation` | `Combat / Initiative / p. 13` (`initiative-ties-uncovered`) |
 
-See [decision 0001](docs/decisions/0001-initiative-is-rolled-only-where-the-corpus-fixes-the-draws.md).
+See [decision 0001](docs/decisions/0001-initiative-is-rolled-only-where-the-corpus-fixes-the-draws.md)
+and [decision 0002](docs/decisions/0002-map-2-0-0-deciders-from-assertedby-and-both-advantage-and-disadvantage-declines.md).
 
 ## Randomness and replay
 
 The corpus declares `randomness: seeded`. Every draw goes through `RulesKernel.Randomness`
 (`IRandomSource`, `UniformInt`) from a source the caller seeds, and `Ruleset.Identity` names PCG32.
 `SeededInitiativeReplayTests` rolls a seven-combatant start with three ties through the entry points,
-replays it from the seed and the recorded tie breaks, compares the bytes, and pins their SHA-256.
+replays it from the seed and the recorded tie breaks, compares the bytes, and pins their SHA-256. The
+bytes name the ruleset (`srd-5.2.1-combat` v2) and the map version (2.0.0).
 
 ## How this engine is produced
 
 From a clean rules-factory checkout, with the SDK `global.json` pins:
 
 ```bash
-python3 tools/factory produce --package RulesFactory.Maps.Srd52Combat@1.0.0 \
+python3 tools/factory produce --package RulesFactory.Maps.Srd52Combat@2.0.0 \
   --corpus <this repository>/corpus/srd-5.2.1.txt --name Srd52Combat --out <this repository>
 ```
 
-`provenance.json` records the run: rules-factory 0.3.1 (tag `factory/v0.3.1`, commit `933c3a6`,
+`provenance.json` records the run: rules-factory 0.4.0 (tag `factory/v0.4.0`, commit `f0da05f`,
 clean). After changing only the overlay, run `produce` again too: the generated correspondence
 tests read the merged statuses, and `provenance.json` hashes the overlay. To check the record against the tree, from a rules-factory checkout at that tag:
 
