@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="RulesKernel" />
+    <!-- The corpus declares randomness: seeded; Initiative is rolled through the kernel's PCG32. -->
+    <PackageReference Include="RulesKernel.Randomness" />
     <!-- The map package is referenced from RulesFactory.Packages.g.props, which `factory produce`
          rewrites, so the reference always names the package the code was generated from. -->
   </ItemGroup>

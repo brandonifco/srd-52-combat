@@ -442,8 +442,8 @@ internal static partial class Handlers
     /// <summary>Combat step by step: establish positions, roll Initiative, take turns (<c>combat-steps</c>): optional.</summary>
     static partial void CombatSteps(global::Srd52Combat.Requests.CombatStepsRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Every participant rolls Initiative, a Dexterity check (<c>initiative-roll</c>): optional.</summary>
-    static partial void InitiativeRoll(global::Srd52Combat.Requests.InitiativeRollRequest request, ref Resolution<object>? resolution);
+    /// <summary>Every participant rolls Initiative, a Dexterity check (<c>initiative-roll</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> InitiativeRoll(global::Srd52Combat.Requests.InitiativeRollRequest request);
 
     /// <summary>The GM makes one Initiative roll for a group of identical creatures (<c>group-initiative</c>): optional.</summary>
     static partial void GroupInitiative(global::Srd52Combat.Requests.GroupInitiativeRequest request, ref Resolution<object>? resolution);
@@ -454,14 +454,14 @@ internal static partial class Handlers
     /// <summary>A surprised combatant has Disadvantage on Initiative (<c>surprise-disadvantage</c>): optional.</summary>
     static partial void SurpriseDisadvantage(global::Srd52Combat.Requests.SurpriseDisadvantageRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Combatants act from highest to lowest Initiative, in the same order every round (<c>initiative-order</c>): optional.</summary>
-    static partial void InitiativeOrder(global::Srd52Combat.Requests.InitiativeOrderRequest request, ref Resolution<object>? resolution);
+    /// <summary>Combatants act from highest to lowest Initiative, in the same order every round (<c>initiative-order</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> InitiativeOrder(global::Srd52Combat.Requests.InitiativeOrderRequest request);
 
     /// <summary>The GM orders tied monsters, the players tied characters, the GM a mixed tie (<c>initiative-ties</c>): optional.</summary>
     static partial void InitiativeTies(global::Srd52Combat.Requests.InitiativeTiesRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Initiative ties the tie rule does not assign (<c>initiative-ties-uncovered</c>): optional.</summary>
-    static partial void InitiativeTiesUncovered(global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest request, ref Resolution<object>? resolution);
+    /// <summary>Initiative ties the tie rule does not assign (<c>initiative-ties-uncovered</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> InitiativeTiesUncovered(global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest request);
 
     /// <summary>On your turn, move up to your Speed and take one action, in either order (<c>turn-move-and-action</c>): optional.</summary>
     static partial void TurnMoveAndAction(global::Srd52Combat.Requests.TurnMoveAndActionRequest request, ref Resolution<object>? resolution);
@@ -726,7 +726,7 @@ internal static partial class Handlers
                 CombatSteps(request as global::Srd52Combat.Requests.CombatStepsRequest ?? new(assertions), ref resolution);
                 break;
             case "initiative-roll":
-                InitiativeRoll(request as global::Srd52Combat.Requests.InitiativeRollRequest ?? new(assertions), ref resolution);
+                resolution = InitiativeRoll(request as global::Srd52Combat.Requests.InitiativeRollRequest ?? new(assertions));
                 break;
             case "group-initiative":
                 GroupInitiative(request as global::Srd52Combat.Requests.GroupInitiativeRequest ?? new(assertions), ref resolution);
@@ -738,13 +738,13 @@ internal static partial class Handlers
                 SurpriseDisadvantage(request as global::Srd52Combat.Requests.SurpriseDisadvantageRequest ?? new(assertions), ref resolution);
                 break;
             case "initiative-order":
-                InitiativeOrder(request as global::Srd52Combat.Requests.InitiativeOrderRequest ?? new(assertions), ref resolution);
+                resolution = InitiativeOrder(request as global::Srd52Combat.Requests.InitiativeOrderRequest ?? new(assertions));
                 break;
             case "initiative-ties":
                 InitiativeTies(request as global::Srd52Combat.Requests.InitiativeTiesRequest ?? new(assertions), ref resolution);
                 break;
             case "initiative-ties-uncovered":
-                InitiativeTiesUncovered(request as global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest ?? new(assertions), ref resolution);
+                resolution = InitiativeTiesUncovered(request as global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest ?? new(assertions));
                 break;
             case "turn-move-and-action":
                 TurnMoveAndAction(request as global::Srd52Combat.Requests.TurnMoveAndActionRequest ?? new(assertions), ref resolution);
@@ -999,13 +999,13 @@ internal static partial class Handlers
         "round-duration" => Hooked("RoundDuration", typeof(global::Srd52Combat.Requests.RoundDurationRequest)),
         "next-round" => Hooked("NextRound", typeof(global::Srd52Combat.Requests.NextRoundRequest)),
         "combat-steps" => Hooked("CombatSteps", typeof(global::Srd52Combat.Requests.CombatStepsRequest)),
-        "initiative-roll" => Hooked("InitiativeRoll", typeof(global::Srd52Combat.Requests.InitiativeRollRequest)),
+        "initiative-roll" => true,
         "group-initiative" => Hooked("GroupInitiative", typeof(global::Srd52Combat.Requests.GroupInitiativeRequest)),
         "surprised" => Hooked("Surprised", typeof(global::Srd52Combat.Requests.SurprisedRequest)),
         "surprise-disadvantage" => Hooked("SurpriseDisadvantage", typeof(global::Srd52Combat.Requests.SurpriseDisadvantageRequest)),
-        "initiative-order" => Hooked("InitiativeOrder", typeof(global::Srd52Combat.Requests.InitiativeOrderRequest)),
+        "initiative-order" => true,
         "initiative-ties" => Hooked("InitiativeTies", typeof(global::Srd52Combat.Requests.InitiativeTiesRequest)),
-        "initiative-ties-uncovered" => Hooked("InitiativeTiesUncovered", typeof(global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest)),
+        "initiative-ties-uncovered" => true,
         "turn-move-and-action" => Hooked("TurnMoveAndAction", typeof(global::Srd52Combat.Requests.TurnMoveAndActionRequest)),
         "action-options" => Hooked("ActionOptions", typeof(global::Srd52Combat.Requests.ActionOptionsRequest)),
         "brief-or-extended-communication" => Hooked("BriefOrExtendedCommunication", typeof(global::Srd52Combat.Requests.BriefOrExtendedCommunicationRequest)),

@@ -1,1 +1,98 @@
-{}
+{
+  "initiative-roll": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 1
+    },
+    "tests": [
+      {
+        "test": "InitiativeRollEntryPointTests.Every_participant_rolls_one_d20_plus_their_Dexterity_check_modifier_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll dropped the stated Dexterity check modifier (`new RolledInitiative(..., 0)`); this test went red, and so did the seeded replay. It went red too when the d20s were drawn in reverse participant order (`participants.Reverse()`), and when the die was a d19 (`InRange(source, 1, D20Faces - 1)`)."
+      },
+      {
+        "test": "InitiativeRollEntryPointTests.Faces_cover_one_to_twenty_and_nothing_else",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll drew a d19 (`UniformInt.InRange(source, 1, D20Faces - 1)`); this test went red."
+      },
+      {
+        "test": "InitiativeRollEntryPointTests.While_the_GM_uses_Initiative_scores_nothing_is_rolled_and_it_declines_citing_page_184",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll ignored the Initiative-score statement (`if (false && scoreOption.InUse)`), rolling anyway; this test went red and no other did."
+      },
+      {
+        "test": "InitiativeRollEntryPointTests.A_group_of_identical_creatures_declines_citing_group_initiative_without_drawing",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll ignored a stated group of identical creatures (`Groups.Length > 99`), rolling once per member; this test went red and no other did."
+      },
+      {
+        "test": "InitiativeRollEntryPointTests.A_roll_with_Advantage_or_Disadvantage_declines_citing_page_7_without_drawing",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll declined only Advantage (`p.Roll == D20Mode.Advantage`), rolling a Disadvantage roll as one d20; this test went red (the Disadvantage case)."
+      },
+      {
+        "test": "InitiativeRollEntryPointTests.A_statement_left_out_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the InitiativeRoll handler defaulted a missing ScoreOption to `InitiativeScoreOptionStatement.Rolling(\"default\")`; this test went red. It went red too when a missing IdenticalCreatures defaulted to `IdenticalCreaturesStatement.None(\"default\")`."
+      },
+      {
+        "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
+        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 2; this test went red on the rendered identity and the pinned SHA-256. It went red too under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order."
+      }
+    ]
+  },
+  "initiative-order": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 1
+    },
+    "tests": [
+      {
+        "test": "InitiativeOrderEntryPointTests.Combatants_act_from_highest_to_lowest_Initiative_the_same_in_every_round",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Order ranked lowest first (`.OrderBy(c => c.Initiative)`); this test went red. It went red too when TurnOrder.TurnsInRound reversed the order in even rounds, and when a tie break was demanded where there was no tie (`assignments.IsEmpty && assignments.Length > 99`)."
+      },
+      {
+        "test": "InitiativeOrderEntryPointTests.A_tie_is_ordered_as_its_decider_stated_and_the_statement_is_recorded",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Order ignored the stated tie breaks, keeping tied combatants in listing order (`.ThenBy(c => 0)`); this test went red, and so did the seeded replay. It went red too under the ascending-order mutation."
+      }
+    ]
+  },
+  "initiative-ties": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 1
+    },
+    "tests": [
+      {
+        "test": "InitiativeOrderEntryPointTests.A_tie_with_no_tie_break_stated_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.BreakTies caught AssertionRequiredException and inferred each tie's order as listed, attributed to \"inferred\"; this test went red and no other did."
+      },
+      {
+        "test": "InitiativeOrderEntryPointTests.The_tie_breaks_resolve_checked_against_the_ties_and_nothing_is_demanded_without_one",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.BreakTies read the assertion even with no tie (`assignments.IsEmpty && assignments.Length > 99`); this test went red. It went red too when a tie between a monster and a player character was assigned to the players."
+      },
+      {
+        "test": "InitiativeOrderEntryPointTests.A_tie_break_by_the_wrong_decider_or_of_other_combatants_is_refused",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules dropped the decider check (`if (false && tieBreak.DecidedBy != tie.Decider)`); this test went red (the two wrong-decider cases). It went red too when a tie break ordering more than the tied set was accepted (`IsSupersetOf` for `SetEquals`), and, after the \"no tie exists\" case was added (it had stayed green without it), when tie breaks for no tie were accepted (`remaining.Count > 99`)."
+      }
+    ]
+  },
+  "initiative-ties-uncovered": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 1
+    },
+    "tests": [
+      {
+        "test": "InitiativeOrderEntryPointTests.Ties_among_monsters_or_between_monsters_and_player_characters_are_the_GMs_and_among_characters_the_players",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Assign gave the GM only all-monster ties (`tie.All(c => c.Kind == CombatantKind.Monster)`), so a monster tied with a player character went to the players; this test went red, and so did the seeded replay."
+      },
+      {
+        "test": "InitiativeOrderEntryPointTests.A_tie_between_a_monster_and_a_non_player_character_declines_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Assign assigned a monster tied with a non-player character to the GM (`if (false && monster && nonPlayerCharacter)`); this test went red. It went red too when the decline's Attempted named initiative-ties instead of initiative-ties-uncovered (both entries cite the same page, so only Attempted tells them apart), and when the decline cited initiative-score-option's locator."
+      },
+      {
+        "test": "InitiativeOrderEntryPointTests.Players_who_state_they_did_not_agree_decline_citing_page_13_with_the_statement_recorded",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules resolved a tie the players stated they did not agree on, ordering it as listed (`if (false && tieBreak.PlayersDidNotAgree)`); this test went red and no other did."
+      }
+    ]
+  }
+}

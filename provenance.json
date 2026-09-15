@@ -123,287 +123,271 @@
     },
     {
       "path": "backlog/001-combat-rounds.md",
-      "sha256": "69a23718039f4082932bcb38ac0a49bddc2cd943bcc4b533f9dcbdd4f361938f"
+      "sha256": "42cbe2d969cee087db3b9c74b66f0797cbe3bee8c9814793e8bc0cf50ec55c82"
     },
     {
       "path": "backlog/002-round-duration.md",
-      "sha256": "858c9a450237c3920afa210873faffc1fd35a5c41cb89346aca412587bb9bd45"
+      "sha256": "0df3b4a8b66c1828b278690ca4d3d8c3ec7a5da592821566930e4c4850ca07ee"
     },
     {
       "path": "backlog/003-surprised.md",
-      "sha256": "1d229c2d72c32962d81eaab379f73dd30f4ad04d106f599b606cf9772fb1fcfe"
+      "sha256": "c24119b0924cfe449b0b1518e6d7fcee31c43297383c441a99519a19d55bf430"
     },
     {
       "path": "backlog/004-brief-or-extended-communication.md",
-      "sha256": "c80e4ecd381f42c29da85d8993367f58feb56b39ee0c519d4899a0c37c4ddab8"
+      "sha256": "58db12343460057b3ba640c36a1128c3e96b9e2059a7ade0b3ae4a7dfd435e9d"
     },
     {
       "path": "backlog/005-side-defeated.md",
-      "sha256": "b9f1a4250c2a04b6b77ecfc1fe06110e7adea555fd427fc2d9f2454f6c3bdbcf"
+      "sha256": "cf5185cb5af8d5ec434cc37f5c976afc63cd589210906a98dc949c7120c147b8"
     },
     {
       "path": "backlog/006-sides-agree-to-end.md",
-      "sha256": "649d5469552e6655329842c3152879ed4df5e31db48c3243f2d8c77076dd0f5c"
+      "sha256": "48c210fae459eecf61586fe5d757cb4837e35f95d441d29992a063803fe282c8"
     },
     {
       "path": "backlog/007-combat-end.md",
-      "sha256": "74d6904836a8c3b481cf9637bd3df039b1b57e49a278ed31d845b3cb6484f914"
+      "sha256": "d68f27e11b65c25b4e3f6efa79e310afa423aa53b7b61289fbddb27edbe9f1a2"
     },
     {
       "path": "backlog/008-grid-play.md",
-      "sha256": "db811ec2393ebd4b3262e8562dba2a04da7b5de054b5c064fa8380c80cd29b15"
+      "sha256": "79e507edafae7db8a7f744e415cf4cce51c62bec7f74796d68c1bb9ae1e0a01f"
     },
     {
       "path": "backlog/009-grid-square-size.md",
-      "sha256": "c54f022d69bf6c7a6e73678b2483266713fe2dfd817e3d60df3796037abd901a"
+      "sha256": "031c098f4d186e9d0b4bc6e48129c90b7681c52155b280117845b6bafc37d751"
     },
     {
       "path": "backlog/010-grid-range.md",
-      "sha256": "b506986bb3b559f164240b71916fb144dd990923463423e63ba8810daa29fdd5"
+      "sha256": "1564d44ec0b6b146e13e65afe7995a280bb5c84d81a7f287ca100f37a989f7e2"
     },
     {
       "path": "backlog/011-move-up-to-speed.md",
-      "sha256": "c03811946f1dae144d4dfc434a552c80e6814f796b4842ded7feebb97f8044ec"
+      "sha256": "74ef00f75bc3ad5f3658eb5efefd87fc66d8d2ccf1443b0b6b4bdb308966b90a"
     },
     {
       "path": "backlog/012-movement-deduction.md",
-      "sha256": "8162eaddb5d8befb4fc780fdd8180fe9551fa5ad224d5aaf399ecb4a742ec400"
+      "sha256": "357692bace3bdd07bc9e8db3a40397cdc9a1cce322b03270fb9c4d68e0aa07d2"
     },
     {
       "path": "backlog/013-difficult-terrain.md",
-      "sha256": "ad3c1752ff56a7922f45bd3b9f8f803b52dff4aba6e077246aa0b4009e1ae035"
+      "sha256": "21fb2582fe4cdc98dccb0155ff01866b576d64f6167690cc58ca091a26de0724"
     },
     {
       "path": "backlog/014-difficult-terrain-cost.md",
-      "sha256": "9ef978816c913d12e7e26d9aeaf76da80120444d1758c0a88ae79a8abfd53d45"
+      "sha256": "1658044ee9407b33337b7f58e78f186e93347760b19d215f37ba06a28a438f51"
     },
     {
       "path": "backlog/015-size-categories.md",
-      "sha256": "7b4d47a1e2ac103b7ad3fb982ef8ce2b0d56441e61769e02cda17fe29afc7e41"
+      "sha256": "e454bec6de76953fb2ce951fbee5057563200298ed74ef8490efd228fe616e1c"
     },
     {
       "path": "backlog/016-creature-size-space.md",
-      "sha256": "f2cad95dbf49814c60a39c8b5ec112eb5387c239470682c9383671ab2dbff0a0"
+      "sha256": "986f5301d788021a746de93374a9414bc159ea7f21225024fb92699c34ffc268"
     },
     {
       "path": "backlog/017-cover-origin.md",
-      "sha256": "e4c71d8bb3a6cbf75ee0571a74aed9497dc9460885432b80d04286ac08c7d7d0"
+      "sha256": "8439fe348dab190e748672c2fac10a569010784a41918eede596772292c3049c"
     },
     {
       "path": "backlog/018-cover-bonuses.md",
-      "sha256": "53baea897d98e02a409f9367da834bcecac21d5d858214a5d75c19cb9b64478b"
+      "sha256": "4ce589ce297a8a2e1dad9c5626918c00c4a3be72192d9dd92666d92e33479b82"
     },
     {
       "path": "backlog/019-cover-degree.md",
-      "sha256": "2cdce0cd09a11e6dbf29dac72f2d8a7de1b43839ccb624347902942aa1f5a590"
+      "sha256": "80675675049cf253055293b3aab646ae8f5401f950a431e9a0a31807b844f3e1"
     },
     {
       "path": "backlog/020-cover-no-stacking.md",
-      "sha256": "70dea4938c0ae3607f70814c8121dce1273abd3c29c78a657078f40d76c8e236"
+      "sha256": "f2e05cc218d9058a2e8a5fc826e9643dbe181eb21b5f8190f6164b973816c177"
     },
     {
       "path": "backlog/021-total-cover.md",
-      "sha256": "8ccecfef83582fd63a69e1ed6d93e1dbf48f58bf64a61a3cc8bf483d504e485f"
+      "sha256": "66cb73130a96554ae77d3de7cdb17ff2f7b0b2f8c98568488d110de8adbc1223"
     },
     {
       "path": "backlog/022-single-range.md",
-      "sha256": "f248ff77dcb4dc8b6695c6655cd9c5114adb3c6e676bd2120763badb187479fb"
+      "sha256": "714ed60e4726667e1e0a6d92543a9c37c257fddb77d5389b26978f1cad3ff8a2"
     },
     {
       "path": "backlog/023-reach.md",
-      "sha256": "f7ecd71619c4ffb2aa0f9a718848098af4cb6071e1887a9ec9c2b443b0fd543d"
+      "sha256": "8b25e297a24d8295c9246d16db9a4502d6a8a33b30848c43adfda7449ab05c64"
     },
     {
       "path": "backlog/024-melee-within-reach.md",
-      "sha256": "2ee8b57572a0afce443f9c93ca1864b009ef187d19948098fb61291a3c41a763"
+      "sha256": "3d0f213934f17aba64ddef79ef593b4950b708af85d3a1b17cc6d63bf4b84cea"
     },
     {
       "path": "backlog/025-appropriate-anatomy.md",
-      "sha256": "3b5ae0993b33d01dfabe0188934b7b38017b5b9623a84dcbf1448f73acb5bda4"
+      "sha256": "5bc396b4745fe5ce41c041d29e7570e2cb87a927bb5e2a12c86d8e7ed367b58b"
     },
     {
       "path": "backlog/026-mount-eligibility.md",
-      "sha256": "dd7e4e8b73342194c28899a98256c4890d1e3b0e3762ca3f84cf62b08f4b8c39"
+      "sha256": "dda24c473b19f3e52d01bb66a1c5de60fbf325d45cff0078ad958f09b99ee04b"
     },
     {
       "path": "backlog/027-mounting-cost.md",
-      "sha256": "f615482ceebc5fad3aecbeb69feb0d33195630d12718ce383d6d0426392847d3"
+      "sha256": "70b5be39a0c729e6ea0989fe7da78534075925f9fad2e3fccc47a5cdb87d0b35"
     },
     {
       "path": "backlog/028-mount-control-requires-training.md",
-      "sha256": "c19898d312bc4d016f3664af1143848687d601aaa3192c9a5ae9a0ab65daa357"
+      "sha256": "a04b3bd26ecdfba3bd63ed39a8f4068e009d1f13a01db6d278e1dd2d68806f8f"
     },
     {
       "path": "backlog/029-turn-move-and-action.md",
-      "sha256": "390e26149a8846402801c443268c750c76395cc6e7551f574a882bfa3f4f0205"
+      "sha256": "59c793b226d2c4f0eec796458658a5d68ac6ef05a512da58fbcda6ee9fa506fd"
     },
     {
       "path": "backlog/030-communication-cost.md",
-      "sha256": "57147379afaa275bac0b6631caaec8331b9c191f55f6e4cb60d32b2c4db80bef"
+      "sha256": "2361276ea1c42b77662ffbf9bad56bb2a08c45324c477953eed7c3f8dc26e1c8"
     },
     {
       "path": "backlog/031-free-object-interaction.md",
-      "sha256": "d271a206333f3eae174a663565dbe0a879f1203c4941eb621ca1dbe50766d7ab"
+      "sha256": "47627df90d9efb14e2edf7180570a2db8614358ad050354ba4bc617b4eff1ca4"
     },
     {
       "path": "backlog/032-gm-requires-action.md",
-      "sha256": "a0d00a80537e211684ace0cf952c8833f96ef6bce231086ace12c368187f6159"
+      "sha256": "6fc922c0f5cf3d0d9fc204e5daa49efdc887f5614f021f8e9bea19bbd14f3940"
     },
     {
       "path": "backlog/033-doing-nothing.md",
-      "sha256": "71ee0c9b3e148b6a4e640eb3c3b70c7152445a581869c2b1db746280d0e856aa"
+      "sha256": "ccdc488265179931e4d958f9cde89c101a32beb89208ce048507ce116bc2eb1b"
     },
     {
       "path": "backlog/034-hidden-attacker-revealed.md",
-      "sha256": "4c3e28ed3f807fecf0cc8b22fa49bb9c394892ba970e1e6b25bf4b6a2aca8688"
+      "sha256": "203cee1f7c9a03eb75cb2d2cbc72d91cad147219fc920e6ff061bf936a27fba4"
     },
     {
       "path": "backlog/035-opportunity-attack-avoidance.md",
-      "sha256": "6d51cd765f3a3b9126d6de9c394b088fddcd4c9bf3357a0419d91d02b8d92863"
+      "sha256": "b77829f23bb33a3486f58246df7ba93cc9f4e154323b706d507059ec2f142844"
     },
     {
       "path": "backlog/036-break-up-move.md",
-      "sha256": "5eee4bfa2ccf9b0f51f8b3218b9f107970adedd2f34fe315be102dfb3cf16dde"
+      "sha256": "1d26589fc211f676f54e09eefb76bd776f79c8830932d30444862081b94e8c82"
     },
     {
       "path": "backlog/037-attack-sources.md",
-      "sha256": "ea32ae1db0e05f5a97c53c5df11edcb38c1e5a0f20b9ce18b11a4a4c924b91c4"
+      "sha256": "971113065c0c796cfea8660aab0042034a9b573f54c6f7c174568dbf1fcb5384"
     },
     {
       "path": "backlog/038-attack-modifiers.md",
-      "sha256": "eb2f9683901939d5a5d971a55e447be3dbcf79a4cb5aadbdabaa81172ed3ac09"
+      "sha256": "755410d3c3ddecccda49e6680c2fdf42e38b9367dd77c4770a2ffba800ba9306"
     },
     {
       "path": "backlog/039-unseen-target-disadvantage.md",
-      "sha256": "8db973b602feba58268d49f0bc38d45c20e1a5df9050e91208e63754e609dab6"
+      "sha256": "d022ae12fabb80a97e660848777312d6b2d9848f4359b8ef498b8d0b9ae48dbd"
     },
     {
       "path": "backlog/040-unseen-attacker-advantage.md",
-      "sha256": "7ed1ee0a4c237cc1c57c5aadbf2c73449f4f03efc5313b3efb19ba363c8a2faa"
+      "sha256": "3eb6753fb019a699f194b69d9fb565a5be99faaf0cbb975564a1074424ca0273"
     },
     {
       "path": "backlog/041-normal-and-long-range.md",
-      "sha256": "db81d384b9c6a41bae820646ce94195524e1e912662a1a456680d70e5f6cce9e"
+      "sha256": "09843a11b32215651d18737f6b41050da6321588da5c6d9fcaf9a3f71a49d232"
     },
     {
       "path": "backlog/042-attack-target.md",
-      "sha256": "b7cd2c99ae0a1434c992218fc020730ca0c34976896029d74dcc80116418b1c8"
+      "sha256": "b20127a31c10feef33496361e0feca107da49edf8ea88ce4b52aaec636e622b6"
     },
     {
       "path": "backlog/043-wrong-location-misses.md",
-      "sha256": "605e978b1216e5e9ffd3cf357cd968473988efcc7a623fecbfd5e038a0e2b2c8"
+      "sha256": "16063f7c664a746170d9a8d648b7610055df379d281faba074526f4933b61074"
     },
     {
       "path": "backlog/044-underwater-melee.md",
-      "sha256": "66005169b2ddbbaa1154ab770500f8a6633917a859846f9ba4e70d9a985e3c09"
+      "sha256": "7af35765bca238a8bcc6fa680b1dac6c34abd35534c503b6fc3be29a1fee945d"
     },
     {
       "path": "backlog/045-underwater-ranged.md",
-      "sha256": "8ea803d736a4be0b956ad09af2d8821cadef02be06b0ba9af720ae10158a1858"
+      "sha256": "2580c5aa56da3174b6928ec3422d95addfba86942ca8b10492bdd6a0368a1fe0"
     },
     {
-      "path": "backlog/046-initiative-roll.md",
-      "sha256": "4a6e3e83ff70fd67532b50ecab5799b8e6cf74419f5d2886225b815e9303e4d2"
+      "path": "backlog/046-group-initiative.md",
+      "sha256": "fbc3ee616f391c98bae5df6b318e650e8d430954a6d61a1c8691fbab94962e4e"
     },
     {
-      "path": "backlog/047-group-initiative.md",
-      "sha256": "dd6015222839900d36cd1c9ecd166fed04a788dc9999526330282819cb1d677f"
+      "path": "backlog/047-surprise-disadvantage.md",
+      "sha256": "7d190c0776f9144ada5f57518b42640d12f9cbceae2fee257305b39e752fc927"
     },
     {
-      "path": "backlog/048-surprise-disadvantage.md",
-      "sha256": "377b7faed46119c5c12c2869f6c0477be82333db199c00bcba433527a4853859"
+      "path": "backlog/048-next-round.md",
+      "sha256": "4192a59c708eebd8f5a86c671d13303a3546f69358ea51d3964e012bae4805ba"
     },
     {
-      "path": "backlog/049-initiative-order.md",
-      "sha256": "eddbc3935caf58862fa8573726c418ce260fc010cde7fb3d5bceeda9bcd48f77"
+      "path": "backlog/049-combat-steps.md",
+      "sha256": "1d2997e02b3c7005cd3f0d93f072a883ce974aedaf976845555390e18a26a5e9"
     },
     {
-      "path": "backlog/050-next-round.md",
-      "sha256": "78320d5e0e3c88540493196d89426b6994c186276534180ab8a1c56e6ab746d0"
+      "path": "backlog/050-controlled-mount-turn.md",
+      "sha256": "38ed63e7ef8a583013f9078c4df45877ab66705466c7f9d634f6c8c76d1303eb"
     },
     {
-      "path": "backlog/051-combat-steps.md",
-      "sha256": "9757d03f1a4a7643f996f39469e85787ebf4a25bfc35aa773ec554b446f90feb"
+      "path": "backlog/051-independent-mount.md",
+      "sha256": "d4b9c1621f4de5eb57dfdaa18e6190f692f3255d258836a49f3b78e3ba29a555"
     },
     {
-      "path": "backlog/052-initiative-ties.md",
-      "sha256": "12f95bebeb4db63fbc0cbb5e822d1bbf9b15bf796c7f9e02c5c63933a24358dd"
+      "path": "backlog/052-grid-speed-in-squares.md",
+      "sha256": "87582afa10336d23485a064b4315950d9e9a4facc0ef15d7b5e4184e22d45b80"
     },
     {
-      "path": "backlog/053-initiative-ties-uncovered.md",
-      "sha256": "12b16e2908c39a916301d7e20a9ca766d26ad9ca7c714aefe6b28a96cf31c9aa"
+      "path": "backlog/053-grid-entering-square.md",
+      "sha256": "e91dba5e498e2010d2360f84cecdde22895aad1bd08717e1efee5e4d166ab739"
     },
     {
-      "path": "backlog/054-controlled-mount-turn.md",
-      "sha256": "00029880ef26d74eeb1b942c22371eb1a66a7e8bd1391d2c1afb29a0162bcbc8"
+      "path": "backlog/054-grid-corners.md",
+      "sha256": "3383ab62f493f1deb3d32c07b1d4b7e48a304d3bf3e65839ef405bd34c40d46e"
     },
     {
-      "path": "backlog/055-independent-mount.md",
-      "sha256": "0d8f9396c6501ac26a36bb94e64409c55168d88f21254fc1c6eef9fb029b7171"
+      "path": "backlog/055-dropping-prone.md",
+      "sha256": "60df1f8c88480c572dd167428a340da7cb93b593750e0469feb87d438fb8678f"
     },
     {
-      "path": "backlog/056-grid-speed-in-squares.md",
-      "sha256": "d8f63197537c7dc7ec4136975b08960a1cee1cf2f10247c4a0b6e84e15861442"
+      "path": "backlog/056-ending-turn-in-occupied-space.md",
+      "sha256": "9d417e4b6c3c044490570fd66c517ffe455e5b966bf69f7b22bbc918f3278535"
     },
     {
-      "path": "backlog/057-grid-entering-square.md",
-      "sha256": "50e9c1680b1ec2e7c9c1c5bd342e61ecc4e1caaac3a4bcd3cd5a6ef2c5e6f50e"
+      "path": "backlog/057-falling-off.md",
+      "sha256": "50d822d39c114e9a5ce7f01f140d920fffc5f90e36b5f7da7c091d31f28cada2"
     },
     {
-      "path": "backlog/058-grid-corners.md",
-      "sha256": "85d650b04566e9121ace4c143472d6ca76f9b5ad4108348f856d9c33b00434d7"
+      "path": "backlog/058-moving-through-creatures.md",
+      "sha256": "e1262b3cded4cd1eed43abbf9b1b96f72e0f853920e69c1de9a3448463227855"
     },
     {
-      "path": "backlog/059-dropping-prone.md",
-      "sha256": "e5d9b1872da0b803b1b895dde920496b3344bdf1600984b3bb30cf681e5a76aa"
+      "path": "backlog/059-creature-space-difficult-terrain.md",
+      "sha256": "3dfcf87ac05904b7dd89c2b2d8cb9c418238c7eadb3fa4f6fc9fe3150e93eb04"
     },
     {
-      "path": "backlog/060-ending-turn-in-occupied-space.md",
-      "sha256": "1027323428cdd1587825b11aaf1b1b5c5751853fa3ebc4f2e34ce2941adcd54b"
+      "path": "backlog/060-no-willing-end-in-occupied-space.md",
+      "sha256": "38f30b0a56e80126fdf9409645da531cca084debec2496f244426f8996b9348d"
     },
     {
-      "path": "backlog/061-falling-off.md",
-      "sha256": "6bedfc80a2e72d3684416bc961b41abdfc2d1932bc228835c08ced2e1d18dbeb"
+      "path": "backlog/061-ranged-in-close-combat.md",
+      "sha256": "8eb73c4af53c9b2e6ea52f9b18d14d0b02e013aacf6e617bffe407627ce60f60"
     },
     {
-      "path": "backlog/062-moving-through-creatures.md",
-      "sha256": "56ada7a5b837fa75d6ca897fa936b17ce930428108c918a85250d40c02fd32e3"
+      "path": "backlog/062-movement-modes.md",
+      "sha256": "6d60af42f363bdcd750fede1db97931b5e15d1e7be3eb721bb8bbd638cad61d5"
     },
     {
-      "path": "backlog/063-creature-space-difficult-terrain.md",
-      "sha256": "0906a6f311387c79a53fa79126af5d75380c09f1c1f922fe36621091e7b4e8a1"
+      "path": "backlog/063-attack-resolution.md",
+      "sha256": "ae78e628e2de8bf07fe1bd9fbf521279a74353004fe3478f028d69b777b6cb0e"
     },
     {
-      "path": "backlog/064-no-willing-end-in-occupied-space.md",
-      "sha256": "d47be5660208e4c422cc003c25283e1450cfbc8a8eda58a3a67361b096b3ee90"
+      "path": "backlog/064-attack-structure.md",
+      "sha256": "c2b0f4adad603e6f6bc1134c84f42c9226d4502bafc3fbec0d13719e5a4b3999"
     },
     {
-      "path": "backlog/065-ranged-in-close-combat.md",
-      "sha256": "32b5f6ec9cf859646a0c8dc556d3dc530f68508aa8232a9a98e710e6241e1f7e"
+      "path": "backlog/065-opportunity-attack.md",
+      "sha256": "9eddd25cf2a9a729dc12f73f316a9ce7fe383e1a364dd5a1f18ae8df9e609343"
     },
     {
-      "path": "backlog/066-movement-modes.md",
-      "sha256": "63e45ad2a3fb38c9b1c1dc3e4a23d834df87150e74f9f3f11b5e89bbed24226a"
-    },
-    {
-      "path": "backlog/067-attack-resolution.md",
-      "sha256": "f659d41ba824edd791cae4d940b1ca069003a0141eab1ebf97892880cd63e957"
-    },
-    {
-      "path": "backlog/068-attack-structure.md",
-      "sha256": "aaf375ec22e0c0184ee61264e93358f5a1e4728983587615a2d407fdcb1368ed"
-    },
-    {
-      "path": "backlog/069-opportunity-attack.md",
-      "sha256": "f96573c1908ca4a3b120e401969ddbc46b6f748323094719139a5eb97eaab14b"
-    },
-    {
-      "path": "backlog/070-underwater-fire-resistance.md",
-      "sha256": "799b57a241422c555414b9fd00727881ea9bf4574c066183aedf43810446d6b9"
+      "path": "backlog/066-underwater-fire-resistance.md",
+      "sha256": "c9d7bdbad01ee66b9613afd48935e986d53bc1ed60da9ea915645fc8558d67e0"
     },
     {
       "path": "backlog/README.md",
-      "sha256": "9fe6671faa77ae66af324b12f54f0a0c4b7f48dc8d4b2cb4b6f00c3220a4149f"
+      "sha256": "a3ad382c045f7a176952d5dd86273822c031c25b067c7ad4604b8b4f8c0541c3"
     },
     {
       "path": "corpus/srd-5.2.1.txt",
@@ -439,7 +423,7 @@
     },
     {
       "path": "src/Srd52Combat/Generated/Contracts.g.cs",
-      "sha256": "7ba61f1c4d80c289a38e95f22956d20b4bfda969915c64443479e69c0f1fbb58"
+      "sha256": "56ba9696e59066193b583d932f11043a4dc7af47866172cd5ac6fcc051423ffb"
     },
     {
       "path": "src/Srd52Combat/Generated/MapEntries.g.cs",
@@ -451,7 +435,7 @@
     },
     {
       "path": "src/Srd52Combat/Generated/Registry.g.cs",
-      "sha256": "fdc1555a57e515f159a853f5ee975a3806eb41c1a4498aa55808b5b3d2a491ba"
+      "sha256": "0eb17101c918f6c73c546a47979288f8c878d98205874ae8631a1d58ff3a4b55"
     },
     {
       "path": "src/Srd52Combat/Generated/Requests.g.cs",
@@ -459,7 +443,7 @@
     },
     {
       "path": "tests/Srd52Combat.Tests/Generated/CorrespondenceTests.g.cs",
-      "sha256": "d7ded8041ffddb573d7c8c4078dd0912b5b2e5dc03c3ca4dac3147fe59da0fb1"
+      "sha256": "597879801d07b9e7d61df41f64e23fb76286bd2e15dc31718cbc694ac41ddf01"
     },
     {
       "path": "tests/Srd52Combat.Tests/Generated/ProvenanceTests.g.cs",
@@ -524,15 +508,15 @@
     },
     {
       "path": "corpus-map.overlay.json",
-      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+      "sha256": "4544737fe72587e52f1aec06cadd61bdc9f3a3a343bf778b3763ee1412c71da7"
     },
     {
       "path": "src/Srd52Combat/Srd52Combat.csproj",
-      "sha256": "0e2ec6d83c60633b1e9aa4d449b23a52f3e8f5ee14d9c97eb8d1b7aba3f3e3a1"
+      "sha256": "4cae91dd5482607b482776e079010868c4deb6054490f7fb2883a03401161cc6"
     },
     {
       "path": "src/Srd52Combat/packages.lock.json",
-      "sha256": "c4ea6347967b836fbf95ec169131584a54bfcd71d499601a4b85465a0c3d59a7"
+      "sha256": "19608ecc2c6c0f338babbad57aa4345d68eeb985a0660cf8fdf6f3f181797f58"
     },
     {
       "path": "tests/Srd52Combat.Tests/Srd52Combat.Tests.csproj",
@@ -540,7 +524,7 @@
     },
     {
       "path": "tests/Srd52Combat.Tests/packages.lock.json",
-      "sha256": "ad37763e4a183297aa6c8a9110597b52a346c6e6d778211a6d117ceffa988f02"
+      "sha256": "ecafbca23bcf50b45c549cc90ab800b53fe8546c6e758bf13b028eca752a9b87"
     }
   ],
   "randomness": "seeded"
