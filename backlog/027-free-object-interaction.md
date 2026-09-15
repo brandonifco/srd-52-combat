@@ -48,6 +48,12 @@ Interacting with Things. You can interact with one object or feature of the envi
 
 - [`gm-requires-action`](028-gm-requires-action.md)
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "as stated in their descriptions" -- `unmapped`: "Magic items (p. 204 onward) and other special objects are outside the extent; the item's own description is the rule."
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

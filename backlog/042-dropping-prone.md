@@ -48,6 +48,12 @@ On your turn, you can give yourself the Prone condition (see “Rules Glossary�
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "(see “Rules Glossary”)" -- `resolvedBy` `prone-condition` -- no backlog item (scope: out -- the engine answers OutsideCurrentScope)
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

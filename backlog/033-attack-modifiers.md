@@ -49,6 +49,13 @@ Evidence, verbatim:
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "(see the next section)" -- `resolvedBy` [`cover-degree`](016-cover-degree.md)
+- `cites` "spells, special abilities, and other effects can apply penalties or bonuses" -- `unmapped`: "Spells (p. 104 onward), features and other effects are outside the extent; each states its own modifier."
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

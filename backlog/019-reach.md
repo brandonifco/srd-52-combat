@@ -48,6 +48,12 @@ A creature has a 5-foot reach and can thus attack targets within 5 feet when mak
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "as noted in their descriptions" -- `unmapped`: "Stat blocks and the Reach weapon property (“Equipment”, p. 89 onward) are outside the extent; a greater reach reaches the engine as a parameter."
+
 ## Acceptance criteria
 
 - [ ] The engine states this value as the evidence prints it -- every figure and unit, and where the corpus prints a finite table, the whole table.
