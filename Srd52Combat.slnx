@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Srd52Combat/Srd52Combat.csproj" />
+  <Project Path="tests/Srd52Combat.Tests/Srd52Combat.Tests.csproj" />
+</Solution>

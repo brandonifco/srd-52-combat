@@ -1,0 +1,23 @@
+SRD 5.2.1 Combat engine
+Copyright 2026 Brandon
+
+This repository is under two sets of terms.
+
+1. Apache License 2.0 (LICENSE): the engine's code, tests, scripts, documentation and
+   everything else in this repository that is not text of the System Reference Document 5.2.1.
+
+2. Creative Commons Attribution 4.0 International (CC-BY-4.0),
+   https://creativecommons.org/licenses/by/4.0/legalcode: text of the System Reference Document
+   5.2.1 wherever it appears here. That is corpus/srd-5.2.1.txt (the whole corpus, as text
+   extracted from the official PDF) and the verbatim quotations of it in backlog/ (each item's
+   evidence, and any note or question quoting it) and in any other file that quotes it. The Apache
+   License does not apply to that text.
+
+The attribution statement the SRD 5.2.1 requires, verbatim:
+
+This work includes material from the System Reference Document 5.2.1 (“SRD 5.2.1”) by Wizards of the Coast LLC, available at https://www.dndbeyond.com/srd. The SRD 5.2.1 is licensed under the Creative Commons Attribution 4.0 International License, available at https://creativecommons.org/licenses/by/4.0/legalcode.
+
+Changes: corpus/srd-5.2.1.txt is the text pdftotext 24.02.0 extracts from the PDF, with a `{N}`
+marker line before each page N (the derivation `srd-5.2.1-pdftotext-24.02.0-page-marked`,
+documented in rules-factory examples/srd-52-combat/extract.py). Quotations are excerpts of that
+text, copied verbatim. Nothing else is modified.
