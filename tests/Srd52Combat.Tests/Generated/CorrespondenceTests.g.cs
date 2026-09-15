@@ -242,8 +242,8 @@ public sealed class CorrespondenceTests
         AssertDeclines("combat-steps", UnresolvedReason.UnsupportedRule, EntryPoints.CombatSteps.Resolve(global::Srd52Combat.Requests.CombatStepsRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Combat Step by Step / p. 13"));
 
     [Fact]
-    public void initiative_roll__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("initiative-roll", UnresolvedReason.UnsupportedRule, EntryPoints.InitiativeRoll.Resolve(global::Srd52Combat.Requests.InitiativeRollRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
+    public void initiative_roll__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("initiative-roll"), "initiative-roll is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void group_initiative__declines_UnsupportedRule_row_2() =>
@@ -258,16 +258,28 @@ public sealed class CorrespondenceTests
         AssertDeclines("surprise-disadvantage", UnresolvedReason.UnsupportedRule, EntryPoints.SurpriseDisadvantage.Resolve(global::Srd52Combat.Requests.SurpriseDisadvantageRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
 
     [Fact]
-    public void initiative_order__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("initiative-order", UnresolvedReason.UnsupportedRule, EntryPoints.InitiativeOrder.Resolve(global::Srd52Combat.Requests.InitiativeOrderRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
+    public void initiative_order__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("initiative-order"), "initiative-order is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void initiative_ties__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("initiative-ties", UnresolvedReason.UnsupportedRule, EntryPoints.InitiativeTies.Resolve(global::Srd52Combat.Requests.InitiativeTiesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
+    public void initiative_ties__is_implemented_and_answers_or_demands_the_assertion()
+    {
+        if (Registry.HasImplementation("initiative-ties"))
+        {
+            return;
+        }
+
+        var value = new object();
+        var resolved = Registry.Resolve("initiative-ties", RuleRequest.Empty.Assert("initiative-ties", value)).Match<object?>(v => v, _ => null);
+        Assert.Same(value, resolved);
+        var typed = EntryPoints.InitiativeTies.Resolve(global::Srd52Combat.Requests.InitiativeTiesRequest.Asserting(value)).Match<object?>(v => v, _ => null);
+        Assert.Same(value, typed);
+        Assert.Throws<AssertionRequiredException>(() => Registry.Resolve("initiative-ties", RuleRequest.Empty));
+    }
 
     [Fact]
-    public void initiative_ties_uncovered__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("initiative-ties-uncovered", UnresolvedReason.UnsupportedRule, EntryPoints.InitiativeTiesUncovered.Resolve(global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
+    public void initiative_ties_uncovered__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("initiative-ties-uncovered"), "initiative-ties-uncovered is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void turn_move_and_action__declines_UnsupportedRule_row_2() =>

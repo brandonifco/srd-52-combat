@@ -96,7 +96,8 @@
       "srd52combat": {
         "type": "Project",
         "dependencies": {
-          "RulesKernel": "[0.2.0, )"
+          "RulesKernel": "[0.2.0, )",
+          "RulesKernel.Randomness": "[0.2.0, )"
         }
       },
       "RulesKernel": {
@@ -104,6 +105,15 @@
         "requested": "[0.2.0, )",
         "resolved": "0.2.0",
         "contentHash": "rVF+Hib90mjqz/uhqg2xKa1RNtL7nK6UFNiCrWDBa+H+HgfBGmOUzXl2L4AZg4pp8azRR0OLDNZL9Cr5Ovlv6Q=="
+      },
+      "RulesKernel.Randomness": {
+        "type": "CentralTransitive",
+        "requested": "[0.2.0, )",
+        "resolved": "0.2.0",
+        "contentHash": "iOXJMPbZ2dDt1UAnL2G0xgVTwhwsRu7rySWk0QqB3utAjh9FVhpbGA+vPOUCLcvo2jv0yUouniLgCz4b//MV2A==",
+        "dependencies": {
+          "RulesKernel": "0.2.0"
+        }
       }
     },
     "net8.0": {
@@ -201,7 +211,8 @@
       "srd52combat": {
         "type": "Project",
         "dependencies": {
-          "RulesKernel": "[0.2.0, )"
+          "RulesKernel": "[0.2.0, )",
+          "RulesKernel.Randomness": "[0.2.0, )"
         }
       },
       "RulesKernel": {
@@ -209,6 +220,15 @@
         "requested": "[0.2.0, )",
         "resolved": "0.2.0",
         "contentHash": "rVF+Hib90mjqz/uhqg2xKa1RNtL7nK6UFNiCrWDBa+H+HgfBGmOUzXl2L4AZg4pp8azRR0OLDNZL9Cr5Ovlv6Q=="
+      },
+      "RulesKernel.Randomness": {
+        "type": "CentralTransitive",
+        "requested": "[0.2.0, )",
+        "resolved": "0.2.0",
+        "contentHash": "iOXJMPbZ2dDt1UAnL2G0xgVTwhwsRu7rySWk0QqB3utAjh9FVhpbGA+vPOUCLcvo2jv0yUouniLgCz4b//MV2A==",
+        "dependencies": {
+          "RulesKernel": "0.2.0"
+        }
       }
     }
   }
