@@ -4,29 +4,29 @@
     "name": "Srd52Combat"
   },
   "factory": {
-    "version": "0.3.1",
-    "commit": "933c3a69249cdd00e254cac3e3b06b53c9eeee1f",
+    "version": "0.4.0",
+    "commit": "f0da05fff2bb1dae0ea7031873276959ae4c481c",
     "dirty": false
   },
   "map": {
     "packageId": "RulesFactory.Maps.Srd52Combat",
-    "version": "1.0.0",
-    "nupkgSha256": "01199233acbe889dd51e399a4aea6ca8f74490420d3464e084f776bf1f03503f",
+    "version": "2.0.0",
+    "nupkgSha256": "b4d20a821c9585106eb5e8612d600c951e2fc0c76a4d054a5c3810552f12f6cf",
     "files": [
       {
         "role": "map",
         "path": "map/corpus-map.json",
-        "sha256": "c4017935b1bd8e658701c254ad4e4213429c808f275014d2966226dbd3113937"
+        "sha256": "228de0dbdfb0900a098ae611a2c72c1142254980ce3c57d66474bc3b4f834ec1"
       },
       {
         "role": "manifest",
         "path": "map/corpus-manifest.json",
-        "sha256": "be15cf9bda86a2a601eb928d7e378016ea25a83610530f8df6c30ca8dc5241f3"
+        "sha256": "aedebbb6a68f84213013706d63be470ce49bbd0396405959a8b53d30418a612d"
       },
       {
         "role": "checker",
         "path": "tools/check-map.py",
-        "sha256": "6916236c2a9be9557bf18d4447668a55846e1dc0b6bde63280c3add1ff4aed67"
+        "sha256": "3198b323fbad84c6c7b284b88dce188d02c16b7bdd569c31ad090c58491e37c8"
       }
     ]
   },
@@ -46,7 +46,7 @@
     "files": [
       {
         "path": "tools/check-map.py",
-        "sha256": "6916236c2a9be9557bf18d4447668a55846e1dc0b6bde63280c3add1ff4aed67"
+        "sha256": "3198b323fbad84c6c7b284b88dce188d02c16b7bdd569c31ad090c58491e37c8"
       },
       {
         "path": "tools/factory/__main__.py",
@@ -62,7 +62,7 @@
       },
       {
         "path": "tools/factory/generate.py",
-        "sha256": "e44420aec92651b69d27812ee11857065fcb0fe31ee173be6a213389206d9bd1"
+        "sha256": "b29436046ecc4bf5cc99f28903f26b67ef77b12ef4b13cfa07b9ab6995a38471"
       },
       {
         "path": "tools/factory/intake.py",
@@ -94,7 +94,7 @@
       },
       {
         "path": "tools/factory/recipe/validate.sh",
-        "sha256": "b43676bd3264d4475d8d5dd3ebf0f71c3c73ecebdaee36ba3829d023908013c9"
+        "sha256": "c28695c10c0b4e966b895d9cd7bb0ac36a1b02dd6a7778d57257093023d2cff1"
       },
       {
         "path": "tools/factory/recipe/validate.yml",
@@ -110,7 +110,7 @@
       }
     ],
     "digestRule": "sha256 over UTF-8 lines '<sha256>  <path>\\n', one per recipe file, in ascending byte order of path",
-    "digest": "72e161b6951176412dfe615df587bd7b349cbe5f4fa14f0eb25fba62e1084fa1"
+    "digest": "efd548dfbfea9f9546883c2603583089a63918a50712c13a1f147e50e36ae5a8"
   },
   "generated": [
     {
@@ -119,275 +119,275 @@
     },
     {
       "path": "RulesFactory.Packages.g.props",
-      "sha256": "d601db0e66d0a523375a3473a36d2effeafc75b35a59e47f5f16736d9028d350"
+      "sha256": "3531cc40c097f10c32fd49aab937402a90bf643a63caa62b37a5b4f82867fecb"
     },
     {
       "path": "backlog/001-combat-rounds.md",
-      "sha256": "42cbe2d969cee087db3b9c74b66f0797cbe3bee8c9814793e8bc0cf50ec55c82"
+      "sha256": "8a054743140b96b934822dd66563f007ae7de41fd17e02c0ba23f665c43e0c57"
     },
     {
       "path": "backlog/002-round-duration.md",
-      "sha256": "0df3b4a8b66c1828b278690ca4d3d8c3ec7a5da592821566930e4c4850ca07ee"
+      "sha256": "16066c4fe45e76b3f0ca660a143283d6cbd47dca8a3fe6843cac4b234cdeb77a"
     },
     {
-      "path": "backlog/003-surprised.md",
-      "sha256": "c24119b0924cfe449b0b1518e6d7fcee31c43297383c441a99519a19d55bf430"
+      "path": "backlog/003-brief-or-extended-communication.md",
+      "sha256": "4511d37ffb4b78ca27bb13df5dfad3c2c8a6bf9d9a61bcf1de6725216a4e72fd"
     },
     {
-      "path": "backlog/004-brief-or-extended-communication.md",
-      "sha256": "58db12343460057b3ba640c36a1128c3e96b9e2059a7ade0b3ae4a7dfd435e9d"
+      "path": "backlog/004-side-defeated.md",
+      "sha256": "76276e49828ccc025374494a4ec329b3e8674ef4f26684f794426b9e2f2ab7be"
     },
     {
-      "path": "backlog/005-side-defeated.md",
-      "sha256": "cf5185cb5af8d5ec434cc37f5c976afc63cd589210906a98dc949c7120c147b8"
+      "path": "backlog/005-sides-agree-to-end.md",
+      "sha256": "57e0e25df22325997ac413b60834909db96a593b408440e202a879a1f3135576"
     },
     {
-      "path": "backlog/006-sides-agree-to-end.md",
-      "sha256": "48c210fae459eecf61586fe5d757cb4837e35f95d441d29992a063803fe282c8"
+      "path": "backlog/006-combat-end.md",
+      "sha256": "bf534c6ea1ebf6b970fe7e736c1f660928ce630f452f91bffd7e192428a49503"
     },
     {
-      "path": "backlog/007-combat-end.md",
-      "sha256": "d68f27e11b65c25b4e3f6efa79e310afa423aa53b7b61289fbddb27edbe9f1a2"
+      "path": "backlog/007-grid-play.md",
+      "sha256": "b2844209a1a25cc2b8ec60c7dbd997b5cf5e4fbb7f3c75afb0db89f2be07e0ee"
     },
     {
-      "path": "backlog/008-grid-play.md",
-      "sha256": "79e507edafae7db8a7f744e415cf4cce51c62bec7f74796d68c1bb9ae1e0a01f"
+      "path": "backlog/008-grid-square-size.md",
+      "sha256": "df229a060242c761bcf2ba64d5c773fb44b5ba807a6cc0a14a6a72fb5467f9a5"
     },
     {
-      "path": "backlog/009-grid-square-size.md",
-      "sha256": "031c098f4d186e9d0b4bc6e48129c90b7681c52155b280117845b6bafc37d751"
+      "path": "backlog/009-grid-range.md",
+      "sha256": "834834b3c7a2206720d3c601b0a2f23bbd91821fc1b4f4910273a1d87d3156b4"
     },
     {
-      "path": "backlog/010-grid-range.md",
-      "sha256": "1564d44ec0b6b146e13e65afe7995a280bb5c84d81a7f287ca100f37a989f7e2"
+      "path": "backlog/010-move-up-to-speed.md",
+      "sha256": "23fd51b05017aaa75332d68fcace29eee194c300b48da4148f179a74a32120c5"
     },
     {
-      "path": "backlog/011-move-up-to-speed.md",
-      "sha256": "74ef00f75bc3ad5f3658eb5efefd87fc66d8d2ccf1443b0b6b4bdb308966b90a"
+      "path": "backlog/011-movement-deduction.md",
+      "sha256": "8ecf70db47e488e0266e9b19f029f002859b29d48461ceb770ed1aa9af719e12"
     },
     {
-      "path": "backlog/012-movement-deduction.md",
-      "sha256": "357692bace3bdd07bc9e8db3a40397cdc9a1cce322b03270fb9c4d68e0aa07d2"
+      "path": "backlog/012-size-categories.md",
+      "sha256": "6c62f26a54d7e5d05092560b57bbdd0ad71f6f99cacb8a2005c1c014dcfe5112"
     },
     {
-      "path": "backlog/013-difficult-terrain.md",
-      "sha256": "21fb2582fe4cdc98dccb0155ff01866b576d64f6167690cc58ca091a26de0724"
+      "path": "backlog/013-creature-size-space.md",
+      "sha256": "129c9ca7c0bd0707278509f4ceaad0ad07488e532cfc334fc76d937a4d07ef23"
     },
     {
-      "path": "backlog/014-difficult-terrain-cost.md",
-      "sha256": "1658044ee9407b33337b7f58e78f186e93347760b19d215f37ba06a28a438f51"
+      "path": "backlog/014-cover-origin.md",
+      "sha256": "de99ee3275d966e39918d209acf1a4759c9f7a1d376f1ea91fc9ea7a213c5779"
     },
     {
-      "path": "backlog/015-size-categories.md",
-      "sha256": "e454bec6de76953fb2ce951fbee5057563200298ed74ef8490efd228fe616e1c"
+      "path": "backlog/015-cover-bonuses.md",
+      "sha256": "ade79891ae7f662c5ac73087f30df067d982c8c45e09395686214f11675425ae"
     },
     {
-      "path": "backlog/016-creature-size-space.md",
-      "sha256": "986f5301d788021a746de93374a9414bc159ea7f21225024fb92699c34ffc268"
+      "path": "backlog/016-cover-degree.md",
+      "sha256": "552904b6dae5a44c44d9959b127cc910a7d20cb4bf1b17e5bf529ee2b20a710d"
     },
     {
-      "path": "backlog/017-cover-origin.md",
-      "sha256": "8439fe348dab190e748672c2fac10a569010784a41918eede596772292c3049c"
+      "path": "backlog/017-total-cover.md",
+      "sha256": "8de9753f6af1426a843a92821a8500f358e0b83426e6f58211645c04322eefb5"
     },
     {
-      "path": "backlog/018-cover-bonuses.md",
-      "sha256": "4ce589ce297a8a2e1dad9c5626918c00c4a3be72192d9dd92666d92e33479b82"
+      "path": "backlog/018-single-range.md",
+      "sha256": "62606a214a396cd29c07e1bdd5b617a63e372dee88435466bf725e465a9df804"
     },
     {
-      "path": "backlog/019-cover-degree.md",
-      "sha256": "80675675049cf253055293b3aab646ae8f5401f950a431e9a0a31807b844f3e1"
+      "path": "backlog/019-reach.md",
+      "sha256": "162321fa2129acbba0dae85bf8986d75718e12c9c24d5115c4eedf1b47322b28"
     },
     {
-      "path": "backlog/020-cover-no-stacking.md",
-      "sha256": "f2e05cc218d9058a2e8a5fc826e9643dbe181eb21b5f8190f6164b973816c177"
+      "path": "backlog/020-melee-within-reach.md",
+      "sha256": "c2afd389df818f98746437345cd3cdfae508f4d273ceab7366ed4987eec17046"
     },
     {
-      "path": "backlog/021-total-cover.md",
-      "sha256": "66cb73130a96554ae77d3de7cdb17ff2f7b0b2f8c98568488d110de8adbc1223"
+      "path": "backlog/021-appropriate-anatomy.md",
+      "sha256": "7bd6c2c125b3f86f446d78b81f737fdc31f6e2b07d584524f581c539c5c1281f"
     },
     {
-      "path": "backlog/022-single-range.md",
-      "sha256": "714ed60e4726667e1e0a6d92543a9c37c257fddb77d5389b26978f1cad3ff8a2"
+      "path": "backlog/022-mount-eligibility.md",
+      "sha256": "f093ffcd0e4f2aef2b4065186e7b28d20e3b8fc1936334e95f6e2ebc3eced1f8"
     },
     {
-      "path": "backlog/023-reach.md",
-      "sha256": "8b25e297a24d8295c9246d16db9a4502d6a8a33b30848c43adfda7449ab05c64"
+      "path": "backlog/023-mounting-cost.md",
+      "sha256": "fc4dd27408446c3da2c478b4e765764e5e72f839f6bb4e6bbfcf19cc320201d6"
     },
     {
-      "path": "backlog/024-melee-within-reach.md",
-      "sha256": "3d0f213934f17aba64ddef79ef593b4950b708af85d3a1b17cc6d63bf4b84cea"
+      "path": "backlog/024-mount-control-requires-training.md",
+      "sha256": "1ed8ae92d860f2e7f6aa5ce1c2a882b130fc0840a0c4f73b0c77f4a6b41479d6"
     },
     {
-      "path": "backlog/025-appropriate-anatomy.md",
-      "sha256": "5bc396b4745fe5ce41c041d29e7570e2cb87a927bb5e2a12c86d8e7ed367b58b"
+      "path": "backlog/025-turn-move-and-action.md",
+      "sha256": "1c11b740637927e5247bd170c052866701cacecc9db00c5b50b0730fcc161a7a"
     },
     {
-      "path": "backlog/026-mount-eligibility.md",
-      "sha256": "dda24c473b19f3e52d01bb66a1c5de60fbf325d45cff0078ad958f09b99ee04b"
+      "path": "backlog/026-communication-cost.md",
+      "sha256": "2556ce386444cfc56bb4d7482da6d28930baf9530dcaf96a85ddf2d7b9f8b6d8"
     },
     {
-      "path": "backlog/027-mounting-cost.md",
-      "sha256": "70b5be39a0c729e6ea0989fe7da78534075925f9fad2e3fccc47a5cdb87d0b35"
+      "path": "backlog/027-free-object-interaction.md",
+      "sha256": "d33c2440f5751cc690aa691e95a709c7d7b3647542cbe1076818258a7ece8fba"
     },
     {
-      "path": "backlog/028-mount-control-requires-training.md",
-      "sha256": "a04b3bd26ecdfba3bd63ed39a8f4068e009d1f13a01db6d278e1dd2d68806f8f"
+      "path": "backlog/028-gm-requires-action.md",
+      "sha256": "e164f88071dd9b793e62252c3aff80f289baefb789f3a917ee50264ba7e319f3"
     },
     {
-      "path": "backlog/029-turn-move-and-action.md",
-      "sha256": "59c793b226d2c4f0eec796458658a5d68ac6ef05a512da58fbcda6ee9fa506fd"
+      "path": "backlog/029-doing-nothing.md",
+      "sha256": "754f772070c72e8a4f7a6cfa58fd3f1bf9d266b77836dab3004c015d5286d952"
     },
     {
-      "path": "backlog/030-communication-cost.md",
-      "sha256": "2361276ea1c42b77662ffbf9bad56bb2a08c45324c477953eed7c3f8dc26e1c8"
+      "path": "backlog/030-hidden-attacker-revealed.md",
+      "sha256": "52faf48af7845a6742a83843d9b8047f0ec7039d3bc399602fb85fe05738b6f4"
     },
     {
-      "path": "backlog/031-free-object-interaction.md",
-      "sha256": "47627df90d9efb14e2edf7180570a2db8614358ad050354ba4bc617b4eff1ca4"
+      "path": "backlog/031-break-up-move.md",
+      "sha256": "1b21bae02ae9c51810355be20d371ac0ffbf9f666e69d4fde8dcb874b977fa2c"
     },
     {
-      "path": "backlog/032-gm-requires-action.md",
-      "sha256": "6fc922c0f5cf3d0d9fc204e5daa49efdc887f5614f021f8e9bea19bbd14f3940"
+      "path": "backlog/032-attack-sources.md",
+      "sha256": "1bf6affb0239981560af5f87bb14676d94a7245d2c92a6809c0581ba3009dc93"
     },
     {
-      "path": "backlog/033-doing-nothing.md",
-      "sha256": "ccdc488265179931e4d958f9cde89c101a32beb89208ce048507ce116bc2eb1b"
+      "path": "backlog/033-attack-modifiers.md",
+      "sha256": "2b186dc187da8ee8ddd03d3ff4af3823fc11d5e062796d60f82b7a2f3d82a504"
     },
     {
-      "path": "backlog/034-hidden-attacker-revealed.md",
-      "sha256": "203cee1f7c9a03eb75cb2d2cbc72d91cad147219fc920e6ff061bf936a27fba4"
+      "path": "backlog/034-unseen-target-disadvantage.md",
+      "sha256": "f1486357c2393fe3ede644e519b3f412a11c936b8c4cefa576f2e829f7307bd2"
     },
     {
-      "path": "backlog/035-opportunity-attack-avoidance.md",
-      "sha256": "b77829f23bb33a3486f58246df7ba93cc9f4e154323b706d507059ec2f142844"
+      "path": "backlog/035-unseen-attacker-advantage.md",
+      "sha256": "817c853b706bccef29bb02c6746d5eb7afe559dc43ec53ca7f4c6c5154606976"
     },
     {
-      "path": "backlog/036-break-up-move.md",
-      "sha256": "1d26589fc211f676f54e09eefb76bd776f79c8830932d30444862081b94e8c82"
+      "path": "backlog/036-normal-and-long-range.md",
+      "sha256": "8a4a51b824bc1f412b97f13ad7e2c24ffb233e48c25fbe0f691e83726293821f"
     },
     {
-      "path": "backlog/037-attack-sources.md",
-      "sha256": "971113065c0c796cfea8660aab0042034a9b573f54c6f7c174568dbf1fcb5384"
+      "path": "backlog/037-attack-target.md",
+      "sha256": "f134936f4b7c2ba4919d5c5824efe39aa0b8c04fbdf16bc4d0208a06148d05aa"
     },
     {
-      "path": "backlog/038-attack-modifiers.md",
-      "sha256": "755410d3c3ddecccda49e6680c2fdf42e38b9367dd77c4770a2ffba800ba9306"
+      "path": "backlog/038-wrong-location-misses.md",
+      "sha256": "ecf7f1980e4aaa6b1f93ebdd2f9a95f81a8f74c5b2b864e445abfdd49bd368c5"
     },
     {
-      "path": "backlog/039-unseen-target-disadvantage.md",
-      "sha256": "d022ae12fabb80a97e660848777312d6b2d9848f4359b8ef498b8d0b9ae48dbd"
+      "path": "backlog/039-underwater-melee.md",
+      "sha256": "4e45294cbcf8a3e2a6a5fab159da56f56cb0c40339fa7f90646f2a7398be1f12"
     },
     {
-      "path": "backlog/040-unseen-attacker-advantage.md",
-      "sha256": "3eb6753fb019a699f194b69d9fb565a5be99faaf0cbb975564a1074424ca0273"
+      "path": "backlog/040-underwater-ranged.md",
+      "sha256": "e093887b22ef1fd2cee5ead434beccd94e0e112e4974f878e4d689db50c8d9cb"
     },
     {
-      "path": "backlog/041-normal-and-long-range.md",
-      "sha256": "09843a11b32215651d18737f6b41050da6321588da5c6d9fcaf9a3f71a49d232"
+      "path": "backlog/041-grid-speed-in-squares.md",
+      "sha256": "3675dd85d2c211e06471d4c9ed9af7555fdf5157e20c25a77e8443312e8be626"
     },
     {
-      "path": "backlog/042-attack-target.md",
-      "sha256": "b20127a31c10feef33496361e0feca107da49edf8ea88ce4b52aaec636e622b6"
+      "path": "backlog/042-dropping-prone.md",
+      "sha256": "f198c22bd9f2a9fa2cb6169a2ada60a637c705630ee96a63d8d001967b7ed407"
     },
     {
-      "path": "backlog/043-wrong-location-misses.md",
-      "sha256": "16063f7c664a746170d9a8d648b7610055df379d281faba074526f4933b61074"
+      "path": "backlog/043-ending-turn-in-occupied-space.md",
+      "sha256": "72d19a6e5533aa2ab84afda4ca311ffd09ea2e75ef887037d6e9c67dad5c9f64"
     },
     {
-      "path": "backlog/044-underwater-melee.md",
-      "sha256": "7af35765bca238a8bcc6fa680b1dac6c34abd35534c503b6fc3be29a1fee945d"
+      "path": "backlog/044-falling-off.md",
+      "sha256": "e3eecab5817ff68db6c13bc902f32b5275e40a22f6f6c5c85844dd809d9d034b"
     },
     {
-      "path": "backlog/045-underwater-ranged.md",
-      "sha256": "2580c5aa56da3174b6928ec3422d95addfba86942ca8b10492bdd6a0368a1fe0"
+      "path": "backlog/045-moving-through-creatures.md",
+      "sha256": "e95604cdd0b4f4671406e7493c1120016591a7944fe80150c55c9c157487856f"
     },
     {
-      "path": "backlog/046-group-initiative.md",
-      "sha256": "fbc3ee616f391c98bae5df6b318e650e8d430954a6d61a1c8691fbab94962e4e"
+      "path": "backlog/046-no-willing-end-in-occupied-space.md",
+      "sha256": "174e082bc85ada46589eac51ac12c2597463e620d65d4c9e9ff86b073728fe36"
     },
     {
-      "path": "backlog/047-surprise-disadvantage.md",
-      "sha256": "7d190c0776f9144ada5f57518b42640d12f9cbceae2fee257305b39e752fc927"
+      "path": "backlog/047-ranged-in-close-combat.md",
+      "sha256": "66a03704ff5a748d2febe499de1774b84b419f135735553bb5c36652bd56d62b"
     },
     {
-      "path": "backlog/048-next-round.md",
-      "sha256": "4192a59c708eebd8f5a86c671d13303a3546f69358ea51d3964e012bae4805ba"
+      "path": "backlog/048-group-initiative.md",
+      "sha256": "d296ec8bc618897f97f3e4fb02548981d44707b152f5fb4b60d7391364d17f2c"
     },
     {
-      "path": "backlog/049-combat-steps.md",
-      "sha256": "1d2997e02b3c7005cd3f0d93f072a883ce974aedaf976845555390e18a26a5e9"
+      "path": "backlog/049-next-round.md",
+      "sha256": "29b3600acca3a144b90671eba2e72a4ded6c63f4bf65b56e3cf967e8981b5ba1"
     },
     {
-      "path": "backlog/050-controlled-mount-turn.md",
-      "sha256": "38ed63e7ef8a583013f9078c4df45877ab66705466c7f9d634f6c8c76d1303eb"
+      "path": "backlog/050-combat-steps.md",
+      "sha256": "7f9a837960d75cf861c00654718aa3160f1f42b2c7e64cfb8f73fc9f4788d7ea"
     },
     {
-      "path": "backlog/051-independent-mount.md",
-      "sha256": "d4b9c1621f4de5eb57dfdaa18e6190f692f3255d258836a49f3b78e3ba29a555"
+      "path": "backlog/051-controlled-mount-turn.md",
+      "sha256": "19a7c57bc087755eff086b79bb9a61398fa77c1aa251dd5585501eb0ed6ed1b7"
     },
     {
-      "path": "backlog/052-grid-speed-in-squares.md",
-      "sha256": "87582afa10336d23485a064b4315950d9e9a4facc0ef15d7b5e4184e22d45b80"
+      "path": "backlog/052-independent-mount.md",
+      "sha256": "03bc92113927046d4f9f122e5446300f223b7ec94aef05dbe47343872ea7b5cf"
     },
     {
-      "path": "backlog/053-grid-entering-square.md",
-      "sha256": "e91dba5e498e2010d2360f84cecdde22895aad1bd08717e1efee5e4d166ab739"
+      "path": "backlog/053-cover-no-stacking.md",
+      "sha256": "5100d8ade0dfcdee675a865a1e7ce63f2f4f007a23ab584f6560db76c1c7e30a"
     },
     {
-      "path": "backlog/054-grid-corners.md",
-      "sha256": "3383ab62f493f1deb3d32c07b1d4b7e48a304d3bf3e65839ef405bd34c40d46e"
+      "path": "backlog/054-opportunity-attack-avoidance.md",
+      "sha256": "708ee0cacf03deb3a35b96741ce3bf9efbc61d1ddf5c59fbcac0df235e2b75eb"
     },
     {
-      "path": "backlog/055-dropping-prone.md",
-      "sha256": "60df1f8c88480c572dd167428a340da7cb93b593750e0469feb87d438fb8678f"
+      "path": "backlog/055-movement-modes.md",
+      "sha256": "7674d0a227512e54e71db319c84b8aefd49bf73decb44544d826c41fb6438030"
     },
     {
-      "path": "backlog/056-ending-turn-in-occupied-space.md",
-      "sha256": "9d417e4b6c3c044490570fd66c517ffe455e5b966bf69f7b22bbc918f3278535"
+      "path": "backlog/056-difficult-terrain.md",
+      "sha256": "99be6e15b13da9b8507b6ce636cfbcd9b53f0ea0f0ae4487909731f4f70e5d02"
     },
     {
-      "path": "backlog/057-falling-off.md",
-      "sha256": "50d822d39c114e9a5ce7f01f140d920fffc5f90e36b5f7da7c091d31f28cada2"
+      "path": "backlog/057-difficult-terrain-cost.md",
+      "sha256": "cf91323be4baaaeefd5d5457d061b95a054942993c39e02ae81402ded9177dee"
     },
     {
-      "path": "backlog/058-moving-through-creatures.md",
-      "sha256": "e1262b3cded4cd1eed43abbf9b1b96f72e0f853920e69c1de9a3448463227855"
+      "path": "backlog/058-grid-entering-square.md",
+      "sha256": "7f73169133827ccd30aee8b66470728e827f6fbe24ec17c44244480c1a69c7c2"
     },
     {
-      "path": "backlog/059-creature-space-difficult-terrain.md",
-      "sha256": "3dfcf87ac05904b7dd89c2b2d8cb9c418238c7eadb3fa4f6fc9fe3150e93eb04"
+      "path": "backlog/059-grid-corners.md",
+      "sha256": "4a952df4b5f2dcf206f737dc522ccaf1daa48c86b4e5936490b5c41d179c48fa"
     },
     {
-      "path": "backlog/060-no-willing-end-in-occupied-space.md",
-      "sha256": "38f30b0a56e80126fdf9409645da531cca084debec2496f244426f8996b9348d"
+      "path": "backlog/060-creature-space-difficult-terrain.md",
+      "sha256": "ad91973da9d2af96cb939d75d1adaf09456c74cd9a36e7161083252ceb594a7e"
     },
     {
-      "path": "backlog/061-ranged-in-close-combat.md",
-      "sha256": "8eb73c4af53c9b2e6ea52f9b18d14d0b02e013aacf6e617bffe407627ce60f60"
+      "path": "backlog/061-surprised.md",
+      "sha256": "9843cc2bbb0f78b8c3a9f559d629f857d269c140304a089c1b3b0b959677f3da"
     },
     {
-      "path": "backlog/062-movement-modes.md",
-      "sha256": "6d60af42f363bdcd750fede1db97931b5e15d1e7be3eb721bb8bbd638cad61d5"
+      "path": "backlog/062-surprise-disadvantage.md",
+      "sha256": "71b669f9e28603f9022c88ebd04f617cbad0c7a9961b9bdbb237a6ec8ec0d0f3"
     },
     {
       "path": "backlog/063-attack-resolution.md",
-      "sha256": "ae78e628e2de8bf07fe1bd9fbf521279a74353004fe3478f028d69b777b6cb0e"
+      "sha256": "24ef3d7e39e742ed97ab143d2c82013c779f22d5a41d648e2dcc62a54cf728b8"
     },
     {
       "path": "backlog/064-attack-structure.md",
-      "sha256": "c2b0f4adad603e6f6bc1134c84f42c9226d4502bafc3fbec0d13719e5a4b3999"
+      "sha256": "db68775636489fbf9b1da1b667288bd3b51fd81404e685e425ef545ae0abe168"
     },
     {
       "path": "backlog/065-opportunity-attack.md",
-      "sha256": "9eddd25cf2a9a729dc12f73f316a9ce7fe383e1a364dd5a1f18ae8df9e609343"
+      "sha256": "760ff604d9920b4028813aeb76cac4335aa89fb458d45444cf1758db414a026a"
     },
     {
       "path": "backlog/066-underwater-fire-resistance.md",
-      "sha256": "c9d7bdbad01ee66b9613afd48935e986d53bc1ed60da9ea915645fc8558d67e0"
+      "sha256": "2e951893fde70908a505adaa6ed653a941234c665bf3e80410f92687758c0714"
     },
     {
       "path": "backlog/README.md",
-      "sha256": "a3ad382c045f7a176952d5dd86273822c031c25b067c7ad4604b8b4f8c0541c3"
+      "sha256": "c2942cfe3b367ef7edd056a65d476b21e021602bb34f2d74fc3782c84754731e"
     },
     {
       "path": "corpus/srd-5.2.1.txt",
@@ -399,7 +399,7 @@
     },
     {
       "path": "scripts/factory/generate.py",
-      "sha256": "e44420aec92651b69d27812ee11857065fcb0fe31ee173be6a213389206d9bd1"
+      "sha256": "b29436046ecc4bf5cc99f28903f26b67ef77b12ef4b13cfa07b9ab6995a38471"
     },
     {
       "path": "scripts/factory/intake.py",
@@ -419,35 +419,35 @@
     },
     {
       "path": "scripts/validate.sh",
-      "sha256": "eafa848961d809147658cf424811101661854b3dc746c81d8d86474dba240a05"
+      "sha256": "9d048b2c6fb7d3389ba4c170cfcb1382065081d7917eb69d4b42b08722296dc9"
     },
     {
       "path": "src/Srd52Combat/Generated/Contracts.g.cs",
-      "sha256": "56ba9696e59066193b583d932f11043a4dc7af47866172cd5ac6fcc051423ffb"
+      "sha256": "315af348650b5f075d79f7a1c37fd6a06c8f726a4af3cd3c8890355ff51b5670"
     },
     {
       "path": "src/Srd52Combat/Generated/MapEntries.g.cs",
-      "sha256": "56b718f1d4f9047094ff8efdb9658c094048dea04c873d3b78d06af76dbca2d4"
+      "sha256": "83b3a9d799966f79c5011473ab1b43744983086b7baa69b67208d38e3f32c2a0"
     },
     {
       "path": "src/Srd52Combat/Generated/Provenance.g.cs",
-      "sha256": "6152e6f275804b73442ab7c95b39fac2d97353e346453f0609f89db61227819b"
+      "sha256": "a22768800b0282f2cc1409903f434734ab81ebe59e45e4001b17ab226e859f99"
     },
     {
       "path": "src/Srd52Combat/Generated/Registry.g.cs",
-      "sha256": "0eb17101c918f6c73c546a47979288f8c878d98205874ae8631a1d58ff3a4b55"
+      "sha256": "1ba83775479fb5c85510d7df24e7d3f7dc8135c0f03b41ecbe211c84f759e7f6"
     },
     {
       "path": "src/Srd52Combat/Generated/Requests.g.cs",
-      "sha256": "f23cdc962101a808de1e162f513f2d97195ab20f3c275098977c6ede62bf70a1"
+      "sha256": "9e39fd44805b43fb68eaa3a4bdd13ce83987023e7bd119484140727cb31bf7ad"
     },
     {
       "path": "tests/Srd52Combat.Tests/Generated/CorrespondenceTests.g.cs",
-      "sha256": "597879801d07b9e7d61df41f64e23fb76286bd2e15dc31718cbc694ac41ddf01"
+      "sha256": "f5046e7db2db7d977763386210e0bc3c314eea93f1db12bf4cfb4f4e8f426d1e"
     },
     {
       "path": "tests/Srd52Combat.Tests/Generated/ProvenanceTests.g.cs",
-      "sha256": "1badacab329463376822f9d9ddf33fbca080e6cddf943dcaa1888e2948e76941"
+      "sha256": "344c9eb3f937289c84f0e161bc339abce5435a00a01cdd3d36ade9b32e59f8b2"
     }
   ],
   "managed": [
@@ -516,7 +516,7 @@
     },
     {
       "path": "src/Srd52Combat/packages.lock.json",
-      "sha256": "19608ecc2c6c0f338babbad57aa4345d68eeb985a0660cf8fdf6f3f181797f58"
+      "sha256": "856443116932d39590094a4e3b7832d3de45e75a8d37156f13fd8a2e4ce08b86"
     },
     {
       "path": "tests/Srd52Combat.Tests/Srd52Combat.Tests.csproj",
