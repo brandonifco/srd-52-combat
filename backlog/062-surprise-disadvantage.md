@@ -51,6 +51,12 @@ Surprise. If a combatant is surprised by combat starting, that combatant has Dis
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "Disadvantage on their Initiative roll" -- `resolvedBy` `initiative-score-option` -- no backlog item (scope: out -- the engine answers OutsideCurrentScope)
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

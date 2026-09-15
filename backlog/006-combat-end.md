@@ -57,6 +57,12 @@ p. 14 says combat can end when both sides agree to end it; p. 13 says the fight 
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- none
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

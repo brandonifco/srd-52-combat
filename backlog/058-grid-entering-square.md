@@ -59,6 +59,12 @@ The rule prices an unoccupied adjacent square (1 square) and a square of Difficu
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "Other effects might make a square cost even more." -- `unmapped`: "Names no rule; the effects are wherever they are stated (spells, the Rules Glossary), outside the extent."
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

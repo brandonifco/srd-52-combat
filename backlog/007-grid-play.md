@@ -48,6 +48,12 @@ If you play using a square grid and miniatures or other tokens, follow these rul
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- none
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

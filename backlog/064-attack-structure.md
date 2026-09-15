@@ -50,6 +50,13 @@ or make an attack roll as part of a spell, an attack has the following structure
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "(see the next section)" -- `resolvedBy` [`cover-degree`](016-cover-degree.md)
+- `cites` "as detailed earlier in “Playing the Game.”" -- `resolvedBy` `attack-rolls` -- no backlog item (scope: out -- the engine answers OutsideCurrentScope)
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

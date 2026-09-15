@@ -2,7 +2,7 @@
 
 A deterministic rules engine for the Combat chapter of the System Reference Document 5.2.1
 (pp. 13–16), produced by [rules-factory](https://github.com/brandonifco/rules-factory) from a
-corpus map, on [`RulesKernel`](https://www.nuget.org/packages/RulesKernel) 0.2.0.
+corpus map, on [`RulesKernel`](https://www.nuget.org/packages/RulesKernel) 0.3.0.
 
 The corpus is the SRD 5.2.1 as text extracted from the official PDF, pinned in
 `corpus/srd-5.2.1.txt` and hashed on every validation run. The specification is the map in the
@@ -86,7 +86,7 @@ python3 tools/factory produce --package RulesFactory.Maps.Srd52Combat@2.0.0 \
   --corpus <this repository>/corpus/srd-5.2.1.txt --name Srd52Combat --out <this repository>
 ```
 
-`provenance.json` records the run: rules-factory 0.4.0 (tag `factory/v0.4.0`, commit `f0da05f`,
+`provenance.json` records the run: rules-factory 0.7.0 (tag `factory/v0.7.0`, commit `0697808`,
 clean). After changing only the overlay, run `produce` again too: the generated correspondence
 tests read the merged statuses, and `provenance.json` hashes the overlay. To check the record against the tree, from a rules-factory checkout at that tag:
 

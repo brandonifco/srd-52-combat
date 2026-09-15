@@ -56,6 +56,12 @@ Fate: `unresolved`; unresolvedReason: `RequiresInterpretation`.
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- none
+
 ## Acceptance criteria
 
 - [ ] The engine states this value as the evidence prints it -- every figure and unit, and where the corpus prints a finite table, the whole table.

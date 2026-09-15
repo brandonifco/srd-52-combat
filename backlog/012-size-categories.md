@@ -48,6 +48,12 @@ A creature belongs to a size category, which determines the width of the square 
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "as shown on the Creature Size and Space table" -- `resolvedBy` [`creature-size-space`](013-creature-size-space.md)
+
 ## Acceptance criteria
 
 - [ ] The engine states this value as the evidence prints it -- every figure and unit, and where the corpus prints a finite table, the whole table.

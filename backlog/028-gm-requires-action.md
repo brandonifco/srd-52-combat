@@ -48,6 +48,13 @@ The GM might require you to use an action for any of these activities when it ne
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "any of these activities" -- `resolvedBy` [`free-object-interaction`](027-free-object-interaction.md)
+- `cites` "any of these activities" -- `resolvedBy` [`communication-cost`](026-communication-cost.md)
+
 ## Acceptance criteria
 
 - [ ] The engine demands this fact of the caller rather than deciding it; what the caller states is what the engine evaluates.

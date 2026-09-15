@@ -49,6 +49,12 @@ Your movement can include climbing, crawling, jumping, and swimming (each explai
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "(each explained in “Rules Glossary”)" -- `resolvedBy` `movement-modes-glossary` -- no backlog item (scope: out -- the engine answers OutsideCurrentScope)
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.

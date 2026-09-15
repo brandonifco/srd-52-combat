@@ -56,6 +56,12 @@ What counts as Difficult Terrain is stated twice, differently. The slice gives o
 
 - none
 
+## Cross-references
+
+`crossReferences` -- each pointer the evidence makes, and the entry or the recorded reason it resolves to:
+
+- `cites` "Difficult Terrain" -- `resolvedBy` `difficult-terrain-glossary` -- no backlog item (scope: out -- the engine answers OutsideCurrentScope)
+
 ## Acceptance criteria
 
 - [ ] The engine performs the operation the evidence states, observable through its public API, on each situation the required evidence names.
