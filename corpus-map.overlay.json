@@ -36,7 +36,7 @@
       },
       {
         "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
-        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 3; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order."
+        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 3; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. Under ruleset version 3 (the movement and space batch) the version mutation is 4: re-run, Ruleset.Identity named version 4, this test went red on the rendered identity and the pinned SHA-256, and no other did."
       }
     ]
   },
@@ -100,6 +100,221 @@
       {
         "test": "InitiativeOrderEntryPointTests.Players_who_state_they_did_not_agree_decline_citing_page_13_with_the_statement_recorded",
         "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules resolved a tie the players stated they did not agree on, ordering it as listed (`if (false && tieBreak.PlayersDidNotAgree)`); this test went red and no other did. Re-run under map 2.0.0: red again, and no other test."
+      }
+    ]
+  },
+  "grid-square-size": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "GridEntryPointTests.Each_square_represents_five_feet_on_a_grid_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules' square was 6 feet (`private const int FeetPerSquare = 6`); this test went red, and so did the Speed-in-squares test (30 feet then translated into 5 squares)."
+      },
+      {
+        "test": "GridEntryPointTests.Off_the_grid_every_grid_rule_declines_citing_grid_play",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`), so the grid rules answered off the grid; this test went red, and so did the entering-a-square one."
+      }
+    ]
+  },
+  "grid-speed-in-squares": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "GridEntryPointTests.A_Speed_of_thirty_feet_is_six_squares_and_one_of_twelve_feet_is_two_rounded_down_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.SpeedInSquares rounded the fraction up (`(speedInFeet + square.Feet - 1) / square.Feet`), so 12 feet was 3 squares; this test went red and no other did. It went red too when the square was 6 feet."
+      },
+      {
+        "test": "GridEntryPointTests.Off_the_grid_every_grid_rule_declines_citing_grid_play",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`), so the grid rules answered off the grid; this test went red, and so did the entering-a-square one."
+      },
+      {
+        "test": "GridEntryPointTests.A_grid_statement_left_out_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the GridSquareSize handler defaulted a missing statement to a grid (`request.Play ?? GridPlayStatement.OnAGrid(\"default\")`); this test went red and no other did."
+      }
+    ]
+  },
+  "grid-entering-square": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "GridEnteringSquareEntryPointTests.Entering_an_unoccupied_adjacent_square_costs_one_square_diagonally_as_orthogonally_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter charged a diagonal step one square more (`+ (adjacency == SquareAdjacency.Diagonal ? 1 : 0)`); this test went red, and so did the occupied-square cost test."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.A_square_of_Difficult_Terrain_costs_two_squares_to_enter",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`); this test went red, and so did the occupied-square, ally-on-Difficult-Terrain and movement-left tests."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.A_square_held_by_a_creature_that_is_neither_Tiny_nor_your_ally_is_Difficult_Terrain_and_costs_two",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`); this test went red. It went red too when a diagonal step cost one square more."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.A_square_held_by_a_Tiny_creature_or_an_ally_declines_RequiresInterpretation_citing_the_entry",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced the occupied square the rule leaves out at 1 instead of declining (`if (false && !difficultTerrain)`); this test went red and no other did. It went red too when MovementRules.SpaceOf dropped the ally exception."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.A_square_that_is_both_held_by_an_ally_and_Difficult_Terrain_costs_two",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`); this test went red."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.Entering_needs_enough_movement_left_to_pay_for_it",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`), so one square of movement paid for Difficult Terrain; this test went red."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.Off_the_grid_entering_a_square_declines_citing_grid_play",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`); this test went red, and so did the other grid rules' off-the-grid test."
+      },
+      {
+        "test": "GridEnteringSquareEntryPointTests.A_statement_about_the_square_left_out_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the GridEnteringSquare handler defaulted a missing square to an unoccupied one (`request.Square ?? SquareStatement.Unoccupied(\"default\")`); this test went red and no other did."
+      }
+    ]
+  },
+  "grid-corners": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "GridEntryPointTests.Diagonal_movement_cant_cross_the_corner_of_a_feature_that_fills_its_space_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Corner let every corner be crossed (`features.FirstOrDefault(f => false)`); this test went red and no other did."
+      },
+      {
+        "test": "GridEntryPointTests.A_feature_that_does_not_fill_its_space_and_an_orthogonal_step_are_not_stopped",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Corner stopped an orthogonal step at the same corner (`true` for `adjacency == SquareAdjacency.Diagonal`); this test went red and no other did."
+      },
+      {
+        "test": "GridEntryPointTests.Off_the_grid_every_grid_rule_declines_citing_grid_play",
+        "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`), so the grid rules answered off the grid; this test went red, and so did the entering-a-square one."
+      }
+    ]
+  },
+  "size-categories": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovementEntryPointTests.The_size_categories_run_from_Tiny_to_Gargantuan_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules' size order ran from Gargantuan to Tiny (the array reversed); this test went red, and so did the ending-a-turn test, because \"of a larger size\" then counted the wrong way."
+      }
+    ]
+  },
+  "movement-modes": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovementEntryPointTests.A_move_can_mix_modes_or_be_entirely_one_and_all_of_them_draw_on_the_same_Speed_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.Combine reversed the modes the caller stated (`[.. modes.Reverse()]`); this test went red and no other did."
+      },
+      {
+        "test": "MovementEntryPointTests.What_a_mode_costs_declines_citing_the_Rules_Glossary",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.Combine answered a request for a mode's cost instead of declining (`askingWhatAModeCosts is { } asked && asked == (MovementMode)99`); this test went red and no other did."
+      },
+      {
+        "test": "MovementEntryPointTests.A_movement_input_left_out_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the MovementModes handler defaulted missing modes to regular movement (`request.Modes ?? [MovementMode.Regular]`); this test went red and no other did."
+      }
+    ]
+  },
+  "dropping-prone": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovementEntryPointTests.A_creature_can_drop_Prone_for_free_unless_its_Speed_is_zero_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.DropProne allowed it at Speed 0 (`new DroppingProneRuling(true, ...)`); this test went red and no other did."
+      },
+      {
+        "test": "MovementEntryPointTests.A_movement_input_left_out_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the MovementModes handler defaulted missing modes to regular movement (`request.Modes ?? [MovementMode.Regular]`); this test went red and no other did."
+      }
+    ]
+  },
+  "moving-through-creatures": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.You_can_pass_through_an_ally_an_Incapacitated_or_Tiny_creature_or_one_exactly_two_sizes_away_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough dropped the ally case (`false` for `other.IsYourAlly`), so passing through an ally's space declined; this test went red and no other did."
+      },
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_or_matching_none_of_the_four_cases_declines_RequiresInterpretation",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough read “two sizes larger or smaller” as two or more (`>= TwoSizes`), choosing a reading of the unresolved question; this test went red and no other did."
+      },
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.A_statement_about_another_creature_left_out_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the MovingThroughCreatures handler defaulted a missing size to Medium (`request.YourSize ?? CreatureSize.Medium`); this test went red and no other did."
+      }
+    ]
+  },
+  "creature-space-difficult-terrain": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.Another_creatures_space_is_Difficult_Terrain_unless_it_is_Tiny_or_your_ally_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.SpaceOf dropped the ally exception (`false` for `other.IsYourAlly`); this test went red, and so did the grid test of the square an ally holds."
+      }
+    ]
+  },
+  "no-willing-end-in-occupied-space": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.A_move_cant_willingly_end_in_an_occupied_space_and_an_unwilling_one_is_not_forbidden_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.EndMove ignored the willingness statement (`occupant is null` for `occupant is null || !willingly`), so a move the creature was made to take was forbidden too; this test went red and no other did."
+      }
+    ]
+  },
+  "ending-turn-in-occupied-space": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 3
+    },
+    "tests": [
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.Ending_a_turn_in_a_space_with_a_creature_of_the_same_size_leaves_you_Prone_and_one_size_larger_does_not_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.EndTurn counted the same size as larger (`!Order.IsLarger(other.Size, yourSize)`); this test went red and no other did. It went red too when the size order was reversed."
+      },
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.A_creature_that_shared_the_space_during_the_turn_but_not_at_its_end_is_not_Prone",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.EndTurn made a creature that ended its turn alone Prone (`new EndOfTurnRuling(true, ...)`); this test went red and no other did."
       }
     ]
   }
