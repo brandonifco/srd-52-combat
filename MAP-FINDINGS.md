@@ -4,15 +4,14 @@ A running log, kept while building this engine from `RulesFactory.Maps.Srd52Comb
 per finding: what the map says, what implementing it revealed, and whether the map or the code is
 at fault. Quotations of SRD 5.2.1 here are under the corpus's licence, CC-BY-4.0; see `NOTICE`.
 
-Counts so far: **16 findings, from three batches against map 2.0.0. Two are a fault in the map**,
-both in the attacks batch (7, 8). Findings 1-6 are the movement and space batch's (ruleset version
-3): four are records of something the map is right about and that a reader of the engine would
-otherwise have to rediscover (1, 3, 4, 5); one is a gap in the method rather than in the map (2);
-one is a question for the engine's owner (6). Findings 7-11 are the attacks batch's (ruleset
-version 4): two faults (7, 8), two records (9, 10) and one more question for the owner (11).
-Findings 12-16 are the turn and round batch's (ruleset version 5): three records (12, 14, 15), one
-more gap in the method (13), and one risk in the build order (16). No batch found an entry that was
-the wrong *unit* of work.
+Counts so far: **22 findings, from four batches against map 2.0.0. Three are a fault in the map**,
+two in the attacks batch (7, 8) and one in the mounted-combat batch (18). Findings 1-6 are the
+movement and space batch's (ruleset version 3), 7-11 the attacks batch's (version 4), 12-16 the turn
+and round batch's (version 5), and 17-22 the mounted-combat, underwater and gap-closing batch's
+(version 6). Across them: three faults, eleven records of something the map is right about that a
+reader would otherwise have to rediscover, four gaps in the method rather than in the map, and four
+questions for the engine's owner (6, 11, 17, 21). No batch has found an entry that was the wrong
+*unit* of work.
 
 ---
 
@@ -120,6 +119,11 @@ The same shape, less sharply: `attack-target` declines for a melee attack (`mele
 and for a ranged attack with one range (`single-range`), and answers only for a ranged attack with
 two ranges (`normal-and-long-range`), which this batch built.
 
+*Closed by the mounted-combat, underwater and gap-closing batch (version 6):* `cover-degree`,
+`melee-within-reach` and `single-range` are built, and both entries answer. `attack-modifiers` still
+declines where `cover-degree` does, which is a creature covering less than half of the target, or a
+target behind more than one source of cover (`cover-no-stacking`, not built).
+
 ## 10. `dependsOn` cannot say "one of these, whichever the attack is"
 
 *The map is right; the method has no field for what was found.* `attack-target`'s `dependsOn` is
@@ -197,3 +201,97 @@ distance up to the Speed, or none — now lives in `TurnRules`. When `move-up-to
 `movement-deduction` are built they must answer through that rule rather than restate it, or the
 engine will hold two implementations of one sentence. The map is right; the risk is in the build
 order, which no field records.
+
+---
+
+The mounted-combat, underwater and gap-closing batch,
+[decision 0006](docs/decisions/0006-a-mount-is-a-fact-the-caller-states-and-the-gaps-this-batch-closes.md).
+
+## 17. Nothing in the map can ever reach the mounted-combat rules
+
+*The map is right, and the question it leaves open is worth a ruling.* `appropriate-anatomy` is
+`clarity: ambiguous`, `fate: unresolved`, and its question ("an appropriate anatomy" states no
+measure, no set of values, and nobody who decides) is the whole of the entry: every asking of it
+declines. `mount-eligibility` `dependsOn` it, so a willing creature of a large enough size gets a
+decline and never a "yes". And every entry after it — `mounting-cost`,
+`mount-control-requires-training`, `controlled-mount-turn`, `independent-mount`, `falling-off` —
+names `mount-eligibility` or `mounting-cost` in `enabledBy`, which the backlog turns into "every
+test of the rule sets up a state in which it holds".
+
+So the five rules of mounted combat are unreachable from inside the engine, and the acceptance
+criterion asks for a state the engine cannot produce. This engine takes the gate as a caller's
+statement (`MountStatement`: not a mount, serves as a mount, ridden), by the same reading
+`grid-play` got in finding 2, and declines `OutsideCurrentScope` where it is shut. That keeps the
+engine from deciding the anatomy question, but it does mean a caller can put a rider on a giant
+spider and the engine will price the mounting.
+
+The ruling worth having: is "an appropriate anatomy" the GM's call, in which case the entry should
+carry an `assertedBy` and the statement is an assertion rather than a parameter? Or is the gate
+what this engine made it, a fact of the table's fiction that the engine records and never checks?
+
+## 18. `falling-off` declares a draw its own dependency puts outside the engine
+
+*The map is at fault, in the same way as finding 7.* The entry carries
+
+```json
+"draws": { "dice": "d20", "count": "one Dexterity saving throw each time the rule applies" }
+```
+
+and `dependsOn: ["saving-throws", "prone-condition"]`, both `scope: out`. The DC is in the slice
+(10) and the ability is named (Dexterity), but what is rolled against that DC — the d20 plus a
+Dexterity saving throw modifier and whatever proficiency applies — is `saving-throws`', outside the
+extent. A seeded engine of this slice that drew a bare d20 here would be comparing the wrong number
+to the DC. So the engine draws nothing, states the DC and the ability, and takes the outcome as a
+statement, exactly as `attack-resolution` does with the attack roll. As finding 7 asked: either
+`draws` should be conditioned on the drawing rule being in scope, or the method needs a way to say
+"this is the draw the rule would make, made elsewhere".
+
+## 19. The three mounted-combat entries that share a page share a citation, and the id carries the work
+
+*The map is right; the record is worth keeping.* `mount-control-requires-training`,
+`controlled-mount-turn` and `independent-mount` all cite "Combat / Controlling a Mount / p. 16",
+and `mount-eligibility` and `appropriate-anatomy` both cite "Combat / Mounted Combat / p. 15". A
+decline's `Locator` therefore cannot say which of them declined, and a test that asserts only the
+locator cannot tell `mount-eligibility` citing itself from `mount-eligibility` citing
+`appropriate-anatomy` — the mutation that swapped them turned nothing red until the entry id was
+asserted in `Attempted` as well. The engine follows `GridRules`' precedent and names the entry in
+every decline; the finding is that the map's shape makes that mandatory here, not optional.
+
+## 20. `underwater-ranged` and `normal-and-long-range` overlap beyond long range
+
+*The map is right; the record is worth keeping.* `normal-and-long-range` says "you can't attack a
+target beyond long range". `underwater-ranged` says a ranged weapon attack underwater "automatically
+misses a target beyond the weapon's normal range", which includes everything beyond long range. The
+two do not contradict each other — no hit either way — but they are different statements: one says
+no attack is made, the other that an attack is made and misses. Nothing in the map marks the
+overlap, and `dependsOn: ["normal-and-long-range"]` does not say which governs. The engine reports
+both: the range verdict (`CanAttack: false`) and the automatic miss, and chooses between them
+nowhere.
+
+## 21. `mount-control-requires-training` names instances and no decider
+
+*The map is right, and the question it leaves open is worth a ruling.* "Domesticated horses, mules,
+and similar creatures have such training." The engine answers for the two the corpus names and
+declines `RequiresInterpretation` for everything else, because "similar" states no measure and the
+slice names nobody who may say a creature is trained.
+
+The alternative would be to let the caller state training as a fact, the way this engine lets the
+caller state a Swim Speed or the Incapacitated condition. The difference is that the corpus *does*
+speak to training — it gives instances — and the question the map asks is precisely who extends the
+list. A ruling from the engine's owner would settle whether "trained to accept a rider" is a
+caller-supplied fact with an `assertedBy`, or a gap that stays declined until a corpus outside this
+extent defines it.
+
+## 22. `movement-deduction` prices a part of a move, not a fraction of one
+
+*The map is right; the record is worth keeping.* "you deduct the distance of each part of your move
+from it until it is used up or until you are done moving, whichever comes first." The engine deducts
+each stated part whole, and a part the movement left does not cover is not taken, nor is anything
+after it. The corpus does not describe taking half a part, and `move-up-to-speed` allows "a distance
+equal to your Speed or less", so nothing licenses a total past the Speed. `mounting-cost`'s own note
+reaches the same conclusion for the mounting cost ("a creature with less movement left than the cost
+cannot mount or dismount"), which is what makes the reading safe; the general rule is what the
+engine implements, and the note is the corroboration. Following finding 16, both entries answer
+through `TurnRules`: `move-up-to-speed` asks `turn-move-and-action`'s rule whether the distance is
+within the turn, and `movement-deduction` asks it of each part in turn, so the sentence the two
+pages share has one implementation.

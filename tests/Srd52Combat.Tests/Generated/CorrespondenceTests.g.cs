@@ -366,16 +366,16 @@ public sealed class CorrespondenceTests
         AssertDeclines("grid-range", UnresolvedReason.UnsupportedRule, EntryPoints.GridRange.Resolve(global::Srd52Combat.Requests.GridRangeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Playing on a Grid / p. 13"));
 
     [Fact]
-    public void move_up_to_speed__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("move-up-to-speed", UnresolvedReason.UnsupportedRule, EntryPoints.MoveUpToSpeed.Resolve(global::Srd52Combat.Requests.MoveUpToSpeedRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Movement and Position / p. 14"));
+    public void move_up_to_speed__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("move-up-to-speed"), "move-up-to-speed is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void movement_modes__is_implemented_so_a_hand_written_handler_answers_it() =>
         Assert.True(Registry.HasImplementation("movement-modes"), "movement-modes is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void movement_deduction__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("movement-deduction", UnresolvedReason.UnsupportedRule, EntryPoints.MovementDeduction.Resolve(global::Srd52Combat.Requests.MovementDeductionRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Movement and Position / p. 14"));
+    public void movement_deduction__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("movement-deduction"), "movement-deduction is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void speed_and_size_sources__declines_OutsideCurrentScope_row_1() =>
@@ -474,16 +474,16 @@ public sealed class CorrespondenceTests
         AssertDeclines("cover-bonuses", UnresolvedReason.UnsupportedRule, EntryPoints.CoverBonuses.Resolve(global::Srd52Combat.Requests.CoverBonusesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Cover / p. 15"));
 
     [Fact]
-    public void cover_degree__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("cover-degree", UnresolvedReason.UnsupportedRule, EntryPoints.CoverDegree.Resolve(global::Srd52Combat.Requests.CoverDegreeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Cover / p. 15"));
+    public void cover_degree__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("cover-degree"), "cover-degree is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void total_cover__declines_UnsupportedRule_row_2() =>
         AssertDeclines("total-cover", UnresolvedReason.UnsupportedRule, EntryPoints.TotalCover.Resolve(global::Srd52Combat.Requests.TotalCoverRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Cover / p. 15"));
 
     [Fact]
-    public void single_range__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("single-range", UnresolvedReason.UnsupportedRule, EntryPoints.SingleRange.Resolve(global::Srd52Combat.Requests.SingleRangeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Range / p. 15"));
+    public void single_range__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("single-range"), "single-range is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void normal_and_long_range__is_implemented_so_a_hand_written_handler_answers_it() =>
@@ -494,12 +494,12 @@ public sealed class CorrespondenceTests
         Assert.True(Registry.HasImplementation("ranged-in-close-combat"), "ranged-in-close-combat is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void melee_within_reach__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("melee-within-reach", UnresolvedReason.UnsupportedRule, EntryPoints.MeleeWithinReach.Resolve(global::Srd52Combat.Requests.MeleeWithinReachRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Melee Attacks / p. 15"));
+    public void melee_within_reach__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("melee-within-reach"), "melee-within-reach is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void reach__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("reach", UnresolvedReason.UnsupportedRule, EntryPoints.Reach.Resolve(global::Srd52Combat.Requests.ReachRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Reach / p. 15"));
+    public void reach__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("reach"), "reach is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void opportunity_attack__is_implemented_so_a_hand_written_handler_answers_it() =>
@@ -510,44 +510,44 @@ public sealed class CorrespondenceTests
         Assert.True(Registry.HasImplementation("opportunity-attack-avoidance"), "opportunity-attack-avoidance is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void mount_eligibility__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("mount-eligibility", UnresolvedReason.UnsupportedRule, EntryPoints.MountEligibility.Resolve(global::Srd52Combat.Requests.MountEligibilityRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Mounted Combat / p. 15"));
+    public void mount_eligibility__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("mount-eligibility"), "mount-eligibility is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void appropriate_anatomy__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("appropriate-anatomy", UnresolvedReason.UnsupportedRule, EntryPoints.AppropriateAnatomy.Resolve(global::Srd52Combat.Requests.AppropriateAnatomyRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Mounted Combat / p. 15"));
+    public void appropriate_anatomy__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("appropriate-anatomy"), "appropriate-anatomy is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void mounting_cost__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("mounting-cost", UnresolvedReason.UnsupportedRule, EntryPoints.MountingCost.Resolve(global::Srd52Combat.Requests.MountingCostRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Mounting and Dismounting / p. 15"));
+    public void mounting_cost__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("mounting-cost"), "mounting-cost is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void mount_control_requires_training__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("mount-control-requires-training", UnresolvedReason.UnsupportedRule, EntryPoints.MountControlRequiresTraining.Resolve(global::Srd52Combat.Requests.MountControlRequiresTrainingRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Controlling a Mount / p. 16"));
+    public void mount_control_requires_training__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("mount-control-requires-training"), "mount-control-requires-training is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void controlled_mount_turn__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("controlled-mount-turn", UnresolvedReason.UnsupportedRule, EntryPoints.ControlledMountTurn.Resolve(global::Srd52Combat.Requests.ControlledMountTurnRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Controlling a Mount / p. 16"));
+    public void controlled_mount_turn__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("controlled-mount-turn"), "controlled-mount-turn is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void independent_mount__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("independent-mount", UnresolvedReason.UnsupportedRule, EntryPoints.IndependentMount.Resolve(global::Srd52Combat.Requests.IndependentMountRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Controlling a Mount / p. 16"));
+    public void independent_mount__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("independent-mount"), "independent-mount is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void falling_off__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("falling-off", UnresolvedReason.UnsupportedRule, EntryPoints.FallingOff.Resolve(global::Srd52Combat.Requests.FallingOffRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Falling Off / p. 16"));
+    public void falling_off__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("falling-off"), "falling-off is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void underwater_melee__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("underwater-melee", UnresolvedReason.UnsupportedRule, EntryPoints.UnderwaterMelee.Resolve(global::Srd52Combat.Requests.UnderwaterMeleeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Impeded Weapons / p. 16"));
+    public void underwater_melee__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("underwater-melee"), "underwater-melee is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void underwater_ranged__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("underwater-ranged", UnresolvedReason.UnsupportedRule, EntryPoints.UnderwaterRanged.Resolve(global::Srd52Combat.Requests.UnderwaterRangedRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Impeded Weapons / p. 16"));
+    public void underwater_ranged__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("underwater-ranged"), "underwater-ranged is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void underwater_fire_resistance__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("underwater-fire-resistance", UnresolvedReason.UnsupportedRule, EntryPoints.UnderwaterFireResistance.Resolve(global::Srd52Combat.Requests.UnderwaterFireResistanceRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Fire Resistance / p. 16"));
+    public void underwater_fire_resistance__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("underwater-fire-resistance"), "underwater-fire-resistance is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void surprise_round__declines_OutsideCurrentScope_row_1() =>

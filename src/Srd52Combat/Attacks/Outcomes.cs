@@ -77,19 +77,34 @@ public sealed record RangeVerdict(
 
 /// <summary>
 /// The target an attack picks: <c>attack-target</c>, "Combat / Making an Attack / p. 15", step 1.
+/// Exactly one of the three range rules measured it, decided by what the attack is: a ranged attack
+/// with two ranges is <c>normal-and-long-range</c>'s, one with a single range is
+/// <c>single-range</c>'s, and a melee attack is <c>melee-within-reach</c>'s.
 /// </summary>
 /// <param name="Kind">A creature, an object, or a location.</param>
 /// <param name="Target">The target's name or handle.</param>
-/// <param name="WithinRange">Whether the target is within the attack's range.</param>
-/// <param name="Range">What the range rule said.</param>
+/// <param name="WithinRange">Whether the target is within the attack's range or reach.</param>
+/// <param name="Range">What <c>normal-and-long-range</c> said; null for the other two kinds of attack.</param>
+/// <param name="Melee">What <c>melee-within-reach</c> said; null unless the attack is a melee attack.</param>
+/// <param name="SingleRange">What <c>single-range</c> said; null unless the attack has a single range.</param>
 /// <param name="Authority">The rule: "Combat / Making an Attack / p. 15".</param>
-public sealed record ChosenTarget(TargetKind Kind, string Target, bool WithinRange, RangeVerdict Range, SourceLocator Authority)
+public sealed record ChosenTarget(
+    TargetKind Kind,
+    string Target,
+    bool WithinRange,
+    RangeVerdict? Range,
+    MeleeTargeting? Melee,
+    SingleRangeVerdict? SingleRange,
+    SourceLocator Authority)
 {
+    /// <summary>What the rule that measured the target said, rendered.</summary>
+    public string Measured => Range?.ToString() ?? Melee?.ToString() ?? SingleRange?.ToString() ?? string.Empty;
+
     /// <inheritdoc/>
     public override string ToString() =>
         WithinRange
-            ? $"the {Kind} {Target} is within the attack's range and is the target [{Authority.Citation}]; {Range}"
-            : $"the {Kind} {Target} is not within the attack's range and can't be the target [{Authority.Citation}]; {Range}";
+            ? $"the {Kind} {Target} is within the attack's range and is the target [{Authority.Citation}]; {Measured}"
+            : $"the {Kind} {Target} is not within the attack's range and can't be the target [{Authority.Citation}]; {Measured}";
 }
 
 /// <summary>
@@ -228,21 +243,23 @@ public sealed record OpportunityAttackOffer(
 
 /// <summary>
 /// The modifiers step 2 determines: <c>attack-modifiers</c>, "Combat / Making an Attack / p. 15".
-/// The Cover half of the step is <c>cover-degree</c>'s, which this engine has not built, so the
-/// entry declines and no value of this type is produced yet; it is the type the step will answer
-/// with once Cover can be determined.
+/// The Cover half of the step is <c>cover-degree</c>'s, built in the mounted-combat and underwater
+/// batch; the Advantage and Disadvantage half is the rules of this slice, which the caller resolves
+/// and hands in; the penalties and bonuses are each effect's own, outside the extent.
 /// </summary>
-/// <param name="Cover">What the Cover determination said.</param>
+/// <param name="Cover">What <c>cover-degree</c> determined.</param>
 /// <param name="Determinations">Every Advantage or Disadvantage the rules in this slice gave.</param>
 /// <param name="Other">Penalties and bonuses from spells, special abilities and other effects, as the caller stated them.</param>
 /// <param name="Authority">The rule: "Combat / Making an Attack / p. 15".</param>
 public sealed record AttackModifiers(
-    string Cover,
+    Srd52Combat.Cover.CoverRuling Cover,
     ImmutableArray<RollDetermination> Determinations,
     ImmutableArray<string> Other,
     SourceLocator Authority)
 {
     /// <inheritdoc/>
     public override string ToString() =>
-        $"Cover: {Cover}; {string.Join("; ", Determinations)}; other: {string.Join("; ", Other)} [{Authority.Citation}]";
+        $"Cover: {Cover}; "
+        + $"{(Determinations.IsEmpty ? "no rule of this slice gave the roll Advantage or Disadvantage" : string.Join("; ", Determinations))}; "
+        + $"other: {(Other.IsEmpty ? "no other effect applies a penalty or bonus" : string.Join("; ", Other))} [{Authority.Citation}]";
 }

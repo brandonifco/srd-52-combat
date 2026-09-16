@@ -12,7 +12,7 @@ public static class Ruleset
     /// only under this identity.
     /// </summary>
     public static ReplayCompatibilityIdentity Identity { get; } = new(
-        ruleset: new RulesetVersion("srd-5.2.1-combat", 5),
+        ruleset: new RulesetVersion("srd-5.2.1-combat", 6),
         replaySchema: new ReplaySchemaVersion(1),
         sourceBaselines: [MapEntries.Baseline],
         randomAlgorithm: RandomAlgorithmId.Pcg32SetSeq64XshRr32);
