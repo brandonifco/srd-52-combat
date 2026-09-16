@@ -36,7 +36,7 @@
       },
       {
         "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
-        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 4, the version before this batch; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
+        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 4, the version before this batch; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did. Under version 5 (the turn and round batch) it was version 6, and under version 6 (the mounted-combat, underwater and gap-closing batch) version 7; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
       }
     ]
   },
@@ -267,7 +267,7 @@
       },
       {
         "test": "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_or_matching_none_of_the_four_cases_declines_RequiresInterpretation",
-        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough read “two sizes larger or smaller” as two or more (`>= TwoSizes`), choosing a reading of the unresolved question; this test went red and no other did."
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough read \u201ctwo sizes larger or smaller\u201d as two or more (`>= TwoSizes`), choosing a reading of the unresolved question; this test went red and no other did."
       },
       {
         "test": "MovingAroundCreaturesEntryPointTests.A_statement_about_another_creature_left_out_is_refused_never_inferred",
@@ -360,7 +360,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 6
     },
     "tests": [
       {
@@ -372,8 +372,8 @@
         "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target reported every target as within range (`new ChosenTarget(kind, target, true, ...)`); this test went red and no other did."
       },
       {
-        "test": "MakingAnAttackEntryPointTests.A_melee_attack_or_a_single_range_attack_declines_citing_the_range_rule_that_is_not_built",
-        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target declined a melee attack citing single-range instead of melee-within-reach (`MapEntries.SingleRange` for `MapEntries.MeleeWithinReach`); this test went red and no other did."
+        "test": "MakingAnAttackEntryPointTests.A_melee_attack_and_a_one_range_attack_are_measured_by_reach_and_by_that_range",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target read every melee attack as within reach (`kind, target, true, null, melee, null`); this test went red and no other did. It went red too when a one-range attack was measured at no distance (`TargetingRules.SingleRange(range, 0)`), and under the mutations of melee-within-reach, single-range and reach that the two rules' own tests record."
       },
       {
         "test": "MakingAnAttackEntryPointTests.A_target_kind_outside_the_three_is_refused",
@@ -385,12 +385,16 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 6
     },
     "tests": [
       {
-        "test": "MakingAnAttackEntryPointTests.Determining_modifiers_declines_citing_cover_degree_and_names_what_it_determined",
-        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Modifiers declined citing attack-rolls instead of cover-degree (`MapEntries.AttackRolls` for `MapEntries.CoverDegree`); this test went red and no other did. It went red too when the decline dropped the determinations it had made from Attempted (`string determined = true || determinations.Count == 0`)."
+        "test": "MakingAnAttackEntryPointTests.Determining_modifiers_names_the_Cover_the_Advantage_and_Disadvantage_and_the_other_effects_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Modifiers dropped the determinations it was given from the answer (`[]` for `[.. determinations]`); this test went red and no other did. It went red too when the step determined Cover of no obstacle at all (`CoverRules.Degree([])`), which also turned the Cover decline red, and under cover-degree's Three-Quarters mutation."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.Determining_modifiers_declines_where_the_degree_of_Cover_is_the_open_question",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Modifiers determined Cover of no obstacle at all (`CoverRules.Degree([])`), so the step answered where cover-degree declines; this test went red, and so did the step's answering test. It went red too under cover-degree's mutation that reads a creature by the object rows."
       },
       {
         "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
@@ -814,6 +818,322 @@
       {
         "test": "TurnEntryPointTests.A_move_broken_around_a_Bonus_Action_and_a_Reaction_costs_neither_the_move_nor_the_action",
         "mutation": "In a throwaway copy, net10.0 suite run; TurnRules counted a Bonus Action and a Reaction as actions (`steps.Count(s => s.Kind != TurnStepKind.Move)`); this test went red, and so did the turn-budget test. It went red too under the fresh-Speed and dropped-`after` mutations of BreakUp above."
+      }
+    ]
+  },
+  "move-up-to-speed": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MovementBudgetEntryPointTests.A_distance_equal_to_the_Speed_or_less_may_be_moved_and_more_may_not",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementBudgetRules.UpToSpeed read the turn rule's answer as \"movement left over\" (`turn.MovementRemaining > 0` for `turn.WithinTurn`), so a move of exactly the Speed was refused; this test went red and no other did. It went red too when the rule stopped reading turn-move-and-action at all (`bool allowed = true`), which also turned movement-deduction's and mounting-cost's tests red."
+      },
+      {
+        "test": "MovementBudgetEntryPointTests.A_figure_a_movement_rule_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the MoveUpToSpeed handler defaulted a missing DistanceFeet to 0 (`request.DistanceFeet ?? 0`); this test went red and no other did. It went red too when that handler defaulted a missing StatedBy, and when the MovementDeduction handler defaulted missing Parts to `[]`."
+      }
+    ]
+  },
+  "movement-deduction": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MovementBudgetEntryPointTests.Each_part_of_a_move_is_deducted_from_the_Speed_in_the_order_stated",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementBudgetRules.Deduct took the parts in reverse order (`parts.Reverse()`); this test went red, and so did the test of a part the movement left does not cover."
+      },
+      {
+        "test": "MovementBudgetEntryPointTests.A_part_the_movement_left_does_not_cover_is_not_taken_and_neither_is_what_follows",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementBudgetRules.Deduct took a part the movement left did not cover (`usedUp && !UpToSpeed(...)` for `usedUp || !UpToSpeed(...)`); this test went red, and so did mounting-cost's test of a rider with less movement left than the cost. It went red too when the rule stopped reading turn-move-and-action (`bool allowed = true` in UpToSpeed), and under the reverse-order mutation."
+      },
+      {
+        "test": "MovementBudgetEntryPointTests.A_figure_a_movement_rule_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the MoveUpToSpeed handler defaulted a missing DistanceFeet to 0 (`request.DistanceFeet ?? 0`); this test went red and no other did. It went red too when that handler defaulted a missing StatedBy, and when the MovementDeduction handler defaulted missing Parts to `[]`."
+      }
+    ]
+  },
+  "cover-degree": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "CoverEntryPointTests.An_object_covering_half_three_quarters_or_the_whole_target_gives_that_degree_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree read the Three-Quarters row as needing 80 per cent (`covered >= 80`), so an object covering three-quarters gave Half Cover; this test went red, and so did attack-modifiers' test of the step's answer."
+      },
+      {
+        "test": "CoverEntryPointTests.An_object_covering_less_than_half_of_the_target_gives_no_degree_of_cover",
+        "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree gave Half Cover to an object covering anything at all (`covered >= 0` for `covered >= CoveringObstacle.Half`); this test went red and no other did."
+      },
+      {
+        "test": "CoverEntryPointTests.A_creature_covering_at_least_half_gives_Half_Cover_and_never_more",
+        "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree read a creature by the object rows (`if (false && obstacle.Kind == Obstacle.Creature)`), so a creature covering 80 per cent gave Three-Quarters Cover and one covering 30 per cent gave none; this test went red, and so did the creature-below-half decline and attack-modifiers' decline."
+      },
+      {
+        "test": "CoverEntryPointTests.A_creature_covering_less_than_half_declines_RequiresInterpretation_citing_cover_degree",
+        "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree dropped the entry's question from the decline (the \"Another creature\" limb out of Attempted); this test went red and no other did. It went red too under the creature-read-as-an-object mutation above, which answered where the corpus does not choose."
+      },
+      {
+        "test": "CoverEntryPointTests.More_than_one_source_of_cover_declines_citing_cover_no_stacking",
+        "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree answered from the first of several stated sources of cover (`obstacles.Count > 99` for `obstacles.Count > 1`); this test went red and no other did."
+      },
+      {
+        "test": "CoverEntryPointTests.The_obstacles_between_attacker_and_target_are_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the CoverDegree handler defaulted missing Obstacles to `[]`; this test went red and no other did."
+      }
+    ]
+  },
+  "single-range": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "ReachAndRangeEntryPointTests.A_ranged_attack_with_one_range_cannot_target_beyond_it_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; TargetingRules.SingleRange read \"beyond this range\" as inclusive (`distanceFeet < rangeFeet`), so a target at exactly the range could not be attacked; this test went red, and so did attack-target's test of the two alternatives."
+      }
+    ]
+  },
+  "melee-within-reach": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "ReachAndRangeEntryPointTests.A_melee_attack_targets_a_creature_within_reach_and_nothing_beyond_it_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; TargetingRules.Melee read \"within your reach\" as strictly within it (`distanceFeet < reach.Feet`), so a target at exactly 5 feet was out of reach; this test went red, and so did attack-target's test of the two alternatives."
+      },
+      {
+        "test": "ReachAndRangeEntryPointTests.A_figure_a_reach_or_range_rule_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the MeleeWithinReach handler defaulted a missing DistanceFeet to 0 (`request.DistanceFeet ?? 0`); this test went red and no other did."
+      }
+    ]
+  },
+  "reach": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "ReachAndRangeEntryPointTests.A_creature_has_a_five_foot_reach_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; TargetingValues.DefaultReachFeet was 10; this test went red, and so did the greater-reach test, melee-within-reach's test and attack-target's."
+      },
+      {
+        "test": "ReachAndRangeEntryPointTests.A_greater_reach_the_caller_states_is_the_creatures_reach_and_a_smaller_one_is_refused",
+        "mutation": "In a throwaway copy, net10.0 suite run; GreaterReach accepted any positive reach (`Feet > 0` for `Feet > TargetingValues.DefaultReachFeet`), so a stated reach of 5 feet was taken for one \"greater than 5 feet\"; this test went red and no other did. It went red too under the 10-foot default above."
+      }
+    ]
+  },
+  "mount-eligibility": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.An_unwilling_creature_and_one_not_at_least_one_size_larger_cannot_serve_as_a_mount_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Eligible ignored the willingness statement (`if (false && !willing.Willing)`), so an unwilling creature reached the anatomy decline instead of being refused; this test went red and no other did. It went red too when \"at least one size larger\" counted the rider's own size as larger (`steps < 0` for `steps < 1`)."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_willing_creature_a_size_larger_turns_on_the_anatomy_and_declines_citing_appropriate_anatomy",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Eligible dropped appropriate-anatomy from the decline's Attempted; this test went red and no other did. Citing mount-eligibility instead of appropriate-anatomy in the same decline turned nothing red: the two entries share the citation \"Combat / Mounted Combat / p. 15\", so the locator cannot tell them apart and the entry id in Attempted is what does."
+      }
+    ]
+  },
+  "appropriate-anatomy": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.What_anatomy_is_appropriate_states_no_measure_and_declines_RequiresInterpretation",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy declined OutsideCurrentScope instead of RequiresInterpretation; this test went red and no other did."
+      }
+    ]
+  },
+  "mounting-cost": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.Mounting_or_dismounting_costs_half_the_Speed_rounded_down_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Mounting rounded half the Speed up (`(speedInFeet + 1) / 2`), so a Speed of 25 feet cost 13; this test went red and no other did."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_rider_with_less_movement_left_than_the_cost_neither_mounts_nor_dismounts",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Mounting paid the cost whatever the movement left (`Done: true`); this test went red and no other did. It went red too under movement-deduction's mutation that takes a part the movement left does not cover."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_creature_more_than_five_feet_away_is_not_mounted",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Mounting stopped reading the 5 feet (`distanceToMountFeet > 99`); this test went red and no other did."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_mounted_combat_rule_declines_where_nothing_states_a_mount_or_a_rider",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.NotRidden let a mount nobody is riding through (`MountState.ServesAsMount when false`), so controlled-mount-turn answered for a mount with no rider; this test went red and no other did."
+      }
+    ]
+  },
+  "mount-control-requires-training": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.A_domesticated_horse_or_a_mule_has_the_training_a_controlled_mount_needs_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountCreatureStatement.NamedByTheCorpus named only the mule (`Kind == MountCreatureKind.Mule`), so a domesticated horse declined; this test went red, and so did controlled-mount-turn's."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.Whether_another_creature_is_trained_declines_RequiresInterpretation_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control read every creature as trained (`return true` for `return creature.NamedByTheCorpus`); this test went red, and so did controlled-mount-turn's decline for a creature the corpus does not name."
+      }
+    ]
+  },
+  "controlled-mount-turn": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.A_controlled_mount_takes_the_riders_Initiative_and_has_only_Dash_Disengage_and_Dodge_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn dropped Dodge from the action options; this test went red and no other did. It went red too when the mount's Initiative did not change to match the rider's (`InitiativeMatchesTheRider: false`), and under mount-control-requires-training's mule-only mutation."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.What_one_of_the_three_action_options_does_declines_citing_the_Actions_table",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn answered the turn instead of declining for what an action does (`if (false && askingWhatAnActionDoes is { } asked)`); this test went red and no other did."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_controlled_mounts_turn_declines_where_the_mounts_training_is_the_open_question",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn read every mount as one the corpus names (`Control(MountCreatureStatement.Mule(...))`); this test went red and no other did. It went red too when MountRules.Control read every creature as trained."
+      }
+    ]
+  },
+  "independent-mount": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.An_independent_mount_retains_its_place_in_the_Initiative_order_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Independent took the mount out of the Initiative order (`RetainsItsPlaceInTheInitiativeOrder: false`); this test went red and no other did."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_mount_that_takes_the_riders_direction_is_not_independent",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Independent read a mount that takes the rider's direction as independent (`if (false && behaviour.Behaviour == MountBehaviour.TakesYourDirection)`); this test went red and no other did."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.What_makes_a_mount_independent_and_what_it_does_are_unresolved_and_decline",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Independent read an unstated behaviour as independence (`if (false && behaviour.Behaviour == MountBehaviour.NotStated)`); this test went red and no other did. It went red too when the rule answered which moves and actions the mount takes (`if (false && askingWhatItDoes)`)."
+      }
+    ]
+  },
+  "falling-off": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "MountedCombatEntryPointTests.Each_of_the_three_cases_demands_a_DC_10_Dexterity_saving_throw_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.FallingOffDc was 12; this test went red, and so did the successful-save test."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_successful_save_keeps_the_rider_on_the_mount",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.FallingOff read the save the other way round (`if (!outcome.Succeeded)`), so a success fell off and a failure stayed on; this test went red, and so did the failed-save decline. It went red too under the DC 12 mutation."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_failed_save_declines_RequiresInterpretation_naming_the_space_the_rider_lands_in",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.FallingOff read the save the other way round (`if (!outcome.Succeeded)`), so a failed save answered that the rider stays on; this test went red, and so did the successful-save test."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_statement_a_mounted_combat_rule_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the FallingOff handler defaulted a missing Trigger to `FallTrigger.RiderKnockedProne`; this test went red and no other did."
+      }
+    ]
+  },
+  "underwater-melee": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "UnderwaterEntryPointTests.Underwater_a_melee_weapon_attack_has_Disadvantage_only_without_a_Swim_Speed_and_without_Piercing_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Melee dropped the Piercing exception (`where.Underwater && !swimSpeed.HasSwimSpeed`); this test went red and no other did. It went red too when the Swim Speed was not read (`where.Underwater && !weapon.DealsPiercingDamage`)."
+      },
+      {
+        "test": "UnderwaterEntryPointTests.Out_of_the_water_the_melee_rule_gives_the_attack_roll_nothing",
+        "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Melee applied out of the water too (the `where.Underwater` conjunct dropped); this test went red and no other did."
+      },
+      {
+        "test": "UnderwaterEntryPointTests.A_statement_an_underwater_rule_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the UnderwaterMelee handler defaulted a missing Where to `UnderwaterStatement.Is(\"default\")`; this test went red and no other did. It went red too when the UnderwaterFireResistance handler defaulted the same way."
+      }
+    ]
+  },
+  "underwater-ranged": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "UnderwaterEntryPointTests.Underwater_a_ranged_weapon_attack_misses_beyond_normal_range_and_has_Disadvantage_within_it_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Ranged read \"beyond the weapon's normal range\" as inclusive (`distanceFeet >= ranges.NormalFeet`), so a target at exactly the normal range was missed automatically; this test went red and no other did. It went red too when a target within normal range took no Disadvantage (`var effect = RollEffect.None`)."
+      },
+      {
+        "test": "UnderwaterEntryPointTests.Out_of_the_water_the_ranged_rule_gives_the_attack_roll_nothing",
+        "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Ranged missed beyond normal range out of the water too (`bool misses = beyondNormal`); this test went red and no other did."
+      }
+    ]
+  },
+  "underwater-fire-resistance": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 6
+    },
+    "tests": [
+      {
+        "test": "UnderwaterEntryPointTests.Anything_underwater_has_Resistance_to_Fire_damage_naming_where_Resistance_is_explained_citing_page_16",
+        "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Fire stopped naming resistance as the authority for what Resistance does (`null` for `where.Underwater ? MapEntries.Resistance.Locator : null`); this test went red and no other did."
+      },
+      {
+        "test": "UnderwaterEntryPointTests.Out_of_the_water_the_rule_gives_no_Resistance_to_Fire_damage",
+        "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Fire gave the Resistance whatever the caller stated (`true` for `where.Underwater`); this test went red and no other did."
+      },
+      {
+        "test": "UnderwaterEntryPointTests.A_statement_an_underwater_rule_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the UnderwaterMelee handler defaulted a missing Where to `UnderwaterStatement.Is(\"default\")`; this test went red and no other did. It went red too when the UnderwaterFireResistance handler defaulted the same way."
       }
     ]
   }

@@ -527,14 +527,14 @@ internal static partial class Handlers
     /// <summary>Range on a grid counts squares by the shortest route (<c>grid-range</c>): optional.</summary>
     static partial void GridRange(global::Srd52Combat.Requests.GridRangeRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>You can move up to your Speed, or not at all (<c>move-up-to-speed</c>): optional.</summary>
-    static partial void MoveUpToSpeed(global::Srd52Combat.Requests.MoveUpToSpeedRequest request, ref Resolution<object>? resolution);
+    /// <summary>You can move up to your Speed, or not at all (<c>move-up-to-speed</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MoveUpToSpeed(global::Srd52Combat.Requests.MoveUpToSpeedRequest request);
 
     /// <summary>Climbing, crawling, jumping and swimming combine with regular movement (<c>movement-modes</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> MovementModes(global::Srd52Combat.Requests.MovementModesRequest request);
 
-    /// <summary>Each part of a move is deducted from Speed until it is used up (<c>movement-deduction</c>): optional.</summary>
-    static partial void MovementDeduction(global::Srd52Combat.Requests.MovementDeductionRequest request, ref Resolution<object>? resolution);
+    /// <summary>Each part of a move is deducted from Speed until it is used up (<c>movement-deduction</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MovementDeduction(global::Srd52Combat.Requests.MovementDeductionRequest request);
 
     /// <summary>Speed comes from character creation or the stat block (<c>speed-and-size-sources</c>): optional.</summary>
     static partial void SpeedAndSizeSources(global::Srd52Combat.Requests.SpeedAndSizeSourcesRequest request, ref Resolution<object>? resolution);
@@ -608,14 +608,14 @@ internal static partial class Handlers
     /// <summary>Half Cover gives +2, Three-Quarters Cover +5, to AC and Dexterity saving throws (<c>cover-bonuses</c>): optional.</summary>
     static partial void CoverBonuses(global::Srd52Combat.Requests.CoverBonusesRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>The degree of cover an obstacle gives (<c>cover-degree</c>): optional.</summary>
-    static partial void CoverDegree(global::Srd52Combat.Requests.CoverDegreeRequest request, ref Resolution<object>? resolution);
+    /// <summary>The degree of cover an obstacle gives (<c>cover-degree</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> CoverDegree(global::Srd52Combat.Requests.CoverDegreeRequest request);
 
     /// <summary>A target with Total Cover can't be targeted directly (<c>total-cover</c>): optional.</summary>
     static partial void TotalCover(global::Srd52Combat.Requests.TotalCoverRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>A ranged attack can't target beyond its range (<c>single-range</c>): optional.</summary>
-    static partial void SingleRange(global::Srd52Combat.Requests.SingleRangeRequest request, ref Resolution<object>? resolution);
+    /// <summary>A ranged attack can't target beyond its range (<c>single-range</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> SingleRange(global::Srd52Combat.Requests.SingleRangeRequest request);
 
     /// <summary>Beyond normal range has Disadvantage; beyond long range is impossible (<c>normal-and-long-range</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> NormalAndLongRange(global::Srd52Combat.Requests.NormalAndLongRangeRequest request);
@@ -623,11 +623,11 @@ internal static partial class Handlers
     /// <summary>A ranged attack within 5 feet of a seeing, capable enemy has Disadvantage (<c>ranged-in-close-combat</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> RangedInCloseCombat(global::Srd52Combat.Requests.RangedInCloseCombatRequest request);
 
-    /// <summary>A melee attack targets something within your reach (<c>melee-within-reach</c>): optional.</summary>
-    static partial void MeleeWithinReach(global::Srd52Combat.Requests.MeleeWithinReachRequest request, ref Resolution<object>? resolution);
+    /// <summary>A melee attack targets something within your reach (<c>melee-within-reach</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MeleeWithinReach(global::Srd52Combat.Requests.MeleeWithinReachRequest request);
 
-    /// <summary>A creature's reach is 5 feet unless its description says otherwise (<c>reach</c>): optional.</summary>
-    static partial void Reach(global::Srd52Combat.Requests.ReachRequest request, ref Resolution<object>? resolution);
+    /// <summary>A creature's reach is 5 feet unless its description says otherwise (<c>reach</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> Reach(global::Srd52Combat.Requests.ReachRequest request);
 
     /// <summary>Making an Opportunity Attack when a seen creature leaves your reach (<c>opportunity-attack</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> OpportunityAttack(global::Srd52Combat.Requests.OpportunityAttackRequest request);
@@ -635,35 +635,35 @@ internal static partial class Handlers
     /// <summary>Disengage, teleporting and involuntary movement don't provoke (<c>opportunity-attack-avoidance</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> OpportunityAttackAvoidance(global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest request);
 
-    /// <summary>A willing creature at least one size larger, with appropriate anatomy, can be a mount (<c>mount-eligibility</c>): optional.</summary>
-    static partial void MountEligibility(global::Srd52Combat.Requests.MountEligibilityRequest request, ref Resolution<object>? resolution);
+    /// <summary>A willing creature at least one size larger, with appropriate anatomy, can be a mount (<c>mount-eligibility</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MountEligibility(global::Srd52Combat.Requests.MountEligibilityRequest request);
 
-    /// <summary>What anatomy is appropriate for a mount (<c>appropriate-anatomy</c>): optional.</summary>
-    static partial void AppropriateAnatomy(global::Srd52Combat.Requests.AppropriateAnatomyRequest request, ref Resolution<object>? resolution);
+    /// <summary>What anatomy is appropriate for a mount (<c>appropriate-anatomy</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> AppropriateAnatomy(global::Srd52Combat.Requests.AppropriateAnatomyRequest request);
 
-    /// <summary>Mounting or dismounting costs half your Speed, rounded down (<c>mounting-cost</c>): optional.</summary>
-    static partial void MountingCost(global::Srd52Combat.Requests.MountingCostRequest request, ref Resolution<object>? resolution);
+    /// <summary>Mounting or dismounting costs half your Speed, rounded down (<c>mounting-cost</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MountingCost(global::Srd52Combat.Requests.MountingCostRequest request);
 
-    /// <summary>You can control a mount only if it is trained to accept a rider (<c>mount-control-requires-training</c>): optional.</summary>
-    static partial void MountControlRequiresTraining(global::Srd52Combat.Requests.MountControlRequiresTrainingRequest request, ref Resolution<object>? resolution);
+    /// <summary>You can control a mount only if it is trained to accept a rider (<c>mount-control-requires-training</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MountControlRequiresTraining(global::Srd52Combat.Requests.MountControlRequiresTrainingRequest request);
 
-    /// <summary>A controlled mount shares your Initiative and can only Dash, Disengage or Dodge (<c>controlled-mount-turn</c>): optional.</summary>
-    static partial void ControlledMountTurn(global::Srd52Combat.Requests.ControlledMountTurnRequest request, ref Resolution<object>? resolution);
+    /// <summary>A controlled mount shares your Initiative and can only Dash, Disengage or Dodge (<c>controlled-mount-turn</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> ControlledMountTurn(global::Srd52Combat.Requests.ControlledMountTurnRequest request);
 
-    /// <summary>An independent mount keeps its Initiative and acts as it likes (<c>independent-mount</c>): optional.</summary>
-    static partial void IndependentMount(global::Srd52Combat.Requests.IndependentMountRequest request, ref Resolution<object>? resolution);
+    /// <summary>An independent mount keeps its Initiative and acts as it likes (<c>independent-mount</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> IndependentMount(global::Srd52Combat.Requests.IndependentMountRequest request);
 
-    /// <summary>A DC 10 Dexterity save or fall off Prone when moved, knocked Prone, or the mount is (<c>falling-off</c>): optional.</summary>
-    static partial void FallingOff(global::Srd52Combat.Requests.FallingOffRequest request, ref Resolution<object>? resolution);
+    /// <summary>A DC 10 Dexterity save or fall off Prone when moved, knocked Prone, or the mount is (<c>falling-off</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> FallingOff(global::Srd52Combat.Requests.FallingOffRequest request);
 
-    /// <summary>Underwater, a melee weapon attack without a Swim Speed has Disadvantage unless Piercing (<c>underwater-melee</c>): optional.</summary>
-    static partial void UnderwaterMelee(global::Srd52Combat.Requests.UnderwaterMeleeRequest request, ref Resolution<object>? resolution);
+    /// <summary>Underwater, a melee weapon attack without a Swim Speed has Disadvantage unless Piercing (<c>underwater-melee</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> UnderwaterMelee(global::Srd52Combat.Requests.UnderwaterMeleeRequest request);
 
-    /// <summary>Underwater, a ranged weapon attack misses beyond normal range and has Disadvantage within it (<c>underwater-ranged</c>): optional.</summary>
-    static partial void UnderwaterRanged(global::Srd52Combat.Requests.UnderwaterRangedRequest request, ref Resolution<object>? resolution);
+    /// <summary>Underwater, a ranged weapon attack misses beyond normal range and has Disadvantage within it (<c>underwater-ranged</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> UnderwaterRanged(global::Srd52Combat.Requests.UnderwaterRangedRequest request);
 
-    /// <summary>Anything underwater has Resistance to Fire damage (<c>underwater-fire-resistance</c>): optional.</summary>
-    static partial void UnderwaterFireResistance(global::Srd52Combat.Requests.UnderwaterFireResistanceRequest request, ref Resolution<object>? resolution);
+    /// <summary>Anything underwater has Resistance to Fire damage (<c>underwater-fire-resistance</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> UnderwaterFireResistance(global::Srd52Combat.Requests.UnderwaterFireResistanceRequest request);
 
     /// <summary>Surprised combatants lose their first turn (<c>surprise-round</c>): optional.</summary>
     static partial void SurpriseRound(global::Srd52Combat.Requests.SurpriseRoundRequest request, ref Resolution<object>? resolution);
@@ -823,13 +823,13 @@ internal static partial class Handlers
                 GridRange(request as global::Srd52Combat.Requests.GridRangeRequest ?? new(assertions), ref resolution);
                 break;
             case "move-up-to-speed":
-                MoveUpToSpeed(request as global::Srd52Combat.Requests.MoveUpToSpeedRequest ?? new(assertions), ref resolution);
+                resolution = MoveUpToSpeed(request as global::Srd52Combat.Requests.MoveUpToSpeedRequest ?? new(assertions));
                 break;
             case "movement-modes":
                 resolution = MovementModes(request as global::Srd52Combat.Requests.MovementModesRequest ?? new(assertions));
                 break;
             case "movement-deduction":
-                MovementDeduction(request as global::Srd52Combat.Requests.MovementDeductionRequest ?? new(assertions), ref resolution);
+                resolution = MovementDeduction(request as global::Srd52Combat.Requests.MovementDeductionRequest ?? new(assertions));
                 break;
             case "speed-and-size-sources":
                 SpeedAndSizeSources(request as global::Srd52Combat.Requests.SpeedAndSizeSourcesRequest ?? new(assertions), ref resolution);
@@ -904,13 +904,13 @@ internal static partial class Handlers
                 CoverBonuses(request as global::Srd52Combat.Requests.CoverBonusesRequest ?? new(assertions), ref resolution);
                 break;
             case "cover-degree":
-                CoverDegree(request as global::Srd52Combat.Requests.CoverDegreeRequest ?? new(assertions), ref resolution);
+                resolution = CoverDegree(request as global::Srd52Combat.Requests.CoverDegreeRequest ?? new(assertions));
                 break;
             case "total-cover":
                 TotalCover(request as global::Srd52Combat.Requests.TotalCoverRequest ?? new(assertions), ref resolution);
                 break;
             case "single-range":
-                SingleRange(request as global::Srd52Combat.Requests.SingleRangeRequest ?? new(assertions), ref resolution);
+                resolution = SingleRange(request as global::Srd52Combat.Requests.SingleRangeRequest ?? new(assertions));
                 break;
             case "normal-and-long-range":
                 resolution = NormalAndLongRange(request as global::Srd52Combat.Requests.NormalAndLongRangeRequest ?? new(assertions));
@@ -919,10 +919,10 @@ internal static partial class Handlers
                 resolution = RangedInCloseCombat(request as global::Srd52Combat.Requests.RangedInCloseCombatRequest ?? new(assertions));
                 break;
             case "melee-within-reach":
-                MeleeWithinReach(request as global::Srd52Combat.Requests.MeleeWithinReachRequest ?? new(assertions), ref resolution);
+                resolution = MeleeWithinReach(request as global::Srd52Combat.Requests.MeleeWithinReachRequest ?? new(assertions));
                 break;
             case "reach":
-                Reach(request as global::Srd52Combat.Requests.ReachRequest ?? new(assertions), ref resolution);
+                resolution = Reach(request as global::Srd52Combat.Requests.ReachRequest ?? new(assertions));
                 break;
             case "opportunity-attack":
                 resolution = OpportunityAttack(request as global::Srd52Combat.Requests.OpportunityAttackRequest ?? new(assertions));
@@ -931,34 +931,34 @@ internal static partial class Handlers
                 resolution = OpportunityAttackAvoidance(request as global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest ?? new(assertions));
                 break;
             case "mount-eligibility":
-                MountEligibility(request as global::Srd52Combat.Requests.MountEligibilityRequest ?? new(assertions), ref resolution);
+                resolution = MountEligibility(request as global::Srd52Combat.Requests.MountEligibilityRequest ?? new(assertions));
                 break;
             case "appropriate-anatomy":
-                AppropriateAnatomy(request as global::Srd52Combat.Requests.AppropriateAnatomyRequest ?? new(assertions), ref resolution);
+                resolution = AppropriateAnatomy(request as global::Srd52Combat.Requests.AppropriateAnatomyRequest ?? new(assertions));
                 break;
             case "mounting-cost":
-                MountingCost(request as global::Srd52Combat.Requests.MountingCostRequest ?? new(assertions), ref resolution);
+                resolution = MountingCost(request as global::Srd52Combat.Requests.MountingCostRequest ?? new(assertions));
                 break;
             case "mount-control-requires-training":
-                MountControlRequiresTraining(request as global::Srd52Combat.Requests.MountControlRequiresTrainingRequest ?? new(assertions), ref resolution);
+                resolution = MountControlRequiresTraining(request as global::Srd52Combat.Requests.MountControlRequiresTrainingRequest ?? new(assertions));
                 break;
             case "controlled-mount-turn":
-                ControlledMountTurn(request as global::Srd52Combat.Requests.ControlledMountTurnRequest ?? new(assertions), ref resolution);
+                resolution = ControlledMountTurn(request as global::Srd52Combat.Requests.ControlledMountTurnRequest ?? new(assertions));
                 break;
             case "independent-mount":
-                IndependentMount(request as global::Srd52Combat.Requests.IndependentMountRequest ?? new(assertions), ref resolution);
+                resolution = IndependentMount(request as global::Srd52Combat.Requests.IndependentMountRequest ?? new(assertions));
                 break;
             case "falling-off":
-                FallingOff(request as global::Srd52Combat.Requests.FallingOffRequest ?? new(assertions), ref resolution);
+                resolution = FallingOff(request as global::Srd52Combat.Requests.FallingOffRequest ?? new(assertions));
                 break;
             case "underwater-melee":
-                UnderwaterMelee(request as global::Srd52Combat.Requests.UnderwaterMeleeRequest ?? new(assertions), ref resolution);
+                resolution = UnderwaterMelee(request as global::Srd52Combat.Requests.UnderwaterMeleeRequest ?? new(assertions));
                 break;
             case "underwater-ranged":
-                UnderwaterRanged(request as global::Srd52Combat.Requests.UnderwaterRangedRequest ?? new(assertions), ref resolution);
+                resolution = UnderwaterRanged(request as global::Srd52Combat.Requests.UnderwaterRangedRequest ?? new(assertions));
                 break;
             case "underwater-fire-resistance":
-                UnderwaterFireResistance(request as global::Srd52Combat.Requests.UnderwaterFireResistanceRequest ?? new(assertions), ref resolution);
+                resolution = UnderwaterFireResistance(request as global::Srd52Combat.Requests.UnderwaterFireResistanceRequest ?? new(assertions));
                 break;
             case "surprise-round":
                 SurpriseRound(request as global::Srd52Combat.Requests.SurpriseRoundRequest ?? new(assertions), ref resolution);
@@ -1062,9 +1062,9 @@ internal static partial class Handlers
         "grid-entering-square" => true,
         "grid-corners" => true,
         "grid-range" => Hooked("GridRange", typeof(global::Srd52Combat.Requests.GridRangeRequest)),
-        "move-up-to-speed" => Hooked("MoveUpToSpeed", typeof(global::Srd52Combat.Requests.MoveUpToSpeedRequest)),
+        "move-up-to-speed" => true,
         "movement-modes" => true,
-        "movement-deduction" => Hooked("MovementDeduction", typeof(global::Srd52Combat.Requests.MovementDeductionRequest)),
+        "movement-deduction" => true,
         "speed-and-size-sources" => Hooked("SpeedAndSizeSources", typeof(global::Srd52Combat.Requests.SpeedAndSizeSourcesRequest)),
         "difficult-terrain" => Hooked("DifficultTerrain", typeof(global::Srd52Combat.Requests.DifficultTerrainRequest)),
         "difficult-terrain-cost" => Hooked("DifficultTerrainCost", typeof(global::Srd52Combat.Requests.DifficultTerrainCostRequest)),
@@ -1089,25 +1089,25 @@ internal static partial class Handlers
         "cover-origin" => Hooked("CoverOrigin", typeof(global::Srd52Combat.Requests.CoverOriginRequest)),
         "cover-no-stacking" => Hooked("CoverNoStacking", typeof(global::Srd52Combat.Requests.CoverNoStackingRequest)),
         "cover-bonuses" => Hooked("CoverBonuses", typeof(global::Srd52Combat.Requests.CoverBonusesRequest)),
-        "cover-degree" => Hooked("CoverDegree", typeof(global::Srd52Combat.Requests.CoverDegreeRequest)),
+        "cover-degree" => true,
         "total-cover" => Hooked("TotalCover", typeof(global::Srd52Combat.Requests.TotalCoverRequest)),
-        "single-range" => Hooked("SingleRange", typeof(global::Srd52Combat.Requests.SingleRangeRequest)),
+        "single-range" => true,
         "normal-and-long-range" => true,
         "ranged-in-close-combat" => true,
-        "melee-within-reach" => Hooked("MeleeWithinReach", typeof(global::Srd52Combat.Requests.MeleeWithinReachRequest)),
-        "reach" => Hooked("Reach", typeof(global::Srd52Combat.Requests.ReachRequest)),
+        "melee-within-reach" => true,
+        "reach" => true,
         "opportunity-attack" => true,
         "opportunity-attack-avoidance" => true,
-        "mount-eligibility" => Hooked("MountEligibility", typeof(global::Srd52Combat.Requests.MountEligibilityRequest)),
-        "appropriate-anatomy" => Hooked("AppropriateAnatomy", typeof(global::Srd52Combat.Requests.AppropriateAnatomyRequest)),
-        "mounting-cost" => Hooked("MountingCost", typeof(global::Srd52Combat.Requests.MountingCostRequest)),
-        "mount-control-requires-training" => Hooked("MountControlRequiresTraining", typeof(global::Srd52Combat.Requests.MountControlRequiresTrainingRequest)),
-        "controlled-mount-turn" => Hooked("ControlledMountTurn", typeof(global::Srd52Combat.Requests.ControlledMountTurnRequest)),
-        "independent-mount" => Hooked("IndependentMount", typeof(global::Srd52Combat.Requests.IndependentMountRequest)),
-        "falling-off" => Hooked("FallingOff", typeof(global::Srd52Combat.Requests.FallingOffRequest)),
-        "underwater-melee" => Hooked("UnderwaterMelee", typeof(global::Srd52Combat.Requests.UnderwaterMeleeRequest)),
-        "underwater-ranged" => Hooked("UnderwaterRanged", typeof(global::Srd52Combat.Requests.UnderwaterRangedRequest)),
-        "underwater-fire-resistance" => Hooked("UnderwaterFireResistance", typeof(global::Srd52Combat.Requests.UnderwaterFireResistanceRequest)),
+        "mount-eligibility" => true,
+        "appropriate-anatomy" => true,
+        "mounting-cost" => true,
+        "mount-control-requires-training" => true,
+        "controlled-mount-turn" => true,
+        "independent-mount" => true,
+        "falling-off" => true,
+        "underwater-melee" => true,
+        "underwater-ranged" => true,
+        "underwater-fire-resistance" => true,
         "surprise-round" => Hooked("SurpriseRound", typeof(global::Srd52Combat.Requests.SurpriseRoundRequest)),
         "actions-table" => Hooked("ActionsTable", typeof(global::Srd52Combat.Requests.ActionsTableRequest)),
         "bonus-actions" => Hooked("BonusActions", typeof(global::Srd52Combat.Requests.BonusActionsRequest)),

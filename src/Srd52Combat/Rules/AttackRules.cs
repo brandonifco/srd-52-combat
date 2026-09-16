@@ -98,22 +98,26 @@ public static class AttackRules
     /// <summary>
     /// Step 1: "Pick a target within your attack's range: a creature, an object, or a location."
     /// The three kinds are the whole set. Whether the target is within range is the range rule of
-    /// the attack the caller states: <c>normal-and-long-range</c> for a ranged attack with two
-    /// ranges, which is built here; <c>single-range</c> and <c>melee-within-reach</c>, which are
-    /// not, decline.
+    /// the attack the caller states, and exactly one of the three applies: <c>normal-and-long-range</c>
+    /// for a ranged attack with two ranges, <c>single-range</c> for a ranged attack with one, and
+    /// <c>melee-within-reach</c> for a melee attack. All three are built.
     /// </summary>
     /// <param name="kind">A creature, an object, or a location.</param>
     /// <param name="target">The target's name or handle.</param>
     /// <param name="rangeKind">Which range rule the attack is measured by.</param>
     /// <param name="ranges">The attack's two ranges, for a ranged attack that has them.</param>
     /// <param name="distanceFeet">The distance to the target, in feet.</param>
+    /// <param name="singleRangeFeet">The attack's single range in feet, for a ranged attack that has one.</param>
+    /// <param name="greaterReach">A reach greater than 5 feet, for a melee attack by a creature whose description gives it one.</param>
     /// <returns>The chosen target, or the decline.</returns>
     public static Resolution<ChosenTarget> Target(
         TargetKind kind,
         string target,
         AttackRangeKind rangeKind,
         TwoRanges? ranges,
-        int distanceFeet)
+        int distanceFeet,
+        int? singleRangeFeet = null,
+        GreaterReach? greaterReach = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(target);
         if (!Enum.IsDefined(kind))
@@ -128,25 +132,24 @@ public static class AttackRules
                 $"the attack's range rule must be stated; {rangeKind} is not an {nameof(AttackRangeKind)}", nameof(rangeKind));
         }
 
-        string attempting = Attempting(MapEntries.AttackTarget);
         switch (rangeKind)
         {
             case AttackRangeKind.Melee:
-                return Decline<ChosenTarget>(
-                    UnresolvedReason.UnsupportedRule,
-                    $"{attempting} for a melee attack: what is within the attacker's reach is '{MapEntries.MeleeWithinReach.Id}', which is not built",
-                    MapEntries.MeleeWithinReach);
+                var melee = TargetingRules.Melee(distanceFeet, greaterReach);
+                return Resolution<ChosenTarget>.FromValue(new ChosenTarget(
+                    kind, target, melee.WithinReach, null, melee, null, MapEntries.AttackTarget.Locator));
             case AttackRangeKind.RangedSingleRange:
-                return Decline<ChosenTarget>(
-                    UnresolvedReason.UnsupportedRule,
-                    $"{attempting} for a ranged attack with one range: that range is '{MapEntries.SingleRange.Id}', which is not built",
-                    MapEntries.SingleRange);
+                int range = singleRangeFeet ?? throw new ArgumentNullException(
+                    nameof(singleRangeFeet), "a ranged attack with a single range is measured by it, and it was not given");
+                var single = TargetingRules.SingleRange(range, distanceFeet);
+                return Resolution<ChosenTarget>.FromValue(new ChosenTarget(
+                    kind, target, single.CanAttack, null, null, single, MapEntries.AttackTarget.Locator));
             default:
                 var two = ranges ?? throw new ArgumentNullException(
                     nameof(ranges), "a ranged attack with two ranges is measured by both of them, and they were not given");
                 return Range(two, distanceFeet).Match(
                     verdict => Resolution<ChosenTarget>.FromValue(
-                        new ChosenTarget(kind, target, verdict.CanAttack, verdict, MapEntries.AttackTarget.Locator)),
+                        new ChosenTarget(kind, target, verdict.CanAttack, verdict, null, null, MapEntries.AttackTarget.Locator)),
                     Resolution<ChosenTarget>.FromUnresolved);
         }
     }
@@ -235,18 +238,22 @@ public static class AttackRules
     /// <remarks>
     /// The Advantage and Disadvantage half is the rules of this slice, which the caller resolves and
     /// hands in, and the penalties and bonuses are each effect's own, outside the extent, so the
-    /// caller states them. The Cover half is <c>cover-degree</c>, an entry this engine has not
-    /// built, and the corpus says the step determines it: so the step declines
-    /// <see cref="UnresolvedReason.UnsupportedRule"/> citing that entry, with everything it did
-    /// determine named in <see cref="UnresolvedResult.Attempted"/>.
+    /// caller states them. The Cover half is <c>cover-degree</c>, which this engine now builds: the
+    /// step reads it rather than deciding Cover itself, and where that rule declines — a creature
+    /// covering less than half of the target, or more than one source of cover — the step declines
+    /// with it, for the same reason and citing the same entry, with everything it did determine
+    /// named in <see cref="UnresolvedResult.Attempted"/>.
     /// </remarks>
+    /// <param name="obstacles">What the caller states lies between attacker and target (<c>cover-degree</c>).</param>
     /// <param name="determinations">What the rules of this slice gave the roll.</param>
     /// <param name="other">Penalties and bonuses from spells, special abilities and other effects, as the caller states them.</param>
-    /// <returns>The decline citing <c>cover-degree</c>.</returns>
+    /// <returns>The modifiers the step determines, or the decline <c>cover-degree</c> gave.</returns>
     public static Resolution<AttackModifiers> Modifiers(
+        IReadOnlyList<Srd52Combat.Cover.CoveringObstacle> obstacles,
         IReadOnlyList<RollDetermination> determinations,
         IReadOnlyList<string> other)
     {
+        ArgumentNullException.ThrowIfNull(obstacles);
         ArgumentNullException.ThrowIfNull(determinations);
         ArgumentNullException.ThrowIfNull(other);
         if (determinations.Any(d => d is null))
@@ -263,11 +270,17 @@ public static class AttackRules
             ? "no rule of this slice gave the roll Advantage or Disadvantage"
             : string.Join("; ", determinations);
         string effects = other.Count == 0 ? "no other effect applies a penalty or bonus" : string.Join("; ", other);
-        return Decline<AttackModifiers>(
-            UnresolvedReason.UnsupportedRule,
-            $"{Attempting(MapEntries.AttackModifiers)}, having determined {determined}, and {effects}: "
-            + $"whether the target has Cover is '{MapEntries.CoverDegree.Id}', which is not built",
-            MapEntries.CoverDegree);
+        return CoverRules.Degree(obstacles).Match(
+            cover => Resolution<AttackModifiers>.FromValue(new AttackModifiers(
+                cover,
+                [.. determinations],
+                [.. other],
+                MapEntries.AttackModifiers.Locator)),
+            unresolved => Resolution<AttackModifiers>.FromUnresolved(new UnresolvedResult(
+                unresolved.Reason,
+                $"{Attempting(MapEntries.AttackModifiers)}, having determined {determined}, and {effects}: "
+                + $"whether the target has Cover is '{MapEntries.CoverDegree.Id}', and {unresolved.Attempted}",
+                unresolved.Locator)));
     }
 
     /// <summary>

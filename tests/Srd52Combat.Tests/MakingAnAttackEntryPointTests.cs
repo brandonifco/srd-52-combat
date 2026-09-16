@@ -1,5 +1,6 @@
 using RulesKernel.Resolution;
 using Srd52Combat.Attacks;
+using Srd52Combat.Cover;
 using Srd52Combat.Requests;
 using Xunit;
 using static Srd52Combat.Tests.AttackFixtures;
@@ -101,7 +102,7 @@ public class MakingAnAttackEntryPointTests
 
             Assert.Equal(kind, chosen.Kind);
             Assert.True(chosen.WithinRange);
-            Assert.Equal(RangeBand.WithinNormalRange, chosen.Range.Band);
+            Assert.Equal(RangeBand.WithinNormalRange, chosen.Range!.Band);
             Assert.Equal(RollEffect.None, chosen.Range.Effect);
             Assert.Equal("Combat / Making an Attack / p. 15", chosen.Authority.Citation);
             Assert.Equal("Combat / Range / p. 15", chosen.Range.Authority.Citation);
@@ -121,33 +122,61 @@ public class MakingAnAttackEntryPointTests
         }));
 
         Assert.False(chosen.WithinRange);
-        Assert.Equal(RangeBand.BeyondLongRange, chosen.Range.Band);
+        Assert.Equal(RangeBand.BeyondLongRange, chosen.Range!.Band);
         Assert.False(chosen.Range.CanAttack);
     }
 
     [Fact]
-    public void A_melee_attack_or_a_single_range_attack_declines_citing_the_range_rule_that_is_not_built()
+    public void A_melee_attack_and_a_one_range_attack_are_measured_by_reach_and_by_that_range()
     {
-        (AttackRangeKind RangeKind, string EntryId)[] cases =
-        [
-            (AttackRangeKind.Melee, "melee-within-reach"),
-            (AttackRangeKind.RangedSingleRange, "single-range"),
-        ];
-
-        foreach (var (rangeKind, entryId) in cases)
+        // A melee attack: melee-within-reach, measured by the attacker's reach (reach).
+        var withinReach = Value<ChosenTarget>(EntryPoints.AttackTarget.Resolve(new AttackTargetRequest
         {
-            var declined = Declined(EntryPoints.AttackTarget.Resolve(new AttackTargetRequest
-            {
-                Kind = TargetKind.Creature,
-                Target = "the goblin",
-                RangeKind = rangeKind,
-                DistanceFeet = 5,
-            }));
+            Kind = TargetKind.Creature,
+            Target = "the goblin",
+            RangeKind = AttackRangeKind.Melee,
+            DistanceFeet = 5,
+        }));
 
-            Assert.Equal(UnresolvedReason.UnsupportedRule, declined.Reason);
-            Assert.Equal(Registry.Entry(entryId).Locator, declined.Locator);
-            Assert.Contains(entryId, declined.Attempted, StringComparison.Ordinal);
-        }
+        Assert.True(withinReach.WithinRange);
+        Assert.True(withinReach.Melee!.WithinReach);
+        Assert.Equal("Combat / Melee Attacks / p. 15", withinReach.Melee.Authority.Citation);
+        Assert.Null(withinReach.Range);
+
+        var beyondReach = Value<ChosenTarget>(EntryPoints.AttackTarget.Resolve(new AttackTargetRequest
+        {
+            Kind = TargetKind.Creature,
+            Target = "the goblin",
+            RangeKind = AttackRangeKind.Melee,
+            DistanceFeet = 10,
+        }));
+
+        Assert.False(beyondReach.WithinRange);
+
+        // A ranged attack with a single range: single-range.
+        var withinRange = Value<ChosenTarget>(EntryPoints.AttackTarget.Resolve(new AttackTargetRequest
+        {
+            Kind = TargetKind.Creature,
+            Target = "the goblin",
+            RangeKind = AttackRangeKind.RangedSingleRange,
+            SingleRangeFeet = 60,
+            DistanceFeet = 60,
+        }));
+
+        Assert.True(withinRange.WithinRange);
+        Assert.True(withinRange.SingleRange!.CanAttack);
+        Assert.Equal("Combat / Range / p. 15", withinRange.SingleRange.Authority.Citation);
+
+        var beyondRange = Value<ChosenTarget>(EntryPoints.AttackTarget.Resolve(new AttackTargetRequest
+        {
+            Kind = TargetKind.Creature,
+            Target = "the goblin",
+            RangeKind = AttackRangeKind.RangedSingleRange,
+            SingleRangeFeet = 60,
+            DistanceFeet = 61,
+        }));
+
+        Assert.False(beyondRange.WithinRange);
     }
 
     [Fact]
@@ -168,23 +197,40 @@ public class MakingAnAttackEntryPointTests
     }
 
     [Fact]
-    public void Determining_modifiers_declines_citing_cover_degree_and_names_what_it_determined()
+    public void Determining_modifiers_names_the_Cover_the_Advantage_and_Disadvantage_and_the_other_effects_citing_page_15()
     {
         var disadvantage = Value<RollDetermination>(EntryPoints.UnseenTargetDisadvantage.Resolve(
             new UnseenTargetDisadvantageRequest { Visibility = TargetVisibilityStatement.HeardNotSeen(Gm) }));
 
-        var declined = Declined(EntryPoints.AttackModifiers.Resolve(new AttackModifiersRequest
+        var modifiers = Value<AttackModifiers>(EntryPoints.AttackModifiers.Resolve(new AttackModifiersRequest
         {
+            Obstacles = [CoveringObstacle.AnObject("the crate", 75, Gm)],
             Determinations = [disadvantage],
             Other = ["Bless adds 1d4 to the attack roll"],
         }));
 
-        Assert.Equal(UnresolvedReason.UnsupportedRule, declined.Reason);
+        Assert.Equal(CoverDegree.ThreeQuarters, modifiers.Cover.Degree);
+        Assert.Equal("Combat / Cover / p. 15", modifiers.Cover.Authority.Citation);
+        Assert.Same(disadvantage, Assert.Single(modifiers.Determinations));
+        Assert.Equal("Bless adds 1d4 to the attack roll", Assert.Single(modifiers.Other));
+        Assert.Equal("Combat / Making an Attack / p. 15", modifiers.Authority.Citation);
+    }
+
+    [Fact]
+    public void Determining_modifiers_declines_where_the_degree_of_Cover_is_the_open_question()
+    {
+        var declined = Declined(EntryPoints.AttackModifiers.Resolve(new AttackModifiersRequest
+        {
+            Obstacles = [CoveringObstacle.ACreature("the ogre", 40, Gm)],
+            Determinations = [],
+            Other = [],
+        }));
+
+        Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
         Assert.Equal(EntryPoints.CoverDegree.Registered.Locator, declined.Locator);
         Assert.Contains("'attack-modifiers'", declined.Attempted, StringComparison.Ordinal);
         Assert.Contains("cover-degree", declined.Attempted, StringComparison.Ordinal);
-        Assert.Contains(disadvantage.ToString(), declined.Attempted, StringComparison.Ordinal);
-        Assert.Contains("Bless adds 1d4 to the attack roll", declined.Attempted, StringComparison.Ordinal);
+        Assert.Contains("no rule of this slice gave the roll Advantage or Disadvantage", declined.Attempted, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -243,6 +289,8 @@ public class MakingAnAttackEntryPointTests
         Assert.Throws<ArgumentException>(() => EntryPoints.AttackResolution.Resolve(
             new AttackResolutionRequest { DamageRules = OrdinaryDamage }));
         Assert.Throws<ArgumentException>(() => EntryPoints.AttackModifiers.Resolve(
-            new AttackModifiersRequest { Determinations = [] }));
+            new AttackModifiersRequest { Determinations = [], Other = [] }));
+        Assert.Throws<ArgumentException>(() => EntryPoints.AttackModifiers.Resolve(
+            new AttackModifiersRequest { Obstacles = [], Determinations = [] }));
     }
 }
