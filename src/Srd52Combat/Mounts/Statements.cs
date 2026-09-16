@@ -1,4 +1,5 @@
 using Srd52Combat.Initiative;
+using Srd52Combat.Turn;
 
 namespace Srd52Combat.Mounts;
 
@@ -67,6 +68,107 @@ public enum MountCreatureKind
 
     /// <summary>Any other creature: the corpus names none, and says only "and similar creatures".</summary>
     AnotherCreature = 3,
+}
+
+/// <summary>
+/// Whether a creature the corpus does not name has been trained to accept a rider, as the caller
+/// states it. "Domesticated horses, mules, and similar creatures have such training"
+/// (<c>mount-control-requires-training</c>) gives instances and no measure, and names nobody who
+/// decides; Brandon ruled on 2026-09-16 that the training is a fact the caller supplies, as a Swim
+/// Speed is (<c>mount-control-requires-training/training-is-stated</c>,
+/// <c>docs/decisions/0007</c>). There is no default: a creature the corpus does not name, and whose
+/// training nothing states, declines.
+/// </summary>
+public enum MountTraining
+{
+    /// <summary>The corpus itself names the creature as having such training; nothing need be stated, and no ruling is relied on.</summary>
+    FromTheCorpus = 1,
+
+    /// <summary>The caller states this creature has been trained to accept a rider.</summary>
+    Trained = 2,
+
+    /// <summary>The caller states this creature has not been trained to accept a rider.</summary>
+    NotTrained = 3,
+
+    /// <summary>Nothing is stated, and the engine never assumes it either way.</summary>
+    NotStated = 4,
+}
+
+/// <summary>
+/// Whether a creature has an anatomy appropriate to a mount, as the GM states it. "An appropriate
+/// anatomy" (<c>appropriate-anatomy</c>) states no measure and no set of values, and names nobody
+/// who decides; Brandon ruled on 2026-09-16 that it is the GM's call
+/// (<c>appropriate-anatomy/gm-decides</c>, <c>docs/decisions/0007</c>). There is no default:
+/// <c>default</c> is refused, and <see cref="NotStated"/> is how a caller says the GM has not ruled
+/// on this creature.
+/// </summary>
+public enum AnatomyVerdict
+{
+    /// <summary>The GM states the creature's anatomy is appropriate.</summary>
+    Appropriate = 1,
+
+    /// <summary>The GM states it is not.</summary>
+    NotAppropriate = 2,
+
+    /// <summary>The GM has stated nothing, and the engine never assumes an anatomy.</summary>
+    NotStated = 3,
+}
+
+/// <summary>
+/// The GM's determination that a creature's anatomy is appropriate to a mount, or is not
+/// (<c>appropriate-anatomy</c>, "Combat / Mounted Combat / p. 15"). Brandon's ruling of 2026-09-16
+/// makes it the GM's call, and the caller supplies it explicitly, in the shape
+/// <c>gm-requires-action</c>'s assertion has (<see cref="Turn.GmActionRequirement"/>): a party, what
+/// it determined, and who is answerable. The map records no <c>assertedBy</c> for this entry — the
+/// ruling is the engine's, and does not change the map — so the party is the one the map names for
+/// <c>gm-requires-action</c>, which is the GM (rules-factory decision 0025).
+/// </summary>
+/// <param name="Decider">The party deciding, checked against the map's <c>assertedBy</c> for <c>gm-requires-action</c>.</param>
+/// <param name="Verdict">What the GM determined, or that nothing is stated.</param>
+/// <param name="Candidate">The creature the determination is about.</param>
+/// <param name="StatedBy">Who is answerable for the statement.</param>
+public sealed record AnatomyStatement(ActionRequirer Decider, AnatomyVerdict Verdict, string Candidate, string StatedBy)
+{
+    /// <summary>The party, checked against the map's <c>assertedBy</c> for <c>gm-requires-action</c>.</summary>
+    public ActionRequirer Decider { get; } = ActionRequirers.Named(ActionRequirers.AssertedBy(Checks.Defined(Decider, nameof(Decider))));
+
+    /// <summary>The verdict, checked to be stated.</summary>
+    public AnatomyVerdict Verdict { get; } = Checks.Defined(Verdict, nameof(Verdict));
+
+    /// <summary>The creature, checked to be named.</summary>
+    public string Candidate { get; } = Checks.Text(Candidate, nameof(Candidate));
+
+    /// <summary>Who stated it, checked to be non-empty.</summary>
+    public string StatedBy { get; } = Checks.Text(StatedBy, nameof(StatedBy));
+
+    /// <summary>The GM determines that this creature's anatomy is appropriate.</summary>
+    /// <param name="candidate">The creature.</param>
+    /// <param name="statedBy">Who is answerable for the statement.</param>
+    /// <returns>The statement.</returns>
+    public static AnatomyStatement Appropriate(string candidate, string statedBy) =>
+        new(ActionRequirer.Gm, AnatomyVerdict.Appropriate, candidate, statedBy);
+
+    /// <summary>The GM determines that this creature's anatomy is not appropriate.</summary>
+    /// <param name="candidate">The creature.</param>
+    /// <param name="statedBy">Who is answerable for the statement.</param>
+    /// <returns>The statement.</returns>
+    public static AnatomyStatement NotAppropriate(string candidate, string statedBy) =>
+        new(ActionRequirer.Gm, AnatomyVerdict.NotAppropriate, candidate, statedBy);
+
+    /// <summary>The GM has determined nothing about this creature's anatomy.</summary>
+    /// <param name="candidate">The creature.</param>
+    /// <param name="statedBy">Who is answerable for the statement.</param>
+    /// <returns>The statement.</returns>
+    public static AnatomyStatement NotStated(string candidate, string statedBy) =>
+        new(ActionRequirer.Gm, AnatomyVerdict.NotStated, candidate, statedBy);
+
+    /// <inheritdoc/>
+    public override string ToString() => Verdict switch
+    {
+        AnatomyVerdict.Appropriate => $"the {ActionRequirers.AssertedBy(Decider)} determines that {Candidate} has an appropriate anatomy, as stated by {StatedBy}",
+        AnatomyVerdict.NotAppropriate => $"the {ActionRequirers.AssertedBy(Decider)} determines that {Candidate} does not have an appropriate anatomy, as stated by {StatedBy}",
+        _ => $"the {ActionRequirers.AssertedBy(Decider)} has determined nothing about {Candidate}'s anatomy, as stated by {StatedBy}",
+    };
 }
 
 /// <summary>
@@ -188,7 +290,13 @@ public sealed record WillingStatement(bool Willing, string StatedBy)
 /// <param name="Kind">Which of the corpus's instances it is, or another creature.</param>
 /// <param name="Id">The mount's name or handle.</param>
 /// <param name="StatedBy">Who is answerable for the statement.</param>
-public sealed record MountCreatureStatement(MountCreatureKind Kind, string Id, string StatedBy)
+/// <param name="Training">
+/// Whether the caller states this creature has been trained to accept a rider. For one of the
+/// corpus's own instances it is <see cref="MountTraining.FromTheCorpus"/> and nothing is stated; for
+/// any other creature it is the caller's fact, under Brandon's ruling of 2026-09-16, and
+/// <see cref="MountTraining.NotStated"/> where the caller says nothing.
+/// </param>
+public sealed record MountCreatureStatement(MountCreatureKind Kind, string Id, string StatedBy, MountTraining Training)
 {
     /// <summary>The kind, checked to be stated.</summary>
     public MountCreatureKind Kind { get; } = Checks.Defined(Kind, nameof(Kind));
@@ -199,36 +307,66 @@ public sealed record MountCreatureStatement(MountCreatureKind Kind, string Id, s
     /// <summary>Who stated it, checked to be non-empty.</summary>
     public string StatedBy { get; } = Checks.Text(StatedBy, nameof(StatedBy));
 
+    /// <summary>The training, checked to be stated, and to be the corpus's only for a creature the corpus names.</summary>
+    public MountTraining Training { get; } = CheckTraining(Kind, Training);
+
     /// <summary>A domesticated horse, one of the corpus's own instances.</summary>
     /// <param name="id">The mount's name or handle.</param>
     /// <param name="statedBy">Who is answerable for the statement.</param>
     /// <returns>The statement.</returns>
     public static MountCreatureStatement DomesticatedHorse(string id, string statedBy) =>
-        new(MountCreatureKind.DomesticatedHorse, id, statedBy);
+        new(MountCreatureKind.DomesticatedHorse, id, statedBy, MountTraining.FromTheCorpus);
 
     /// <summary>A mule, one of the corpus's own instances.</summary>
     /// <param name="id">The mount's name or handle.</param>
     /// <param name="statedBy">Who is answerable for the statement.</param>
     /// <returns>The statement.</returns>
     public static MountCreatureStatement Mule(string id, string statedBy) =>
-        new(MountCreatureKind.Mule, id, statedBy);
+        new(MountCreatureKind.Mule, id, statedBy, MountTraining.FromTheCorpus);
 
-    /// <summary>A creature the corpus does not name.</summary>
+    /// <summary>A creature the corpus does not name, whose training nothing states.</summary>
     /// <param name="id">The mount's name or handle.</param>
     /// <param name="statedBy">Who is answerable for the statement.</param>
     /// <returns>The statement.</returns>
     public static MountCreatureStatement AnotherCreature(string id, string statedBy) =>
-        new(MountCreatureKind.AnotherCreature, id, statedBy);
+        new(MountCreatureKind.AnotherCreature, id, statedBy, MountTraining.NotStated);
+
+    /// <summary>A creature the corpus does not name, whose training the caller states.</summary>
+    /// <param name="id">The mount's name or handle.</param>
+    /// <param name="statedBy">Who is answerable for the statement.</param>
+    /// <param name="trained">True when the caller states it has been trained to accept a rider.</param>
+    /// <returns>The statement.</returns>
+    public static MountCreatureStatement AnotherCreature(string id, string statedBy, bool trained) =>
+        new(MountCreatureKind.AnotherCreature, id, statedBy, trained ? MountTraining.Trained : MountTraining.NotTrained);
 
     /// <summary>True for the creatures the corpus names as having such training.</summary>
     public bool NamedByTheCorpus => Kind != MountCreatureKind.AnotherCreature;
+
+    private static MountTraining CheckTraining(MountCreatureKind kind, MountTraining training)
+    {
+        bool named = Checks.Defined(kind, nameof(Kind)) != MountCreatureKind.AnotherCreature;
+        if (named != (Checks.Defined(training, nameof(Training)) == MountTraining.FromTheCorpus))
+        {
+            throw new ArgumentException(
+                "a domesticated horse and a mule are trained by the corpus's own words, and no other creature is: "
+                + "any other creature's training is the caller's to state, or to leave unstated",
+                nameof(Training));
+        }
+
+        return training;
+    }
 
     /// <inheritdoc/>
     public override string ToString() => Kind switch
     {
         MountCreatureKind.DomesticatedHorse => $"{Id} is a domesticated horse, as stated by {StatedBy}",
         MountCreatureKind.Mule => $"{Id} is a mule, as stated by {StatedBy}",
-        _ => $"{Id} is a creature the corpus does not name, as stated by {StatedBy}",
+        _ => Training switch
+        {
+            MountTraining.Trained => $"{Id} is a creature the corpus does not name, trained to accept a rider, as stated by {StatedBy}",
+            MountTraining.NotTrained => $"{Id} is a creature the corpus does not name, not trained to accept a rider, as stated by {StatedBy}",
+            _ => $"{Id} is a creature the corpus does not name, whose training {StatedBy} does not state",
+        },
     };
 }
 

@@ -63,8 +63,8 @@ public class OpportunityAttackEntryPointTests
         LeavingReach[] avoided =
         [
             LeavingReach.Disengages(Gm),
-            new LeavingReach(DepartureMeans.Teleport, DisengageTaken: false, "the creature Teleports away", Gm),
-            new LeavingReach(DepartureMeans.MovedWithoutItsOwn, DisengageTaken: false, "an explosion hurls the creature out of reach", Gm),
+            new LeavingReach(DepartureMeans.Teleport, DisengageTaken: false, DisengagedOnAnEarlierTurn: false, "the creature Teleports away", Gm),
+            new LeavingReach(DepartureMeans.MovedWithoutItsOwn, DisengageTaken: false, DisengagedOnAnEarlierTurn: false, "an explosion hurls the creature out of reach", Gm),
         ];
 
         foreach (var leaving in avoided)
@@ -105,6 +105,7 @@ public class OpportunityAttackEntryPointTests
         var elsewhere = new LeavingReach(
             DepartureMeans.ByNoneOfThose,
             DisengageTaken: false,
+            DisengagedOnAnEarlierTurn: false,
             "the attacker moves away, so the creature is no longer in its reach",
             Gm);
 
@@ -124,7 +125,7 @@ public class OpportunityAttackEntryPointTests
         Assert.Equal("Combat / Opportunity Attacks / p. 15", disengaged.Authority.Citation);
         Assert.Equal(EntryPoints.OpportunityAttackAvoidance.Registered.Locator, disengaged.Authority);
 
-        var teleported = Avoiding(new LeavingReach(DepartureMeans.Teleport, false, "the creature Teleports away", Gm));
+        var teleported = Avoiding(new LeavingReach(DepartureMeans.Teleport, false, false, "the creature Teleports away", Gm));
         Assert.False(teleported.Provokes);
         Assert.Contains("Teleport", teleported.Because, StringComparison.Ordinal);
     }
@@ -134,8 +135,8 @@ public class OpportunityAttackEntryPointTests
     {
         LeavingReach[] examples =
         [
-            new(DepartureMeans.MovedWithoutItsOwn, false, "an explosion hurls the creature out of a foe's reach", Gm),
-            new(DepartureMeans.MovedWithoutItsOwn, false, "the creature falls past an enemy", Gm),
+            new(DepartureMeans.MovedWithoutItsOwn, false, false, "an explosion hurls the creature out of a foe's reach", Gm),
+            new(DepartureMeans.MovedWithoutItsOwn, false, false, "the creature falls past an enemy", Gm),
         ];
 
         foreach (var leaving in examples)
@@ -153,6 +154,72 @@ public class OpportunityAttackEntryPointTests
         var verdict = Avoiding(Walks);
 
         Assert.True(verdict.Provokes);
+        Assert.Empty(verdict.Decisions);
+    }
+
+    [Fact]
+    public void Disengage_protects_your_own_movement_on_your_turn_naming_the_engines_decision()
+    {
+        var verdict = Avoiding(LeavingReach.Disengages(Gm));
+
+        Assert.False(verdict.Provokes);
+
+        // The slice's sentence states no limit; following the glossary's is this engine's own
+        // decision, taken by its owner, and every answer that rests on it says so.
+        var decision = Assert.Single(verdict.Decisions);
+        Assert.Equal("disengage-protection-follows-the-glossary", decision.Id);
+        Assert.Equal("opportunity-attack-avoidance", decision.EntryId);
+        Assert.Equal("Brandon", decision.DecidedBy);
+        Assert.Equal(new DateOnly(2026, 9, 16), decision.DecidedOn);
+        Assert.Equal("docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md", decision.Record);
+
+        // It is not an owner's ruling of rules-factory 0027: this entry has no open question, and
+        // nothing about it reaches the generated registry.
+        Assert.DoesNotContain(decision.Id, OwnerRulings.All.Select(r => r.Id));
+        Assert.DoesNotContain(decision.EntryId, OwnerRulings.All.Select(r => r.EntryId));
+
+        // The two limbs the slice states itself rest on nothing of the engine's.
+        Assert.Empty(Avoiding(new LeavingReach(DepartureMeans.Teleport, false, false, "the creature Teleports away", Gm)).Decisions);
+        Assert.Empty(Avoiding(new LeavingReach(DepartureMeans.MovedWithoutItsOwn, false, false, "an explosion hurls it clear", Gm)).Decisions);
+    }
+
+    [Fact]
+    public void A_creature_that_Disengaged_on_an_earlier_turn_provokes_again()
+    {
+        var later = LeavingReach.DisengagedEarlier(Gm);
+
+        var verdict = Avoiding(later);
+
+        Assert.True(verdict.Provokes);
+        Assert.Contains("earlier turn", verdict.Because, StringComparison.Ordinal);
+        Assert.Contains("disengage-action", verdict.Because, StringComparison.Ordinal);
+        Assert.Equal(
+            OwnerDecisions.DisengageCoversYourOwnMovementThisTurn,
+            Assert.Single(verdict.Decisions));
+
+        // And the attack is offered, because nothing avoids it any more.
+        Assert.True(Value<OpportunityAttackOffer>(Make(later)).CanBeMade);
+
+        // Being hurled out of reach on that later turn is the slice's own second limb, not this
+        // creature's lapsed Disengage: it does not provoke, and rests on no decision of the engine's.
+        var hurled = Avoiding(LeavingReach.DisengagedEarlier(Gm, DepartureMeans.MovedWithoutItsOwn, "an explosion hurls it clear"));
+        Assert.False(hurled.Provokes);
+        Assert.Empty(hurled.Decisions);
+    }
+
+    [Fact]
+    public void An_offer_refused_because_the_creature_Disengaged_names_the_engines_decision()
+    {
+        var offer = Value<OpportunityAttackOffer>(Make(LeavingReach.Disengages(Gm)));
+
+        Assert.False(offer.CanBeMade);
+
+        // opportunity-attack takes no decision of its own: it carries the avoidance rule's.
+        Assert.Equal(OwnerDecisions.DisengageCoversYourOwnMovementThisTurn, Assert.Single(offer.Decisions));
+
+        // An offer that rests on nothing of the engine's names nothing.
+        Assert.Empty(Value<OpportunityAttackOffer>(Make(Walks)).Decisions);
+        Assert.Empty(Value<OpportunityAttackOffer>(Make(Walks, sight: TargetVisibilityStatement.HeardNotSeen(Gm))).Decisions);
     }
 
     [Fact]

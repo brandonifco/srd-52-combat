@@ -47,20 +47,38 @@ public static class MountRules
 
     /// <summary>
     /// <c>appropriate-anatomy</c>: the gap split out of <c>mount-eligibility</c>. "An appropriate
-    /// anatomy" states no measure and no set of values, and names nobody who decides, so every
-    /// question this entry is asked turns on the question the corpus leaves open.
+    /// anatomy" states no measure and no set of values, and names nobody who decides.
     /// </summary>
-    /// <param name="candidate">The creature asked about.</param>
-    /// <returns>The decline citing this entry.</returns>
-    /// <exception cref="ArgumentException"><paramref name="candidate"/> is empty.</exception>
-    public static Resolution<object> AppropriateAnatomy(string candidate)
+    /// <remarks>
+    /// **Brandon ruled on 2026-09-16 that it is the GM's call** (<c>appropriate-anatomy/gm-decides</c>,
+    /// <c>docs/decisions/0007</c>). The caller supplies the GM's determination explicitly, in the shape
+    /// <c>gm-requires-action</c>'s assertion has, and the engine never assumes one: it reports what the
+    /// GM determined and names the ruling that makes that the answer. Where the GM has determined
+    /// nothing, the rule declines <see cref="UnresolvedReason.RequiresInterpretation"/> citing this
+    /// entry — the ruled behaviour, not a part of the question left unruled — and, as 0027 § 4 has it,
+    /// that decline names no ruling.
+    /// </remarks>
+    /// <param name="anatomy">What the GM determined about the creature, as the caller states it.</param>
+    /// <returns>The GM's determination, naming the ruling; or the decline where nothing was determined.</returns>
+    public static Resolution<AnatomyRuling> AppropriateAnatomy(AnatomyStatement anatomy)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(candidate);
-        return Declines.Of<object>(
-            UnresolvedReason.RequiresInterpretation,
-            $"{Declines.Attempting(MapEntries.AppropriateAnatomy)} for {candidate}: \"an appropriate anatomy\" states no measure and "
-            + "no set of values, and names nobody who decides",
-            MapEntries.AppropriateAnatomy);
+        ArgumentNullException.ThrowIfNull(anatomy);
+        if (anatomy.Verdict == AnatomyVerdict.NotStated)
+        {
+            return Declines.Of<AnatomyRuling>(
+                UnresolvedReason.RequiresInterpretation,
+                $"{Declines.Attempting(MapEntries.AppropriateAnatomy)} for {anatomy.Candidate}: \"an appropriate anatomy\" states no "
+                + $"measure and no set of values, and {anatomy}",
+                MapEntries.AppropriateAnatomy);
+        }
+
+        bool appropriate = anatomy.Verdict == AnatomyVerdict.Appropriate;
+        return Resolution<AnatomyRuling>.FromValue(new AnatomyRuling(
+            appropriate,
+            anatomy,
+            $"the corpus states no measure for \"an appropriate anatomy\" and names nobody who decides, and {anatomy}",
+            MapEntries.AppropriateAnatomy.Locator,
+            [OwnerRulings.TheGmDecidesTheAnatomy]));
     }
 
     /// <summary>
@@ -70,23 +88,28 @@ public static class MountRules
     /// <remarks>
     /// The sentence is three conditions together. Two of them the engine can measure: willingness is
     /// a fact the caller states, and "at least one size larger" is counted along
-    /// <c>size-categories</c>. The third is <c>appropriate-anatomy</c>, which resolves nothing, so
-    /// the rule answers only the refusals: where willingness or size fails, no anatomy makes the
-    /// creature a mount. Where both hold, what remains is the anatomy, and the rule declines.
+    /// <c>size-categories</c>. Where either fails, no anatomy makes the creature a mount, and that
+    /// answer is the corpus's own and names no ruling. Where both hold, what remains is
+    /// <c>appropriate-anatomy</c>, which the GM decides under Brandon's ruling: the rule reads that
+    /// entry's answer, carries its ruling into this one (rules-factory decision 0027 § 4, as amended
+    /// on 2026-09-15), and declines with it where the GM has determined nothing.
     /// </remarks>
     /// <param name="rider">The rider's size category, as the caller states it.</param>
     /// <param name="candidate">The candidate's name or handle.</param>
     /// <param name="candidateSize">The candidate's size category, as the caller states it.</param>
     /// <param name="willing">Whether the candidate is willing, as the caller states it.</param>
-    /// <returns>That the creature can't serve as a mount, or the decline citing <c>appropriate-anatomy</c>.</returns>
+    /// <param name="anatomy">What the GM determined about the candidate's anatomy, as the caller states it.</param>
+    /// <returns>Whether the creature can serve as a mount, or the decline citing <c>appropriate-anatomy</c>.</returns>
     public static Resolution<MountEligibility> Eligible(
         CreatureSize rider,
         string candidate,
         CreatureSize candidateSize,
-        WillingStatement willing)
+        WillingStatement willing,
+        AnatomyStatement anatomy)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(candidate);
         ArgumentNullException.ThrowIfNull(willing);
+        ArgumentNullException.ThrowIfNull(anatomy);
         Checks.Defined(rider, nameof(rider));
         Checks.Defined(candidateSize, nameof(candidateSize));
 
@@ -99,7 +122,8 @@ public static class MountRules
                 rider,
                 candidateSize,
                 $"the rule names a willing creature, and {willing}",
-                MapEntries.MountEligibility.Locator));
+                MapEntries.MountEligibility.Locator,
+                OwnerRulings.None));
         }
 
         if (steps < 1)
@@ -110,15 +134,24 @@ public static class MountRules
                 candidateSize,
                 $"the rule names a creature at least one size larger than the rider, and {candidateSize} is "
                 + $"{(steps == 0 ? "the rider's own size" : $"{-steps} size(s) smaller than the rider")} along {order}",
-                MapEntries.MountEligibility.Locator));
+                MapEntries.MountEligibility.Locator,
+                OwnerRulings.None));
         }
 
-        return Declines.Of<MountEligibility>(
-            UnresolvedReason.RequiresInterpretation,
-            $"{Declines.Attempting(MapEntries.MountEligibility)} for {candidate}: it is willing and {steps} size(s) larger than the "
-            + $"rider, so what is left of the sentence is \"an appropriate anatomy\", which is '{MapEntries.AppropriateAnatomy.Id}', "
-            + "and the corpus states no measure for it",
-            MapEntries.AppropriateAnatomy);
+        return AppropriateAnatomy(anatomy).Match(
+            ruling => Resolution<MountEligibility>.FromValue(new MountEligibility(
+                ruling.Appropriate,
+                rider,
+                candidateSize,
+                $"it is willing and {steps} size(s) larger than the rider, and what is left of the sentence is \"an appropriate "
+                + $"anatomy\", which is '{MapEntries.AppropriateAnatomy.Id}': {ruling.Because}",
+                MapEntries.MountEligibility.Locator,
+                OwnerRulings.InOrder(ruling.Rulings))),
+            unresolved => Declines.Of<MountEligibility>(
+                unresolved.Reason,
+                $"{Declines.Attempting(MapEntries.MountEligibility)} for {candidate}: it is willing and {steps} size(s) larger than "
+                + $"the rider, so what is left of the sentence is \"an appropriate anatomy\", and {unresolved.Attempted}",
+                MapEntries.AppropriateAnatomy));
     }
 
     /// <summary>
@@ -196,12 +229,15 @@ public static class MountRules
     /// </summary>
     /// <remarks>
     /// The corpus gives instances and no definition. For a domesticated horse or a mule it says the
-    /// training is there, and the rule answers. For any other creature "similar" states no measure
-    /// and nobody is named who decides, so the rule declines
-    /// <see cref="UnresolvedReason.RequiresInterpretation"/> rather than reading "similar" for the
-    /// corpus.
+    /// training is there, and the rule answers on the corpus's own words, naming no ruling. For any
+    /// other creature "similar" states no measure and nobody is named who decides; **Brandon ruled on
+    /// 2026-09-16 that the training is a fact the caller supplies**, as a Swim Speed is
+    /// (<c>mount-control-requires-training/training-is-stated</c>, <c>docs/decisions/0007</c>). So a
+    /// stated training answers and names the ruling, and a creature the corpus does not name whose
+    /// training nothing states declines <see cref="UnresolvedReason.RequiresInterpretation"/> — the
+    /// ruled behaviour, and a decline names no ruling.
     /// </remarks>
-    /// <param name="creature">Which creature the mount is, as the caller states it.</param>
+    /// <param name="creature">Which creature the mount is, and what the caller states of its training.</param>
     /// <param name="mount">Whether a rider is on it, as the caller states it.</param>
     /// <returns>Whether it can be controlled, or a decline.</returns>
     public static Resolution<MountControl> Control(MountCreatureStatement creature, MountStatement mount)
@@ -213,18 +249,35 @@ public static class MountRules
             return Resolution<MountControl>.FromUnresolved(declined);
         }
 
-        return creature.NamedByTheCorpus
-            ? Resolution<MountControl>.FromValue(new MountControl(
+        if (creature.NamedByTheCorpus)
+        {
+            return Resolution<MountControl>.FromValue(new MountControl(
                 CanBeControlled: true,
                 creature,
                 $"the corpus names domesticated horses and mules as having the training a rider needs, and {creature}",
-                MapEntries.MountControlRequiresTraining.Locator))
-            : Declines.Of<MountControl>(
+                MapEntries.MountControlRequiresTraining.Locator,
+                OwnerRulings.None));
+        }
+
+        if (creature.Training == MountTraining.NotStated)
+        {
+            return Declines.Of<MountControl>(
                 UnresolvedReason.RequiresInterpretation,
                 $"{Declines.Attempting(MapEntries.MountControlRequiresTraining)} for {creature}: the corpus names domesticated "
                 + "horses, mules \"and similar creatures\", which states no measure, and nothing in the slice says whether this "
-                + "creature is trained or who decides",
+                + "creature is trained",
                 MapEntries.MountControlRequiresTraining);
+        }
+
+        // The owner's ruling, not the corpus's: training is a fact the caller supplies.
+        bool trained = creature.Training == MountTraining.Trained;
+        return Resolution<MountControl>.FromValue(new MountControl(
+            trained,
+            creature,
+            $"the corpus names domesticated horses, mules \"and similar creatures\" and states no measure for the rest, and "
+            + $"{creature}",
+            MapEntries.MountControlRequiresTraining.Locator,
+            [OwnerRulings.TrainingIsAStatedFact]));
     }
 
     /// <summary>
@@ -235,7 +288,10 @@ public static class MountRules
     /// </summary>
     /// <remarks>
     /// A mount is controlled only if it is trained (<c>mount-control-requires-training</c>, this
-    /// entry's <c>enabledBy</c>), so the rule reads that one first and answers only where it does.
+    /// entry's <c>enabledBy</c>), so the rule reads that one first: it answers what this rule gives a
+    /// controlled mount where the training holds, answers that the rule gives nothing where the
+    /// training is stated not to, and declines where that rule declines. Whatever rulings the training
+    /// rested on are carried into this answer (rules-factory decision 0027 § 4, as amended).
     /// What Dash, Disengage and Dodge do is the Actions table's (<c>actions-table</c>, this entry's
     /// <c>dependsOn</c>), outside the extent: a caller asking what one of them does is declined
     /// <see cref="UnresolvedReason.OutsideCurrentScope"/> citing it.
@@ -267,13 +323,23 @@ public static class MountRules
         }
 
         return Control(creature, mount).Match(
-            control => Resolution<ControlledMountTurn>.FromValue(new ControlledMountTurn(
-                InitiativeMatchesTheRider: true,
-                MovesOnYourTurnAsYouDirect: true,
-                [ControlledMountAction.Dash, ControlledMountAction.Disengage, ControlledMountAction.Dodge],
-                ActsOnTheTurnItIsMounted: true,
-                control,
-                MapEntries.ControlledMountTurn.Locator)),
+            control => control.CanBeControlled
+                ? Resolution<ControlledMountTurn>.FromValue(new ControlledMountTurn(
+                    InitiativeMatchesTheRider: true,
+                    MovesOnYourTurnAsYouDirect: true,
+                    [ControlledMountAction.Dash, ControlledMountAction.Disengage, ControlledMountAction.Dodge],
+                    ActsOnTheTurnItIsMounted: true,
+                    control,
+                    MapEntries.ControlledMountTurn.Locator,
+                    OwnerRulings.InOrder(control.Rulings)))
+                : Resolution<ControlledMountTurn>.FromValue(new ControlledMountTurn(
+                    InitiativeMatchesTheRider: false,
+                    MovesOnYourTurnAsYouDirect: false,
+                    [],
+                    ActsOnTheTurnItIsMounted: false,
+                    control,
+                    MapEntries.ControlledMountTurn.Locator,
+                    OwnerRulings.InOrder(control.Rulings))),
             unresolved => Declines.Of<ControlledMountTurn>(
                 unresolved.Reason,
                 $"{Declines.Attempting(MapEntries.ControlledMountTurn)}: a mount is controlled only if it has been trained to accept "

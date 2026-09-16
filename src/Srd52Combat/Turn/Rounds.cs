@@ -160,6 +160,11 @@ public sealed record SidesAgreementStatement(bool AgreedToEnd, string StatedBy)
 /// <param name="Why">The rule's own reason, in the engine's words.</param>
 /// <param name="Waiting">The combatants who have not yet taken a turn, in Initiative order.</param>
 /// <param name="Authority">The rule: <c>next-round</c>, "Combat / The Order of Combat / p. 13".</param>
+/// <param name="Rulings">
+/// The owner's rulings this answer relies on: <c>next-round/agreement-ends-it</c> where both sides
+/// agreed and neither is defeated, which is the case p. 13 and p. 14 answer differently, and none in
+/// the three cases the corpus settles on its own.
+/// </param>
 public sealed record NextRoundOutcome(
     int Round,
     bool RoundOver,
@@ -167,8 +172,13 @@ public sealed record NextRoundOutcome(
     int? Next,
     string Why,
     ImmutableArray<string> Waiting,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
 {
+    /// <summary>The rulings, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
+
     /// <inheritdoc/>
     public override string ToString() => $"round {Round}: {Why} [{Authority.Citation}]";
 }

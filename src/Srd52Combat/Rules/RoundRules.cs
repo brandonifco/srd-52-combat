@@ -48,11 +48,16 @@ public static class RoundRules
     /// <remarks>
     /// Before everyone has taken a turn the round is not over and no next round follows yet. Once it
     /// is over: with neither side defeated the fight continues to the round after this one; with a
-    /// side defeated it does not. Where neither side is defeated and both sides have agreed to end
-    /// combat, p. 14 says combat can end and this sentence says another round begins; that conflict
-    /// is the entry's unresolved question, so the rule declines
-    /// <see cref="UnresolvedReason.RequiresInterpretation"/> citing <c>next-round</c> and chooses
-    /// neither reading.
+    /// side defeated it does not. Those three cases are the corpus's own and name no ruling.
+    /// <para>
+    /// Where neither side is defeated and both sides have agreed to end combat, p. 14 says combat can
+    /// end and this sentence says another round begins; that conflict is the entry's unresolved
+    /// question, which the engine used to decline. **Brandon ruled on 2026-09-15 that combat ends**
+    /// (<c>next-round/agreement-ends-it</c>, <c>docs/decisions/0007</c>), so the round is over, no
+    /// further round follows, and the answer names the ruling. The same question sits on
+    /// <c>combat-end</c>, which this engine has not built; the ruling there is that entry's to carry
+    /// when it is.
+    /// </para>
     /// </remarks>
     /// <param name="round">The round whose turns were taken, from 1.</param>
     /// <param name="order">Every combatant, in Initiative order.</param>
@@ -107,17 +112,24 @@ public static class RoundRules
                 Next: null,
                 $"not everyone has taken a turn in round {round}: {string.Join(", ", waiting)} still to act",
                 waiting,
-                MapEntries.NextRound.Locator));
+                MapEntries.NextRound.Locator,
+                OwnerRulings.None));
         }
 
         if (!defeat.ASideIsDefeated && agreement.AgreedToEnd)
         {
-            return Resolution<NextRoundOutcome>.FromUnresolved(new UnresolvedResult(
-                UnresolvedReason.RequiresInterpretation,
-                $"resolve the map entry '{MapEntries.NextRound.Id}' [{MapEntries.NextRound.Locator.Citation}] "
-                + $"after round {round}, while {defeat} and {agreement}: this rule continues the fight and "
-                + $"'{MapEntries.CombatEnd.Id}' [{MapEntries.CombatEnd.Locator.Citation}] ends the combat, and the corpus does not say which governs",
-                MapEntries.NextRound.Locator));
+            // The one case this rule and combat-end answer differently, and the corpus does not say
+            // which governs. The owner's ruling, not the corpus's answer, and the result names it.
+            return Resolution<NextRoundOutcome>.FromValue(new NextRoundOutcome(
+                round,
+                RoundOver: true,
+                Continues: false,
+                Next: null,
+                $"everyone has taken a turn, {defeat} and {agreement}; this rule would continue the fight and "
+                + $"'{MapEntries.CombatEnd.Id}' [{MapEntries.CombatEnd.Locator.Citation}] would end the combat, and combat ends",
+                [],
+                MapEntries.NextRound.Locator,
+                [OwnerRulings.AgreementEndsTheCombat]));
         }
 
         return defeat.ASideIsDefeated
@@ -128,7 +140,8 @@ public static class RoundRules
                 Next: null,
                 $"everyone has taken a turn and {defeat}, so the fight does not continue to another round",
                 [],
-                MapEntries.NextRound.Locator))
+                MapEntries.NextRound.Locator,
+                OwnerRulings.None))
             : Resolution<NextRoundOutcome>.FromValue(new NextRoundOutcome(
                 round,
                 RoundOver: true,
@@ -136,6 +149,7 @@ public static class RoundRules
                 Next: round + 1,
                 $"everyone has taken a turn and {defeat}, so the fight continues to round {round + 1}",
                 [],
-                MapEntries.NextRound.Locator));
+                MapEntries.NextRound.Locator,
+                OwnerRulings.None));
     }
 }

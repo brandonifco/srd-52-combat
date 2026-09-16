@@ -423,14 +423,29 @@ public sealed record TargetLocationStatement(string TargetedLocation, bool Targe
 /// <summary>
 /// How a creature left the attacker's reach, and whether it took the Disengage action, as the
 /// caller states it. The Disengage action is <c>actions-table</c>'s and <c>disengage-action</c>'s,
-/// outside the extent; what the rules here test is only that it was taken.
+/// outside the extent; what the rules here test is that it was taken, and — since Brandon's decision
+/// of 2026-09-16 (<see cref="OwnerDecisions.DisengageCoversYourOwnMovementThisTurn"/>) — whether this
+/// departure is still on the turn it was taken.
 /// </summary>
 /// <param name="Means">How the creature left reach.</param>
 /// <param name="DisengageTaken">True when the creature took the Disengage action.</param>
+/// <param name="DisengagedOnAnEarlierTurn">True when the Disengage action was taken on a turn before this departure; false when it was taken on this one.</param>
 /// <param name="Description">What happened, in the caller's words; the corpus's own examples are an explosion hurling you and falling past an enemy.</param>
 /// <param name="StatedBy">Who is answerable for the statement.</param>
-public sealed record LeavingReach(DepartureMeans Means, bool DisengageTaken, string Description, string StatedBy)
+public sealed record LeavingReach(
+    DepartureMeans Means,
+    bool DisengageTaken,
+    bool DisengagedOnAnEarlierTurn,
+    string Description,
+    string StatedBy)
 {
+    /// <summary>
+    /// Whether the Disengage action protects this departure under the glossary's limits: it was
+    /// taken, this is the creature's own movement, and the turn it was taken on has not ended.
+    /// </summary>
+    public bool ProtectedByDisengage =>
+        DisengageTaken && !DisengagedOnAnEarlierTurn && Means == DepartureMeans.OwnMovement;
+
     /// <summary>The means, checked to be stated.</summary>
     public DepartureMeans Means { get; } = Checks.Defined(Means, nameof(Means));
 
@@ -445,18 +460,32 @@ public sealed record LeavingReach(DepartureMeans Means, bool DisengageTaken, str
     /// <param name="description">What happened, in the caller's words.</param>
     /// <returns>The statement.</returns>
     public static LeavingReach Walks(string statedBy, string description = "the creature walks out of the attacker's reach") =>
-        new(DepartureMeans.OwnMovement, DisengageTaken: false, description, statedBy);
+        new(DepartureMeans.OwnMovement, DisengageTaken: false, DisengagedOnAnEarlierTurn: false, description, statedBy);
 
-    /// <summary>The creature took the Disengage action and then moved out of reach.</summary>
+    /// <summary>The creature took the Disengage action and then, on that same turn, moved out of reach.</summary>
     /// <param name="statedBy">Who is answerable for the statement.</param>
     /// <param name="description">What happened, in the caller's words.</param>
     /// <returns>The statement.</returns>
     public static LeavingReach Disengages(string statedBy, string description = "the creature takes the Disengage action and moves out of the attacker's reach") =>
-        new(DepartureMeans.OwnMovement, DisengageTaken: true, description, statedBy);
+        new(DepartureMeans.OwnMovement, DisengageTaken: true, DisengagedOnAnEarlierTurn: false, description, statedBy);
+
+    /// <summary>
+    /// The creature took the Disengage action on an earlier turn, and leaves reach now by the means
+    /// stated. Under the engine's decision of 2026-09-16 the protection did not outlast that turn.
+    /// </summary>
+    /// <param name="statedBy">Who is answerable for the statement.</param>
+    /// <param name="means">How the creature leaves reach now.</param>
+    /// <param name="description">What happened, in the caller's words.</param>
+    /// <returns>The statement.</returns>
+    public static LeavingReach DisengagedEarlier(
+        string statedBy,
+        DepartureMeans means = DepartureMeans.OwnMovement,
+        string description = "the creature, having taken the Disengage action on an earlier turn, moves out of the attacker's reach") =>
+        new(means, DisengageTaken: true, DisengagedOnAnEarlierTurn: true, description, statedBy);
 
     /// <inheritdoc/>
     public override string ToString() =>
-        $"{Description} ({Means}{(DisengageTaken ? ", having taken the Disengage action" : string.Empty)}), as stated by {StatedBy}";
+        $"{Description} ({Means}{(DisengageTaken ? DisengagedOnAnEarlierTurn ? ", having taken the Disengage action on an earlier turn" : ", having taken the Disengage action on this turn" : string.Empty)}), as stated by {StatedBy}";
 }
 
 /// <summary>

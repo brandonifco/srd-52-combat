@@ -25,9 +25,11 @@ public class SeededInitiativeReplayTests
     /// <summary>
     /// The SHA-256 of the recorded combat start. A literal: if it changes, the engine rolls or orders
     /// this seed differently, which is a decision about the ruleset version, not a number to update
-    /// until green.
+    /// until green. Re-pinned for ruleset version 7 and replay schema 2 (<c>docs/decisions/0007</c>):
+    /// the identity line moved, and the record gained its <c>rulings</c> line. The d20s and the order
+    /// are unchanged — this combat states no group, so no ruling touches it.
     /// </summary>
-    private const string RecordedReplaySha256 = "a8a8105d9220b2edd37fcd9d6a16a1d3691f9a336a2adc13afa31a517f6f7f33";
+    private const string RecordedReplaySha256 = "cf5bf4bb41275ba86e2dcbd196f97c26202c9f5c618a4fd7126aa768b695273c";
 
     private static readonly Combatant[] Participants =
     [
@@ -56,14 +58,51 @@ public class SeededInitiativeReplayTests
         var (other, _) = Run(new CountingSource(Pcg32.FromSeed(Seed + 1, stream: 1)), decisions: null);
         Assert.NotEqual(first.Rolls.Rolls.Select(r => r.D20), other.Rolls.Rolls.Select(r => r.D20));
 
-        // Comparable only under the same identity: ruleset srd-5.2.1-combat v6, PCG32, map 2.0.0.
+        // Comparable only under the same identity: ruleset srd-5.2.1-combat v7, PCG32, map 2.0.0.
         Assert.Equal("srd-5.2.1-combat", Ruleset.Identity.Ruleset.Id);
-        Assert.Equal(6, Ruleset.Identity.Ruleset.Version);
+        Assert.Equal(7, Ruleset.Identity.Ruleset.Version);
+        Assert.Equal(2, Ruleset.Identity.ReplaySchema.Version);
         Assert.Equal(RulesKernel.Identity.RandomAlgorithmId.Pcg32SetSeq64XshRr32, Ruleset.Identity.RandomAlgorithm);
         Assert.StartsWith(
-            "identity srd-5.2.1-combat v6 schema 1 map RulesFactory.Maps.Srd52Combat 2.0.0\n",
+            "identity srd-5.2.1-combat v7 schema 2 map RulesFactory.Maps.Srd52Combat 2.0.0\n",
             Encoding.UTF8.GetString(bytes),
             StringComparison.Ordinal);
+
+        // This combat states no group of identical creatures, so it relies on no ruling, and the
+        // record says so rather than leaving a reader to infer it.
+        Assert.Empty(first.Rolls.Rulings);
+        Assert.Contains("\nrulings none\n", Encoding.UTF8.GetString(bytes), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void A_recorded_combat_whose_rolls_rest_on_the_owners_ruling_names_it_in_the_record()
+    {
+        var source = new CountingSource(Pcg32.FromSeed(Seed, stream: 1));
+        var grouped = IdenticalCreaturesStatement.Grouped(Gm, ["Goblin", "Orc"]);
+
+        var rolls = Value<InitiativeRolls>(EntryPoints.InitiativeRoll.Resolve(new InitiativeRollRequest
+        {
+            Participants = Participants,
+            StatedBy = Gm,
+            ScoreOption = Rolling,
+            IdenticalCreatures = grouped,
+            Source = source,
+        }));
+
+        // Same seed, same d20s: the ruling changes what is answered, not what is drawn.
+        var order = Value<TurnOrder>(EntryPoints.InitiativeOrder.Resolve(
+            new InitiativeOrderRequest(RuleRequest.Empty.Assert("initiative-ties", Run(new CountingSource(Pcg32.FromSeed(Seed, stream: 1)), null).Decisions))
+            {
+                Counts = rolls.Counts,
+            }));
+        string record = Encoding.UTF8.GetString(Render(rolls, order));
+
+        Assert.Equal(Participants.Length, source.Drawn);
+        Assert.Contains(
+            "ruling group-initiative/no-grouping Brandon 2026-09-15 docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md\n",
+            record,
+            StringComparison.Ordinal);
+        Assert.DoesNotContain("rulings none", record, StringComparison.Ordinal);
     }
 
     private static ((InitiativeRolls Rolls, TurnOrder Order) Result, TieBreaks Decisions) Run(IRandomSource source, TieBreaks? decisions)
@@ -103,7 +142,12 @@ public class SeededInitiativeReplayTests
         }
 
         text.Append($"generator {identity.RandomAlgorithm?.Name} seed {Seed} stream 1\n")
-            .Append($"statements {rolls.ScoreOption}; {rolls.IdenticalCreatures}; participants stated by {rolls.StatedBy}\n");
+            .Append($"statements {rolls.ScoreOption}; {rolls.IdenticalCreatures}; participants stated by {rolls.StatedBy}\n")
+            // Schema 2: a record of a result carries the owner's rulings it relied on, so a reader
+            // can see which of it is Brandon's and not the corpus's (rules-factory decision 0027 § 4).
+            .Append(rolls.Rulings.IsEmpty
+                ? "rulings none\n"
+                : string.Concat(rolls.Rulings.Select(r => $"ruling {r.Id} {r.RuledBy} {r.RuledOn:yyyy-MM-dd} {r.Record}\n")));
         foreach (var roll in rolls.Rolls)
         {
             text.Append($"roll {roll} [{rolls.Authority}]\n");

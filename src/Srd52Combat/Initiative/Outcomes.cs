@@ -26,15 +26,26 @@ public sealed record RolledInitiative(string CombatantId, CombatantKind Kind, in
 /// <param name="ScoreOption">The Initiative-score statement the roll was made under.</param>
 /// <param name="IdenticalCreatures">The identical-creatures statement the roll was made under.</param>
 /// <param name="Authority">The rule: <c>initiative-roll</c>, "Combat / Initiative / p. 13".</param>
+/// <param name="Rulings">
+/// The owner's rulings this roll relies on, in overlay order: <c>group-initiative/no-grouping</c>
+/// where the caller stated a group of identical creatures, which the corpus would have the GM roll
+/// once for, and nothing where it stated none. Carried from <c>group-initiative</c>'s rule, which is
+/// where the ruling is held (rules-factory decision 0027 § 4, as amended on 2026-09-15).
+/// </param>
 public sealed record InitiativeRolls(
     ImmutableArray<RolledInitiative> Rolls,
     string StatedBy,
     InitiativeScoreOptionStatement ScoreOption,
     IdenticalCreaturesStatement IdenticalCreatures,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
 {
     /// <summary>The Initiative counts, in the order the participants were given.</summary>
     public ImmutableArray<InitiativeCount> Counts => [.. Rolls.Select(r => r.Count)];
+
+    /// <summary>The rulings, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
 }
 
 /// <summary>Who decides the order among a set of tied combatants.</summary>

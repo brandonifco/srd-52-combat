@@ -25,15 +25,20 @@ public static class InitiativeRules
     /// <list type="bullet">
     /// <item>the GM uses Initiative scores: <see cref="UnresolvedReason.OutsideCurrentScope"/>, citing
     /// <c>initiative-score-option</c> (p. 184), the gate outside the slice that suspends this entry;</item>
-    /// <item>a group of identical creatures, for which the GM makes a single roll:
-    /// <see cref="UnresolvedReason.RequiresInterpretation"/>, citing <c>group-initiative</c>, which is built
-    /// and declines — map 2.0.0's <c>draws</c> counts one d20 per participant "not in a group of identical
-    /// creatures, whose roll is group-initiative's", and what makes such a group the corpus never says
-    /// (decision 0005);</item>
     /// <item>a roll with Advantage, Disadvantage, or both: <see cref="UnresolvedReason.OutsideCurrentScope"/>,
     /// citing <c>advantage-disadvantage</c> (p. 7). Map 2.0.0's <c>draws</c> counts one d20 for a roll with
     /// both, because they cancel; the cancelling is that <c>scope: out</c> entry's rule (decision 0002).</item>
     /// </list>
+    /// <para>
+    /// A group of identical creatures no longer declines. Map 2.0.0's <c>draws</c> counts one d20 per
+    /// participant "not in a group of identical creatures, whose roll is group-initiative's", and what
+    /// makes such a group the corpus never says; Brandon ruled on 2026-09-15 that every creature rolls
+    /// its own Initiative and the engine never groups (<c>group-initiative/no-grouping</c>,
+    /// <c>docs/decisions/0007</c>). That ruling is <c>group-initiative</c>'s, held in that entry's
+    /// overlay item, and a roll made under a stated group relies on it and names it in
+    /// <see cref="InitiativeRolls.Rulings"/> (rules-factory decision 0027 § 4, as amended on
+    /// 2026-09-15). One d20 is drawn per participant either way.
+    /// </para>
     /// </remarks>
     /// <param name="participants">Every participant, as the caller states them.</param>
     /// <param name="statedBy">Who stated the participants.</param>
@@ -76,15 +81,6 @@ public static class InitiativeRules
             return Decline(UnresolvedReason.OutsideCurrentScope, $"{attempted} while {scoreOption}", MapEntries.InitiativeScoreOption);
         }
 
-        if (!identicalCreatures.Groups.IsEmpty)
-        {
-            return Decline(
-                UnresolvedReason.RequiresInterpretation,
-                $"{attempted} while {identicalCreatures}: the roll of a participant in a group is '{MapEntries.GroupInitiative.Id}'"
-                + " [map draws], whose question the corpus leaves open, so how many d20s this combat throws is not fixed",
-                MapEntries.GroupInitiative);
-        }
-
         var modified = participants.Where(p => p.Roll != D20Mode.Straight).ToArray();
         if (modified.Length > 0)
         {
@@ -97,8 +93,17 @@ public static class InitiativeRules
         var rolls = participants
             .Select(p => new RolledInitiative(p.Id, p.Kind, UniformInt.InRange(source, 1, D20Faces), p.DexterityCheckModifier))
             .ToImmutableArray();
-        return Resolution<InitiativeRolls>.FromValue(
-            new InitiativeRolls(rolls, statedBy, scoreOption, identicalCreatures, MapEntries.InitiativeRoll.Locator));
+        // A stated group takes no roll of its own: that is group-initiative's ruling, and this roll
+        // relies on it and names it (0027 § 4 as amended; the ruling is never presented as the corpus's).
+        return Resolution<InitiativeRolls>.FromValue(new InitiativeRolls(
+            rolls,
+            statedBy,
+            scoreOption,
+            identicalCreatures,
+            MapEntries.InitiativeRoll.Locator,
+            identicalCreatures.Groups.IsEmpty
+                ? OwnerRulings.None
+                : [OwnerRulings.EveryCreatureRollsItsOwnInitiative]));
     }
 
     /// <summary>

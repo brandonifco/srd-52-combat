@@ -3,7 +3,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -19,8 +19,8 @@
         "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll ignored the Initiative-score statement (`if (false && scoreOption.InUse)`), rolling anyway; this test went red and no other did."
       },
       {
-        "test": "InitiativeRollEntryPointTests.A_group_of_identical_creatures_declines_citing_group_initiative_without_drawing",
-        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll declined a stated group of identical creatures as a rule that is not built (`UnresolvedReason.UnsupportedRule`), which is what it answered before group-initiative was built; this test went red, and so did group-initiative's own decline test. Under map 2.0.0 and before group-initiative was built it had gone red when a stated group was rolled once per member (`Groups.Length > 99`)."
+        "test": "InitiativeRollEntryPointTests.A_group_of_identical_creatures_rolls_one_d20_each_naming_group_initiatives_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll restored version 6's decline for a stated group (`if (!identicalCreatures.Groups.IsEmpty) return Decline(UnresolvedReason.RequiresInterpretation, ...)`), so nothing was drawn; this test went red, and so did group-initiative's ruling test and the seeded record that names the ruling."
       },
       {
         "test": "InitiativeRollEntryPointTests.A_roll_with_Advantage_or_Disadvantage_declines_citing_page_7_without_drawing",
@@ -37,6 +37,10 @@
       {
         "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
         "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 4, the version before this batch; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did. Under version 5 (the turn and round batch) it was version 6, and under version 6 (the mounted-combat, underwater and gap-closing batch) version 7; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
+      },
+      {
+        "test": "SeededInitiativeReplayTests.A_recorded_combat_whose_rolls_rest_on_the_owners_ruling_names_it_in_the_record",
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll named no ruling on a roll made under a stated group (`OwnerRulings.None`), so the recorded combat carried `rulings none` and a reader could not tell which of it was Brandon's; this test went red, and so did the two tests that assert the ruling on the roll itself."
       }
     ]
   },
@@ -44,7 +48,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 2
+      "version": 7
     },
     "tests": [
       {
@@ -61,7 +65,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 2
+      "version": 7
     },
     "tests": [
       {
@@ -86,7 +90,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 2
+      "version": 7
     },
     "tests": [
       {
@@ -107,7 +111,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -124,7 +128,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -145,7 +149,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -186,7 +190,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -207,7 +211,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -220,7 +224,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -241,7 +245,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -258,7 +262,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -266,12 +270,37 @@
         "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough dropped the ally case (`false` for `other.IsYourAlly`), so passing through an ally's space declined; this test went red and no other did."
       },
       {
-        "test": "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_or_matching_none_of_the_four_cases_declines_RequiresInterpretation",
-        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough read \u201ctwo sizes larger or smaller\u201d as two or more (`>= TwoSizes`), choosing a reading of the unresolved question; this test went red and no other did."
+        "test": "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_may_be_passed_through_naming_the_owners_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough declined a creature more than two sizes away again (`if (false && steps > TwoSizes)`), which is what version 6 did before the ruling; this test went red and no other did."
       },
       {
         "test": "MovingAroundCreaturesEntryPointTests.A_statement_about_another_creature_left_out_is_refused_never_inferred",
         "mutation": "In a throwaway copy, net10.0 suite run; the MovingThroughCreatures handler defaulted a missing size to Medium (`request.YourSize ?? CreatureSize.Medium`); this test went red and no other did."
+      },
+      {
+        "test": "MovingAroundCreaturesEntryPointTests.A_creature_fewer_than_two_sizes_away_is_the_part_of_the_question_nobody_has_ruled_on",
+        "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough let every other creature's space be passed through (`if (steps != TwoSizes)`), reading the half of the question nobody has ruled on; this test went red and no other did."
+      }
+    ],
+    "rulings": [
+      {
+        "id": "moving-through-creatures/two-or-more",
+        "span": "Does \u201ca creature that is two sizes larger or smaller than you\u201d mean exactly two sizes, or two or more? Read literally, a Medium creature can pass through a Huge creature's space and not a Gargantuan one's.",
+        "answer": "Two or more: a creature two or more sizes larger or smaller than you may be passed through, so a Medium creature passes through a Huge or a Gargantuan one.",
+        "ruledBy": "Brandon",
+        "ruledOn": "2026-09-16",
+        "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+        "tests": [
+          "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_may_be_passed_through_naming_the_owners_ruling"
+        ]
+      }
+    ],
+    "declines": [
+      {
+        "span": "And the sentence permits passage through four kinds of space without saying that every other creature's space is impassable, though that is the evident reading.",
+        "tests": [
+          "MovingAroundCreaturesEntryPointTests.A_creature_fewer_than_two_sizes_away_is_the_part_of_the_question_nobody_has_ruled_on"
+        ]
       }
     ]
   },
@@ -279,7 +308,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -292,7 +321,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -305,7 +334,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 3
+      "version": 7
     },
     "tests": [
       {
@@ -322,7 +351,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -347,7 +376,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -360,7 +389,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -385,7 +414,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -406,7 +435,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -431,7 +460,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -452,7 +481,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -473,7 +502,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -494,7 +523,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -515,7 +544,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -532,7 +561,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -553,7 +582,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
@@ -583,6 +612,10 @@
       {
         "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
         "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.An_offer_refused_because_the_creature_Disengaged_names_the_engines_decision",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make dropped the avoidance verdict's decisions from the offer (`OpportunityAttackOffer.None(verdict.Because, verdict.Authority)`), so a refusal resting on the engine's decision named none; this test went red and no other did."
       }
     ]
   },
@@ -590,12 +623,12 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 4
+      "version": 7
     },
     "tests": [
       {
         "test": "OpportunityAttackEntryPointTests.Disengage_teleporting_and_being_moved_without_your_own_movement_do_not_provoke_citing_page_15",
-        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance ignored the Disengage action (`if (false && leaving.DisengageTaken)`); this test went red, and so did the Opportunity Attack test for the avoided cases. It went red too when the Teleport case was dropped from the switch."
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance ignored the Disengage action (`if (false && leaving.ProtectedByDisengage)`); this test went red, and so did the two Disengage tests of this rule and the Opportunity Attack test for the avoided cases. It went red too when the Teleport case was dropped from the switch."
       },
       {
         "test": "OpportunityAttackEntryPointTests.Both_of_the_corpuss_examples_an_explosion_and_a_fall_do_not_provoke",
@@ -608,6 +641,14 @@
       {
         "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
         "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.Disengage_protects_your_own_movement_on_your_turn_naming_the_engines_decision",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance named no decision where the Disengage action decided the verdict (`OwnerDecisions.None`), so the engine's narrowing read as the slice's own sentence; this test went red, and so did the offer that carries it."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.A_creature_that_Disengaged_on_an_earlier_turn_provokes_again",
+        "mutation": "In a throwaway copy, net10.0 suite run; LeavingReach.ProtectedByDisengage went back to the slice's unlimited sentence (`DisengageTaken`), so the protection outlasted the turn it was taken on; this test went red and no other did."
       }
     ]
   },
@@ -615,7 +656,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -631,16 +672,35 @@
         "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound continued the fight with a side defeated (`return false ? ...`); this test went red, and so did the both-sides-agree decline. It went red too under the accepted-second-turn mutation."
       },
       {
-        "test": "RoundEntryPointTests.Both_sides_agreeing_to_end_with_neither_defeated_declines_citing_page_13",
-        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound resolved the conflict instead of declining it (`if (false && !defeat.ASideIsDefeated && agreement.AgreedToEnd)`), beginning another round; this test went red and no other did. It went red too when a defeat no longer stopped the fight, and under the accepted-second-turn mutation."
+        "test": "RoundEntryPointTests.Both_sides_agreeing_with_neither_defeated_ends_the_combat_naming_the_owners_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound skipped the ruled case (`if (false && !defeat.ASideIsDefeated && agreement.AgreedToEnd)`), so the fight continued to another round as p. 13 alone would have it; this test went red and no other did."
+      },
+      {
+        "test": "RoundEntryPointTests.The_owners_ruling_is_named_only_where_both_sides_agreed_and_neither_was_defeated",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound named the ruling on the ordinary continuing round too (`[OwnerRulings.AgreementEndsTheCombat]` in the last arm); this test went red and no other did."
       }
-    ]
+    ],
+    "rulings": [
+      {
+        "id": "next-round/agreement-ends-it",
+        "span": "p. 13 says the fight continues to the next round if neither side is defeated; p. 14 (Ending Combat) says combat can also end when both sides agree to end it, which is a case where neither side is defeated. When both sides agree and neither is defeated, does another round begin (p. 13) or does combat end (p. 14)?",
+        "answer": "Combat ends: where both sides agree to end it and neither side is defeated, no further round begins.",
+        "ruledBy": "Brandon",
+        "ruledOn": "2026-09-15",
+        "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+        "tests": [
+          "RoundEntryPointTests.Both_sides_agreeing_with_neither_defeated_ends_the_combat_naming_the_owners_ruling",
+          "RoundEntryPointTests.The_owners_ruling_is_named_only_where_both_sides_agreed_and_neither_was_defeated"
+        ]
+      }
+    ],
+    "declines": []
   },
   "combat-steps": {
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -657,7 +717,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -665,20 +725,39 @@
         "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll had the GM roll for every participant, not only the monsters (`participants.Select(p => p.Id)`); this test went red and no other did."
       },
       {
-        "test": "SurpriseAndGroupEntryPointTests.A_stated_group_of_identical_creatures_declines_citing_page_13_and_nothing_is_drawn",
-        "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll took a stated group as settling the question (`identicalCreatures.Groups.Length > 99`), answering instead of declining; this test went red and no other did. It went red too when initiative-roll declined a stated group as a rule that is not built (`UnresolvedReason.UnsupportedRule`), which is what it did before group-initiative was built."
+        "test": "SurpriseAndGroupEntryPointTests.A_stated_group_of_identical_creatures_rolls_one_d20_each_naming_the_owners_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll named no ruling on an answer given under a stated group (`OwnerRulings.None` in every case), so the owner's answer was passed off as the corpus's; this test went red and no other did. Restoring version 6's decline for a stated group (`return Resolution<GroupInitiativeRolls>.FromUnresolved(...)`) turned it red too, along with initiative-roll's roll of a stated group and the seeded record that names the ruling."
       },
       {
         "test": "SurpriseAndGroupEntryPointTests.A_group_naming_someone_who_is_not_a_participant_is_refused",
         "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll accepted a group naming someone who is not a participant (`unknown.Length > 99`); this test went red and no other did."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.The_owners_ruling_is_named_only_where_a_group_was_stated",
+        "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll named the ruling on every answer (`[OwnerRulings.EveryCreatureRollsItsOwnInitiative]` unconditionally), so an answer the corpus settles claimed to rest on Brandon's; this test went red and no other did."
       }
-    ]
+    ],
+    "rulings": [
+      {
+        "id": "group-initiative/no-grouping",
+        "span": "What makes creatures a \u201cgroup of identical creatures\u201d? The corpus does not say whether identical means the same stat block, whether every identical monster in the combat forms one group or the GM may divide them into several, or whether a monster with no identical companion is its own group of one. No measure or set of values is stated, so it is a gap, not a delegated choice.",
+        "answer": "Every creature rolls its own Initiative: the engine never groups identical creatures, whatever the caller states.",
+        "ruledBy": "Brandon",
+        "ruledOn": "2026-09-15",
+        "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+        "tests": [
+          "SurpriseAndGroupEntryPointTests.A_stated_group_of_identical_creatures_rolls_one_d20_each_naming_the_owners_ruling",
+          "SurpriseAndGroupEntryPointTests.The_owners_ruling_is_named_only_where_a_group_was_stated"
+        ]
+      }
+    ],
+    "declines": []
   },
   "surprise-disadvantage": {
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -707,7 +786,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -728,7 +807,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -749,7 +828,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -774,7 +853,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -791,7 +870,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -808,7 +887,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 5
+      "version": 7
     },
     "tests": [
       {
@@ -825,7 +904,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -842,7 +921,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -863,7 +942,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -896,7 +975,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -909,7 +988,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -926,7 +1005,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -943,7 +1022,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -952,7 +1031,11 @@
       },
       {
         "test": "MountedCombatEntryPointTests.A_willing_creature_a_size_larger_turns_on_the_anatomy_and_declines_citing_appropriate_anatomy",
-        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Eligible dropped appropriate-anatomy from the decline's Attempted; this test went red and no other did. Citing mount-eligibility instead of appropriate-anatomy in the same decline turned nothing red: the two entries share the citation \"Combat / Mounted Combat / p. 15\", so the locator cannot tell them apart and the entry id in Attempted is what does."
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy read an unstated anatomy as appropriate (`if (false && anatomy.Verdict == AnatomyVerdict.NotStated)`), so this creature was a mount instead of declining; this test went red, and so did appropriate-anatomy's own decline test."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_willing_larger_creature_the_GM_calls_appropriately_shaped_can_serve_as_a_mount_naming_the_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Eligible ignored the GM's determination and asked the anatomy rule as though nothing were stated (`AppropriateAnatomy(AnatomyStatement.NotStated(candidate, anatomy.StatedBy))`), so a willing creature a size larger declined whatever the GM said; this test went red and no other did."
       }
     ]
   },
@@ -960,20 +1043,39 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
-        "test": "MountedCombatEntryPointTests.What_anatomy_is_appropriate_states_no_measure_and_declines_RequiresInterpretation",
-        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy declined OutsideCurrentScope instead of RequiresInterpretation; this test went red and no other did."
+        "test": "MountedCombatEntryPointTests.With_no_GM_statement_the_engine_never_assumes_an_anatomy_and_declines",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy read an unstated anatomy as appropriate (`if (false && anatomy.Verdict == AnatomyVerdict.NotStated)`), which is the assumption the ruling forbids; this test went red, and so did mount-eligibility's decline where the GM has said nothing."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_GM_statement_that_the_anatomy_is_appropriate_answers_naming_the_owners_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy answered the GM's determination while naming no ruling (`OwnerRulings.None`), so the GM's call read as the corpus's; this test went red, and so did mount-eligibility's answer for a creature the GM calls appropriately shaped, which carries the same ruling."
       }
-    ]
+    ],
+    "rulings": [
+      {
+        "id": "appropriate-anatomy/gm-decides",
+        "span": "\u201cAn appropriate anatomy\u201d states no measure and no set of values, and names nobody who decides. Is a Large spider an appropriate mount for a Medium rider? The corpus does not say.",
+        "answer": "The GM decides: an appropriate anatomy is the GM's call, stated to the engine, and the engine never assumes one.",
+        "ruledBy": "Brandon",
+        "ruledOn": "2026-09-16",
+        "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+        "tests": [
+          "MountedCombatEntryPointTests.A_GM_statement_that_the_anatomy_is_appropriate_answers_naming_the_owners_ruling",
+          "MountedCombatEntryPointTests.With_no_GM_statement_the_engine_never_assumes_an_anatomy_and_declines"
+        ]
+      }
+    ],
+    "declines": []
   },
   "mounting-cost": {
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -998,7 +1100,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -1006,16 +1108,35 @@
         "mutation": "In a throwaway copy, net10.0 suite run; MountCreatureStatement.NamedByTheCorpus named only the mule (`Kind == MountCreatureKind.Mule`), so a domesticated horse declined; this test went red, and so did controlled-mount-turn's."
       },
       {
-        "test": "MountedCombatEntryPointTests.Whether_another_creature_is_trained_declines_RequiresInterpretation_citing_page_16",
-        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control read every creature as trained (`return true` for `return creature.NamedByTheCorpus`); this test went red, and so did controlled-mount-turn's decline for a creature the corpus does not name."
+        "test": "MountedCombatEntryPointTests.With_no_stated_training_a_creature_the_corpus_does_not_name_declines",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control declined only where the caller stated the creature was not trained (`if (creature.Training == MountTraining.NotTrained)`), so an unstated training was read as untrained; this test went red, and so did controlled-mount-turn's decline and both of the tests for a stated training."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_creature_the_corpus_does_not_name_is_trained_when_the_caller_states_it_naming_the_owners_ruling",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control ignored the caller's stated training and declined for every creature the corpus does not name (`if (creature.Training != MountTraining.FromTheCorpus)`), which is version 6's behaviour; this test went red, and so did controlled-mount-turn's carrying of the ruling."
       }
-    ]
+    ],
+    "rulings": [
+      {
+        "id": "mount-control-requires-training/training-is-stated",
+        "span": "Which creatures have been trained to accept a rider? The corpus gives instances (\u201cDomesticated horses, mules, and similar creatures\u201d) and no definition, and \u201csimilar\u201d states no measure. For a creature not named, nothing in the slice says whether it is trained or who decides.",
+        "answer": "The caller states it: training to accept a rider is a fact the caller supplies, and the horse and the mule the corpus names are trained without being told.",
+        "ruledBy": "Brandon",
+        "ruledOn": "2026-09-16",
+        "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+        "tests": [
+          "MountedCombatEntryPointTests.A_creature_the_corpus_does_not_name_is_trained_when_the_caller_states_it_naming_the_owners_ruling",
+          "MountedCombatEntryPointTests.With_no_stated_training_a_creature_the_corpus_does_not_name_declines"
+        ]
+      }
+    ],
+    "declines": []
   },
   "controlled-mount-turn": {
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -1027,8 +1148,12 @@
         "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn answered the turn instead of declining for what an action does (`if (false && askingWhatAnActionDoes is { } asked)`); this test went red and no other did."
       },
       {
-        "test": "MountedCombatEntryPointTests.A_controlled_mounts_turn_declines_where_the_mounts_training_is_the_open_question",
-        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn read every mount as one the corpus names (`Control(MountCreatureStatement.Mule(...))`); this test went red and no other did. It went red too when MountRules.Control read every creature as trained."
+        "test": "MountedCombatEntryPointTests.A_controlled_mounts_turn_declines_where_nothing_states_the_mounts_training",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control declined only a stated lack of training (`if (creature.Training == MountTraining.NotTrained)`), so a mount whose training nothing states was controlled; this test went red, and so did mount-control-requires-training's own tests."
+      },
+      {
+        "test": "MountedCombatEntryPointTests.A_controlled_mount_trained_by_the_callers_statement_carries_that_ruling_into_its_turn",
+        "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn dropped the rulings its input relied on (`OwnerRulings.None` in place of `OwnerRulings.InOrder(control.Rulings)`), so a turn resting on Brandon's ruling named none; this test went red and no other did."
       }
     ]
   },
@@ -1036,7 +1161,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -1057,7 +1182,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -1082,7 +1207,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -1103,7 +1228,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {
@@ -1120,7 +1245,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 6
+      "version": 7
     },
     "tests": [
       {

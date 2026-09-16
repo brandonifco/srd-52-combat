@@ -185,8 +185,22 @@ public sealed record HiddenAttacker(bool LocationGivenAway, string Because, Sour
 /// <param name="Provokes">False when this rule says the movement does not provoke.</param>
 /// <param name="Because">Why, in the engine's words.</param>
 /// <param name="Authority">The rule: "Combat / Opportunity Attacks / p. 15".</param>
-public sealed record ProvocationVerdict(bool Provokes, string Because, SourceLocator Authority)
+/// <param name="Decisions">
+/// The engine's own decisions this verdict relies on (<see cref="OwnerDecision"/>, not an owner's
+/// ruling of rules-factory 0027, because the map records no open question here):
+/// <see cref="OwnerDecisions.DisengageCoversYourOwnMovementThisTurn"/> wherever the Disengage action
+/// decided the verdict, and none where the slice's own words did.
+/// </param>
+public sealed record ProvocationVerdict(
+    bool Provokes,
+    string Because,
+    SourceLocator Authority,
+    ImmutableArray<OwnerDecision> Decisions)
 {
+    /// <summary>The decisions, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerDecision> Decisions { get; } =
+        Decisions.IsDefault ? throw new ArgumentNullException(nameof(Decisions)) : Decisions;
+
     /// <inheritdoc/>
     public override string ToString() =>
         Provokes
@@ -215,6 +229,11 @@ public enum MeleeAttackOption
 /// <param name="Timing">When it happens, in the corpus's words.</param>
 /// <param name="Because">Why, in the engine's words.</param>
 /// <param name="Authority">The rule: "Combat / Opportunity Attacks / p. 15".</param>
+/// <param name="Decisions">
+/// The engine's own decisions this offer relies on, carried from the avoidance rule it reads
+/// (rules-factory decision 0027 § 4, as amended on 2026-09-15, applied to this engine's own decisions
+/// as well as to owner's rulings). This rule takes none of its own.
+/// </param>
 public sealed record OpportunityAttackOffer(
     bool CanBeMade,
     bool UsesReaction,
@@ -222,17 +241,24 @@ public sealed record OpportunityAttackOffer(
     ImmutableArray<MeleeAttackOption> Options,
     string Timing,
     string Because,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerDecision> Decisions)
 {
     /// <summary>When an Opportunity Attack happens, in the corpus's words.</summary>
     public const string RightBefore = "right before it leaves your reach";
 
+    /// <summary>The decisions, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerDecision> Decisions { get; } =
+        Decisions.IsDefault ? throw new ArgumentNullException(nameof(Decisions)) : Decisions;
+
     /// <summary>No Opportunity Attack can be made, for the reason given.</summary>
     /// <param name="because">Why, in the engine's words.</param>
     /// <param name="authority">The rule's citation.</param>
+    /// <param name="decisions">The engine's decisions the reason relies on; none by default.</param>
     /// <returns>The offer.</returns>
-    public static OpportunityAttackOffer None(string because, SourceLocator authority) =>
-        new(CanBeMade: false, UsesReaction: false, Attacks: 0, [], RightBefore, because, authority);
+    public static OpportunityAttackOffer None(string because, SourceLocator authority, ImmutableArray<OwnerDecision> decisions = default) =>
+        new(CanBeMade: false, UsesReaction: false, Attacks: 0, [], RightBefore, because, authority,
+            decisions.IsDefault ? OwnerDecisions.None : decisions);
 
     /// <inheritdoc/>
     public override string ToString() =>

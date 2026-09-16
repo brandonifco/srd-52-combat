@@ -19,6 +19,9 @@ namespace Srd52Combat.Requests
 
         /// <summary>Whether the candidate is willing. Required, never defaulted.</summary>
         public WillingStatement? Willing { get; init; }
+
+        /// <summary>What the GM determined about the candidate's anatomy (<c>appropriate-anatomy</c>). Required, never defaulted.</summary>
+        public AnatomyStatement? Anatomy { get; init; }
     }
 }
 
@@ -26,12 +29,13 @@ namespace Srd52Combat
 {
     internal static partial class Handlers
     {
-        /// <summary><c>mount-eligibility</c>: <see cref="MountRules.Eligible"/>, the refusal, or the decline citing <c>appropriate-anatomy</c>.</summary>
+        /// <summary><c>mount-eligibility</c>: <see cref="MountRules.Eligible"/>, whether the creature can serve as a mount, or the decline citing <c>appropriate-anatomy</c>.</summary>
         internal static partial Resolution<object> MountEligibility(Requests.MountEligibilityRequest request) =>
             Answer(MountRules.Eligible(
                 Demand(request.Rider, request.EntryId, nameof(request.Rider)),
                 Demand(request.Candidate, request.EntryId, nameof(request.Candidate)),
                 Demand(request.CandidateSize, request.EntryId, nameof(request.CandidateSize)),
-                Demand(request.Willing, request.EntryId, nameof(request.Willing))));
+                Demand(request.Willing, request.EntryId, nameof(request.Willing)),
+                Demand(request.Anatomy, request.EntryId, nameof(request.Anatomy))));
     }
 }
