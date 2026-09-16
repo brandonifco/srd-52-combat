@@ -4,13 +4,15 @@ A running log, kept while building this engine from `RulesFactory.Maps.Srd52Comb
 per finding: what the map says, what implementing it revealed, and whether the map or the code is
 at fault. Quotations of SRD 5.2.1 here are under the corpus's licence, CC-BY-4.0; see `NOTICE`.
 
-Counts so far: **11 findings, from two batches against map 2.0.0. Two are a fault in the map**,
+Counts so far: **16 findings, from three batches against map 2.0.0. Two are a fault in the map**,
 both in the attacks batch (7, 8). Findings 1-6 are the movement and space batch's (ruleset version
 3): four are records of something the map is right about and that a reader of the engine would
 otherwise have to rediscover (1, 3, 4, 5); one is a gap in the method rather than in the map (2);
 one is a question for the engine's owner (6). Findings 7-11 are the attacks batch's (ruleset
 version 4): two faults (7, 8), two records (9, 10) and one more question for the owner (11).
-Neither batch found an entry that was the wrong *unit* of work.
+Findings 12-16 are the turn and round batch's (ruleset version 5): three records (12, 14, 15), one
+more gap in the method (13), and one risk in the build order (16). No batch found an entry that was
+the wrong *unit* of work.
 
 ---
 
@@ -141,3 +143,57 @@ Whether that is right — whether a creature that Disengages, and is then hurled
 out of it again on someone else's turn, is still protected — is not a case the slice decides, and
 the engine's answer comes from the narrower text not being in it. It is listed here rather than
 guessed at.
+
+---
+
+## 12. An unresolved question with `affectsDraws: true` takes two entries out of service
+
+*The map is right; the consequence is worth seeing.* `group-initiative`'s question is what makes
+creatures "a group of identical creatures", marked `affectsDraws: true`: the answer fixes how many
+d20s a combat throws. `initiative-roll`'s `draws` in map 2.0.0 says one d20 per participant "not in
+a group of identical creatures, whose roll is group-initiative's". Put together, a combat in which
+the caller states any group cannot be rolled by either entry: `group-initiative` declines the count,
+and `initiative-roll` cannot roll the rest without it. The two `draws` fields are what make that
+visible; nothing in a backlog item says that building one entry of such a pair changes the other's
+answer. Building `group-initiative` moved `initiative-roll`'s stated-group decline from
+`UnsupportedRule` to `RequiresInterpretation`
+([decision 0005](docs/decisions/0005-the-turn-and-the-round-are-stated-by-the-caller-and-a-group-of-identical-creatures-declines.md)).
+
+## 13. Nothing in the method says what an entry answers when an *in-slice* gate holds
+
+`free-object-interaction` and `communication-cost` name `gm-requires-action` in `suspendedBy`. The
+method fixes the runtime answer for a gate outside the slice — `OutsideCurrentScope` citing the gate
+(rules-factory 0021) — but this gate is `scope: in`, `kind: assertion`, and built. This engine
+answers the gate's own rule: the activity requires an action, cited to `gm-requires-action` (p. 14).
+That reads well because the gate's evidence states a consequence ("might require you to use an
+action"); a gate whose evidence stated only a condition would leave the same hole the movement batch
+found for `enabledBy` (finding 2). The map is not wrong; the method has no field for it.
+
+## 14. Half of `next-round` is unaffected by the question recorded on it
+
+`next-round` is `clarity: ambiguous`, `fate: unresolved`, on the conflict with `combat-end`: what
+happens when both sides agree and neither is defeated. Three of its four cases — the round not yet
+over, over with neither side defeated, over with a side defeated — do not turn on that question and
+are answered. An entry marked unresolved is not an entry that can only decline, and the acceptance
+criterion says as much ("where the answer turns on the question"). Worth recording because the shape
+recurs: `communication-cost` and `group-initiative` in this batch each answer one half and decline
+the other.
+
+## 15. Part of `free-object-interaction`'s span is a rule the extent does not cover
+
+The entry's evidence ends "Some magic items and other special objects always require an action to
+use, as stated in their descriptions", and its one `crossReference` is `unmapped`: the item's own
+description is the rule, and magic items (p. 204 onward) are outside the extent. The sentence is
+still a rule about the turn's free interaction, and an engine that dropped it would call a wand free.
+This engine takes "this object's description always requires an action" as a fact the caller states,
+answers `RequiresAction` and cites p. 13. The `unmapped` note is what makes that reading available;
+a reader of the entry alone might have dropped the sentence with the cross-reference.
+
+## 16. `turn-move-and-action` and `move-up-to-speed` state the same rule on two pages
+
+The map says so in `move-up-to-speed`'s note ("Restates turn-move-and-action's movement half, in
+agreement"), and both are `scope: in`. This batch built the turn entry, so the movement budget — a
+distance up to the Speed, or none — now lives in `TurnRules`. When `move-up-to-speed` and
+`movement-deduction` are built they must answer through that rule rather than restate it, or the
+engine will hold two implementations of one sentence. The map is right; the risk is in the build
+order, which no field records.

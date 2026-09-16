@@ -3,7 +3,7 @@
     "status": "implemented",
     "implementedIn": {
       "ruleset": "srd-5.2.1-combat",
-      "version": 2
+      "version": 5
     },
     "tests": [
       {
@@ -20,7 +20,7 @@
       },
       {
         "test": "InitiativeRollEntryPointTests.A_group_of_identical_creatures_declines_citing_group_initiative_without_drawing",
-        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll ignored a stated group of identical creatures (`Groups.Length > 99`), rolling once per member; this test went red and no other did."
+        "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll declined a stated group of identical creatures as a rule that is not built (`UnresolvedReason.UnsupportedRule`), which is what it answered before group-initiative was built; this test went red, and so did group-initiative's own decline test. Under map 2.0.0 and before group-initiative was built it had gone red when a stated group was rolled once per member (`Groups.Length > 99`)."
       },
       {
         "test": "InitiativeRollEntryPointTests.A_roll_with_Advantage_or_Disadvantage_declines_citing_page_7_without_drawing",
@@ -36,7 +36,7 @@
       },
       {
         "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
-        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 5; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
+        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 4, the version before this batch; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
       }
     ]
   },
@@ -604,6 +604,216 @@
       {
         "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
         "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
+      }
+    ]
+  },
+  "next-round": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "RoundEntryPointTests.The_fight_continues_to_the_next_round_once_everyone_has_taken_a_turn_and_neither_side_is_defeated",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound named this round as the one that follows (`Next: round`); this test went red and no other did. It went red too when a second turn by the same combatant in a round was accepted (`if (false && !taken.Add(id))`)."
+      },
+      {
+        "test": "RoundEntryPointTests.Before_everyone_has_taken_a_turn_the_round_is_not_over",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound treated every round as over (`waiting.Length > 99`); this test went red and no other did. It went red too when a second turn by the same combatant was accepted (`if (false && !taken.Add(id))`)."
+      },
+      {
+        "test": "RoundEntryPointTests.A_defeated_side_ends_the_round_without_another_following",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound continued the fight with a side defeated (`return false ? ...`); this test went red, and so did the both-sides-agree decline. It went red too under the accepted-second-turn mutation."
+      },
+      {
+        "test": "RoundEntryPointTests.Both_sides_agreeing_to_end_with_neither_defeated_declines_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound resolved the conflict instead of declining it (`if (false && !defeat.ASideIsDefeated && agreement.AgreedToEnd)`), beginning another round; this test went red and no other did. It went red too when a defeat no longer stopped the fight, and under the accepted-second-turn mutation."
+      }
+    ]
+  },
+  "combat-steps": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "RoundEntryPointTests.Combat_unfolds_in_three_steps_positions_Initiative_then_turns_in_Initiative_order",
+        "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.Steps returned the three steps in reverse (`[.. steps.Reverse()]`); this test went red and no other did."
+      },
+      {
+        "test": "RoundEntryPointTests.No_turn_is_taken_before_Initiative_is_rolled",
+        "mutation": "In a throwaway copy, net10.0 suite run; the CombatSteps handler defaulted a missing Initiative order to an empty one (`request.Order ?? new TurnOrder([], [], MapEntries.InitiativeOrder.Locator)`), so the steps were built and turns taken with no Initiative rolled; this test went red and no other did."
+      }
+    ]
+  },
+  "group-initiative": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "SurpriseAndGroupEntryPointTests.The_GM_rolls_for_the_monsters_when_no_group_of_identical_creatures_is_stated",
+        "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll had the GM roll for every participant, not only the monsters (`participants.Select(p => p.Id)`); this test went red and no other did."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.A_stated_group_of_identical_creatures_declines_citing_page_13_and_nothing_is_drawn",
+        "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll took a stated group as settling the question (`identicalCreatures.Groups.Length > 99`), answering instead of declining; this test went red and no other did. It went red too when initiative-roll declined a stated group as a rule that is not built (`UnresolvedReason.UnsupportedRule`), which is what it did before group-initiative was built."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.A_group_naming_someone_who_is_not_a_participant_is_refused",
+        "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll accepted a group naming someone who is not a participant (`unknown.Length > 99`); this test went red and no other did."
+      }
+    ]
+  },
+  "surprise-disadvantage": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "SurpriseAndGroupEntryPointTests.A_surprised_combatant_has_Disadvantage_on_their_Initiative_roll_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; SurpriseRules.OnInitiative gave a surprised combatant nothing (`new SurpriseEffect(statement, false, ...)`); this test went red, and so did the roll-mode test that passes it to initiative-roll."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.A_combatant_who_is_not_surprised_gets_nothing_from_this_rule",
+        "mutation": "In a throwaway copy, net10.0 suite run; SurpriseEffect reported a combatant that is not surprised as rolling Straight (`: D20Mode.Straight`), which claims more than surprise decides; this test went red and no other did."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.While_the_GM_uses_Initiative_scores_surprise_declines_citing_page_184",
+        "mutation": "In a throwaway copy, net10.0 suite run; SurpriseRules.OnInitiative ignored the Initiative-score statement (`if (false && scoreOption.InUse)`), answering with Disadvantage on a roll that is not made; this test went red and no other did."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.Surprise_is_stated_never_inferred_and_so_is_the_Initiative_score_option",
+        "mutation": "In a throwaway copy, net10.0 suite run; the SurpriseDisadvantage handler defaulted a missing surprise statement to not surprised and a missing ScoreOption to rolling; this test went red and no other did."
+      },
+      {
+        "test": "SurpriseAndGroupEntryPointTests.The_Disadvantage_surprise_gives_is_the_roll_mode_the_caller_states_to_initiative_roll",
+        "mutation": "In a throwaway copy, net10.0 suite run; SurpriseRules.OnInitiative gave a surprised combatant nothing (`new SurpriseEffect(statement, false, ...)`), so there was no Disadvantage to state to initiative-roll; this test went red, and so did the Disadvantage test."
+      }
+    ]
+  },
+  "turn-move-and-action": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "TurnEntryPointTests.On_your_turn_you_move_up_to_your_Speed_and_take_one_action_in_either_order",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules counted only the movement before the first action (`steps.TakeWhile(s => s.Kind != TurnStepKind.Action)`), so the same steps in the other order gave a different budget; this test went red, and so did the broken-up move."
+      },
+      {
+        "test": "TurnEntryPointTests.A_turn_beyond_the_Speed_or_with_a_second_action_is_named_as_beyond_what_the_turn_allows",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules never counted a move as beyond the Speed (`used > speed + 99`); this test went red. It went red too when a second action was allowed (`actions > 99`), and when a Bonus Action or a Reaction was counted as an action (`steps.Count(s => s.Kind != TurnStepKind.Move)`)."
+      },
+      {
+        "test": "TurnEntryPointTests.A_turn_stated_without_its_Speed_or_its_steps_is_refused_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the TurnMoveAndAction handler defaulted a missing Speed to 30, missing Steps to none and a missing StatedBy to \"default\"; this test went red and no other did."
+      }
+    ]
+  },
+  "communication-cost": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "YourTurnEntryPointTests.Brief_communication_is_free_and_extended_communication_requires_an_action",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Communicates swapped the two costs, making brief communication cost an action and extended communication free (`communication.Kind == CommunicationKind.Extended`); this test went red, and so did the requirement-naming-an-object-interaction test."
+      },
+      {
+        "test": "YourTurnEntryPointTests.A_GM_requirement_naming_the_communication_declines_citing_page_13",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Communicates answered a communication the GM's requirement names instead of declining (`if (false && requirement.Requires(ActivityKind.Communication, ...))`); this test went red and no other did. It went red too when the handler defaulted the unasserted requirement to `GmActionRequirement.None(\"default\")`."
+      },
+      {
+        "test": "YourTurnEntryPointTests.A_GM_requirement_naming_only_an_object_interaction_leaves_communication_as_it_is",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Communicates declined whenever the requirement named any communication at all (`requirement.Activities.Any(a => a.Kind == ActivityKind.Communication)`), not this one; this test went red and no other did. It went red too under the swapped-costs mutation above."
+      }
+    ]
+  },
+  "free-object-interaction": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "YourTurnEntryPointTests.The_first_interaction_is_free_during_the_move_or_during_the_action_and_a_second_needs_the_Utilize_action",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Interactions never spent the turn's free interaction (`freeTaken = false`), so a second object was free too; this test went red and no other did."
+      },
+      {
+        "test": "YourTurnEntryPointTests.An_interaction_the_GM_requires_an_action_for_is_not_free_and_cites_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Interactions ignored the GM's requirement (`if (false && requirement.Requires(ActivityKind.ObjectInteraction, ...))`); this test went red and no other did. It went red too when the handler defaulted the unasserted requirement to `GmActionRequirement.None(\"default\")`."
+      },
+      {
+        "test": "YourTurnEntryPointTests.An_object_whose_description_always_requires_an_action_is_not_the_free_interaction",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Interactions ignored an object whose own description always requires an action (`if (false && interaction.AlwaysRequiresAction)`), making it the free interaction; this test went red and no other did."
+      },
+      {
+        "test": "YourTurnEntryPointTests.The_GMs_requirement_is_demanded_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the FreeObjectInteraction and CommunicationCost handlers defaulted the unasserted requirement to `GmActionRequirement.None(\"default\")` instead of demanding it; this test went red, and so did the two tests whose answers the requirement decides."
+      }
+    ]
+  },
+  "gm-requires-action": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "YourTurnEntryPointTests.The_GMs_requirement_is_recorded_as_stated_and_the_engine_applies_no_measure_of_its_own",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Requires returned a requirement of the engine's own making, dropping the activities the GM named (`new GmActionRequirement(requirement.Requirer, [], requirement.StatedBy)`); this test went red and no other did."
+      },
+      {
+        "test": "YourTurnEntryPointTests.The_parties_a_requirement_may_name_are_exactly_the_maps_assertedBy_for_gm_requires_action",
+        "mutation": "In a throwaway copy, net10.0 suite run; ActionRequirers.Named skipped the map's assertedBy and matched the engine's own party (`if (false && !MapEntries.GmRequiresAction.AssertedBy.Contains(party, ...))`); this test went red and no other did."
+      }
+    ]
+  },
+  "doing-nothing": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "TurnEntryPointTests.A_turn_can_forgo_moving_acting_or_doing_anything_at_all",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Forgo reported nothing as forgone (`new ForgoneTurn(taken, false, false, ...)`); this test went red, and so did forgoing only the move or only the action. It went red too when doing nothing at all was reported as not permitted (`Permitted => !Everything`)."
+      },
+      {
+        "test": "TurnEntryPointTests.Forgoing_only_the_move_or_only_the_action_is_permitted_and_leaves_the_rest_of_the_turn",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Forgo reported nothing as forgone (`new ForgoneTurn(taken, false, false, ...)`); this test went red, and so did forgoing everything."
+      }
+    ]
+  },
+  "break-up-move": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 5
+    },
+    "tests": [
+      {
+        "test": "TurnEntryPointTests.A_move_is_broken_up_around_an_action_and_what_is_left_is_the_remainder_not_a_fresh_Speed",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.BreakUp gave each part of the move a fresh Speed (`Math.Max(0, speed - step.Feet)`) instead of the remainder; this test went red, and so did the move broken around a Bonus Action and a Reaction. It went red too when a part no longer recorded what it follows (`after = null`), when a move beyond the Speed was not named as such (`used > speed + 99`), and under the movement-counted-only-before-the-action mutation above."
+      },
+      {
+        "test": "TurnEntryPointTests.A_move_broken_around_a_Bonus_Action_and_a_Reaction_costs_neither_the_move_nor_the_action",
+        "mutation": "In a throwaway copy, net10.0 suite run; TurnRules counted a Bonus Action and a Reaction as actions (`steps.Count(s => s.Kind != TurnStepKind.Move)`); this test went red, and so did the turn-budget test. It went red too under the fresh-Speed and dropped-`after` mutations of BreakUp above."
       }
     ]
   }

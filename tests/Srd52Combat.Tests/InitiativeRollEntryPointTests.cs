@@ -94,7 +94,9 @@ public class InitiativeRollEntryPointTests
 
         var declined = Declined(Roll([Pc("Aria", 3), Monster("Goblin 1", 2), Monster("Goblin 2", 2)], source, identical: grouped));
 
-        Assert.Equal(UnresolvedReason.UnsupportedRule, declined.Reason);
+        // group-initiative is built now, and declines: what makes creatures a group of identical
+        // creatures is not stated, so how many d20s the combat throws is not fixed (decision 0005).
+        Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
         Assert.Equal(EntryPoints.GroupInitiative.Registered.Locator, declined.Locator);
         Assert.Contains("'group-initiative'", declined.Attempted, StringComparison.Ordinal);
         Assert.Contains(grouped.ToString(), declined.Attempted, StringComparison.Ordinal);
