@@ -410,44 +410,44 @@ public sealed class CorrespondenceTests
         Assert.True(Registry.HasImplementation("ending-turn-in-occupied-space"), "ending-turn-in-occupied-space is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void attack_sources__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("attack-sources", UnresolvedReason.UnsupportedRule, EntryPoints.AttackSources.Resolve(global::Srd52Combat.Requests.AttackSourcesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Making an Attack / p. 14"));
+    public void attack_sources__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("attack-sources"), "attack-sources is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void attack_structure__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("attack-structure", UnresolvedReason.UnsupportedRule, EntryPoints.AttackStructure.Resolve(global::Srd52Combat.Requests.AttackStructureRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Making an Attack / p. 15"));
+    public void attack_structure__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("attack-structure"), "attack-structure is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void attack_target__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("attack-target", UnresolvedReason.UnsupportedRule, EntryPoints.AttackTarget.Resolve(global::Srd52Combat.Requests.AttackTargetRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Making an Attack / p. 15"));
+    public void attack_target__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("attack-target"), "attack-target is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void attack_modifiers__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("attack-modifiers", UnresolvedReason.UnsupportedRule, EntryPoints.AttackModifiers.Resolve(global::Srd52Combat.Requests.AttackModifiersRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Making an Attack / p. 15"));
+    public void attack_modifiers__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("attack-modifiers"), "attack-modifiers is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void attack_resolution__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("attack-resolution", UnresolvedReason.UnsupportedRule, EntryPoints.AttackResolution.Resolve(global::Srd52Combat.Requests.AttackResolutionRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Making an Attack / p. 15"));
+    public void attack_resolution__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("attack-resolution"), "attack-resolution is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void flanking__declines_OutsideCurrentScope_row_1() =>
         AssertDeclines("flanking", UnresolvedReason.OutsideCurrentScope, EntryPoints.Flanking.Resolve(global::Srd52Combat.Requests.FlankingRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Making an Attack / p. 15"));
 
     [Fact]
-    public void unseen_target_disadvantage__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("unseen-target-disadvantage", UnresolvedReason.UnsupportedRule, EntryPoints.UnseenTargetDisadvantage.Resolve(global::Srd52Combat.Requests.UnseenTargetDisadvantageRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Unseen Attackers and Targets / p. 14"));
+    public void unseen_target_disadvantage__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("unseen-target-disadvantage"), "unseen-target-disadvantage is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void wrong_location_misses__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("wrong-location-misses", UnresolvedReason.UnsupportedRule, EntryPoints.WrongLocationMisses.Resolve(global::Srd52Combat.Requests.WrongLocationMissesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Unseen Attackers and Targets / p. 14"));
+    public void wrong_location_misses__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("wrong-location-misses"), "wrong-location-misses is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void unseen_attacker_advantage__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("unseen-attacker-advantage", UnresolvedReason.UnsupportedRule, EntryPoints.UnseenAttackerAdvantage.Resolve(global::Srd52Combat.Requests.UnseenAttackerAdvantageRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Unseen Attackers and Targets / p. 14"));
+    public void unseen_attacker_advantage__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("unseen-attacker-advantage"), "unseen-attacker-advantage is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void hidden_attacker_revealed__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("hidden-attacker-revealed", UnresolvedReason.UnsupportedRule, EntryPoints.HiddenAttackerRevealed.Resolve(global::Srd52Combat.Requests.HiddenAttackerRevealedRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Unseen Attackers and Targets / p. 14"));
+    public void hidden_attacker_revealed__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("hidden-attacker-revealed"), "hidden-attacker-revealed is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void cover_origin__declines_UnsupportedRule_row_2() =>
@@ -474,12 +474,12 @@ public sealed class CorrespondenceTests
         AssertDeclines("single-range", UnresolvedReason.UnsupportedRule, EntryPoints.SingleRange.Resolve(global::Srd52Combat.Requests.SingleRangeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Range / p. 15"));
 
     [Fact]
-    public void normal_and_long_range__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("normal-and-long-range", UnresolvedReason.UnsupportedRule, EntryPoints.NormalAndLongRange.Resolve(global::Srd52Combat.Requests.NormalAndLongRangeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Range / p. 15"));
+    public void normal_and_long_range__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("normal-and-long-range"), "normal-and-long-range is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void ranged_in_close_combat__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("ranged-in-close-combat", UnresolvedReason.UnsupportedRule, EntryPoints.RangedInCloseCombat.Resolve(global::Srd52Combat.Requests.RangedInCloseCombatRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Ranged Attacks in Close Combat / p. 15"));
+    public void ranged_in_close_combat__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("ranged-in-close-combat"), "ranged-in-close-combat is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void melee_within_reach__declines_UnsupportedRule_row_2() =>
@@ -490,12 +490,12 @@ public sealed class CorrespondenceTests
         AssertDeclines("reach", UnresolvedReason.UnsupportedRule, EntryPoints.Reach.Resolve(global::Srd52Combat.Requests.ReachRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Reach / p. 15"));
 
     [Fact]
-    public void opportunity_attack__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("opportunity-attack", UnresolvedReason.UnsupportedRule, EntryPoints.OpportunityAttack.Resolve(global::Srd52Combat.Requests.OpportunityAttackRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Opportunity Attacks / p. 15"));
+    public void opportunity_attack__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("opportunity-attack"), "opportunity-attack is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void opportunity_attack_avoidance__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("opportunity-attack-avoidance", UnresolvedReason.UnsupportedRule, EntryPoints.OpportunityAttackAvoidance.Resolve(global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Opportunity Attacks / p. 15"));
+    public void opportunity_attack_avoidance__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("opportunity-attack-avoidance"), "opportunity-attack-avoidance is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void mount_eligibility__declines_UnsupportedRule_row_2() =>

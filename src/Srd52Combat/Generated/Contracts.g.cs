@@ -569,35 +569,35 @@ internal static partial class Handlers
     /// <summary>Ending a turn in another creature's space leaves you Prone (<c>ending-turn-in-occupied-space</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> EndingTurnInOccupiedSpace(global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest request);
 
-    /// <summary>The Attack action and some other actions make an attack (<c>attack-sources</c>): optional.</summary>
-    static partial void AttackSources(global::Srd52Combat.Requests.AttackSourcesRequest request, ref Resolution<object>? resolution);
+    /// <summary>The Attack action and some other actions make an attack (<c>attack-sources</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> AttackSources(global::Srd52Combat.Requests.AttackSourcesRequest request);
 
-    /// <summary>An attack is three steps: choose a target, determine modifiers, resolve (<c>attack-structure</c>): optional.</summary>
-    static partial void AttackStructure(global::Srd52Combat.Requests.AttackStructureRequest request, ref Resolution<object>? resolution);
+    /// <summary>An attack is three steps: choose a target, determine modifiers, resolve (<c>attack-structure</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> AttackStructure(global::Srd52Combat.Requests.AttackStructureRequest request);
 
-    /// <summary>Choose a target within range: a creature, an object, or a location (<c>attack-target</c>): optional.</summary>
-    static partial void AttackTarget(global::Srd52Combat.Requests.AttackTargetRequest request, ref Resolution<object>? resolution);
+    /// <summary>Choose a target within range: a creature, an object, or a location (<c>attack-target</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> AttackTarget(global::Srd52Combat.Requests.AttackTargetRequest request);
 
-    /// <summary>Determine Cover, Advantage or Disadvantage, and other modifiers (<c>attack-modifiers</c>): optional.</summary>
-    static partial void AttackModifiers(global::Srd52Combat.Requests.AttackModifiersRequest request, ref Resolution<object>? resolution);
+    /// <summary>Determine Cover, Advantage or Disadvantage, and other modifiers (<c>attack-modifiers</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> AttackModifiers(global::Srd52Combat.Requests.AttackModifiersRequest request);
 
-    /// <summary>Make the attack roll; on a hit, roll damage unless the attack says otherwise (<c>attack-resolution</c>): optional.</summary>
-    static partial void AttackResolution(global::Srd52Combat.Requests.AttackResolutionRequest request, ref Resolution<object>? resolution);
+    /// <summary>Make the attack roll; on a hit, roll damage unless the attack says otherwise (<c>attack-resolution</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> AttackResolution(global::Srd52Combat.Requests.AttackResolutionRequest request);
 
     /// <summary>Flanking (<c>flanking</c>): optional.</summary>
     static partial void Flanking(global::Srd52Combat.Requests.FlankingRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Attacking a target you can't see has Disadvantage (<c>unseen-target-disadvantage</c>): optional.</summary>
-    static partial void UnseenTargetDisadvantage(global::Srd52Combat.Requests.UnseenTargetDisadvantageRequest request, ref Resolution<object>? resolution);
+    /// <summary>Attacking a target you can't see has Disadvantage (<c>unseen-target-disadvantage</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> UnseenTargetDisadvantage(global::Srd52Combat.Requests.UnseenTargetDisadvantageRequest request);
 
-    /// <summary>Attacking a location the target isn't in misses (<c>wrong-location-misses</c>): optional.</summary>
-    static partial void WrongLocationMisses(global::Srd52Combat.Requests.WrongLocationMissesRequest request, ref Resolution<object>? resolution);
+    /// <summary>Attacking a location the target isn't in misses (<c>wrong-location-misses</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> WrongLocationMisses(global::Srd52Combat.Requests.WrongLocationMissesRequest request);
 
-    /// <summary>Attacking a creature that can't see you has Advantage (<c>unseen-attacker-advantage</c>): optional.</summary>
-    static partial void UnseenAttackerAdvantage(global::Srd52Combat.Requests.UnseenAttackerAdvantageRequest request, ref Resolution<object>? resolution);
+    /// <summary>Attacking a creature that can't see you has Advantage (<c>unseen-attacker-advantage</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> UnseenAttackerAdvantage(global::Srd52Combat.Requests.UnseenAttackerAdvantageRequest request);
 
-    /// <summary>Attacking while hidden gives away your location (<c>hidden-attacker-revealed</c>): optional.</summary>
-    static partial void HiddenAttackerRevealed(global::Srd52Combat.Requests.HiddenAttackerRevealedRequest request, ref Resolution<object>? resolution);
+    /// <summary>Attacking while hidden gives away your location (<c>hidden-attacker-revealed</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> HiddenAttackerRevealed(global::Srd52Combat.Requests.HiddenAttackerRevealedRequest request);
 
     /// <summary>Cover counts only against an attack from its far side (<c>cover-origin</c>): optional.</summary>
     static partial void CoverOrigin(global::Srd52Combat.Requests.CoverOriginRequest request, ref Resolution<object>? resolution);
@@ -617,11 +617,11 @@ internal static partial class Handlers
     /// <summary>A ranged attack can't target beyond its range (<c>single-range</c>): optional.</summary>
     static partial void SingleRange(global::Srd52Combat.Requests.SingleRangeRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Beyond normal range has Disadvantage; beyond long range is impossible (<c>normal-and-long-range</c>): optional.</summary>
-    static partial void NormalAndLongRange(global::Srd52Combat.Requests.NormalAndLongRangeRequest request, ref Resolution<object>? resolution);
+    /// <summary>Beyond normal range has Disadvantage; beyond long range is impossible (<c>normal-and-long-range</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> NormalAndLongRange(global::Srd52Combat.Requests.NormalAndLongRangeRequest request);
 
-    /// <summary>A ranged attack within 5 feet of a seeing, capable enemy has Disadvantage (<c>ranged-in-close-combat</c>): optional.</summary>
-    static partial void RangedInCloseCombat(global::Srd52Combat.Requests.RangedInCloseCombatRequest request, ref Resolution<object>? resolution);
+    /// <summary>A ranged attack within 5 feet of a seeing, capable enemy has Disadvantage (<c>ranged-in-close-combat</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> RangedInCloseCombat(global::Srd52Combat.Requests.RangedInCloseCombatRequest request);
 
     /// <summary>A melee attack targets something within your reach (<c>melee-within-reach</c>): optional.</summary>
     static partial void MeleeWithinReach(global::Srd52Combat.Requests.MeleeWithinReachRequest request, ref Resolution<object>? resolution);
@@ -629,11 +629,11 @@ internal static partial class Handlers
     /// <summary>A creature's reach is 5 feet unless its description says otherwise (<c>reach</c>): optional.</summary>
     static partial void Reach(global::Srd52Combat.Requests.ReachRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Making an Opportunity Attack when a seen creature leaves your reach (<c>opportunity-attack</c>): optional.</summary>
-    static partial void OpportunityAttack(global::Srd52Combat.Requests.OpportunityAttackRequest request, ref Resolution<object>? resolution);
+    /// <summary>Making an Opportunity Attack when a seen creature leaves your reach (<c>opportunity-attack</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> OpportunityAttack(global::Srd52Combat.Requests.OpportunityAttackRequest request);
 
-    /// <summary>Disengage, teleporting and involuntary movement don't provoke (<c>opportunity-attack-avoidance</c>): optional.</summary>
-    static partial void OpportunityAttackAvoidance(global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest request, ref Resolution<object>? resolution);
+    /// <summary>Disengage, teleporting and involuntary movement don't provoke (<c>opportunity-attack-avoidance</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> OpportunityAttackAvoidance(global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest request);
 
     /// <summary>A willing creature at least one size larger, with appropriate anatomy, can be a mount (<c>mount-eligibility</c>): optional.</summary>
     static partial void MountEligibility(global::Srd52Combat.Requests.MountEligibilityRequest request, ref Resolution<object>? resolution);
@@ -865,34 +865,34 @@ internal static partial class Handlers
                 resolution = EndingTurnInOccupiedSpace(request as global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest ?? new(assertions));
                 break;
             case "attack-sources":
-                AttackSources(request as global::Srd52Combat.Requests.AttackSourcesRequest ?? new(assertions), ref resolution);
+                resolution = AttackSources(request as global::Srd52Combat.Requests.AttackSourcesRequest ?? new(assertions));
                 break;
             case "attack-structure":
-                AttackStructure(request as global::Srd52Combat.Requests.AttackStructureRequest ?? new(assertions), ref resolution);
+                resolution = AttackStructure(request as global::Srd52Combat.Requests.AttackStructureRequest ?? new(assertions));
                 break;
             case "attack-target":
-                AttackTarget(request as global::Srd52Combat.Requests.AttackTargetRequest ?? new(assertions), ref resolution);
+                resolution = AttackTarget(request as global::Srd52Combat.Requests.AttackTargetRequest ?? new(assertions));
                 break;
             case "attack-modifiers":
-                AttackModifiers(request as global::Srd52Combat.Requests.AttackModifiersRequest ?? new(assertions), ref resolution);
+                resolution = AttackModifiers(request as global::Srd52Combat.Requests.AttackModifiersRequest ?? new(assertions));
                 break;
             case "attack-resolution":
-                AttackResolution(request as global::Srd52Combat.Requests.AttackResolutionRequest ?? new(assertions), ref resolution);
+                resolution = AttackResolution(request as global::Srd52Combat.Requests.AttackResolutionRequest ?? new(assertions));
                 break;
             case "flanking":
                 Flanking(request as global::Srd52Combat.Requests.FlankingRequest ?? new(assertions), ref resolution);
                 break;
             case "unseen-target-disadvantage":
-                UnseenTargetDisadvantage(request as global::Srd52Combat.Requests.UnseenTargetDisadvantageRequest ?? new(assertions), ref resolution);
+                resolution = UnseenTargetDisadvantage(request as global::Srd52Combat.Requests.UnseenTargetDisadvantageRequest ?? new(assertions));
                 break;
             case "wrong-location-misses":
-                WrongLocationMisses(request as global::Srd52Combat.Requests.WrongLocationMissesRequest ?? new(assertions), ref resolution);
+                resolution = WrongLocationMisses(request as global::Srd52Combat.Requests.WrongLocationMissesRequest ?? new(assertions));
                 break;
             case "unseen-attacker-advantage":
-                UnseenAttackerAdvantage(request as global::Srd52Combat.Requests.UnseenAttackerAdvantageRequest ?? new(assertions), ref resolution);
+                resolution = UnseenAttackerAdvantage(request as global::Srd52Combat.Requests.UnseenAttackerAdvantageRequest ?? new(assertions));
                 break;
             case "hidden-attacker-revealed":
-                HiddenAttackerRevealed(request as global::Srd52Combat.Requests.HiddenAttackerRevealedRequest ?? new(assertions), ref resolution);
+                resolution = HiddenAttackerRevealed(request as global::Srd52Combat.Requests.HiddenAttackerRevealedRequest ?? new(assertions));
                 break;
             case "cover-origin":
                 CoverOrigin(request as global::Srd52Combat.Requests.CoverOriginRequest ?? new(assertions), ref resolution);
@@ -913,10 +913,10 @@ internal static partial class Handlers
                 SingleRange(request as global::Srd52Combat.Requests.SingleRangeRequest ?? new(assertions), ref resolution);
                 break;
             case "normal-and-long-range":
-                NormalAndLongRange(request as global::Srd52Combat.Requests.NormalAndLongRangeRequest ?? new(assertions), ref resolution);
+                resolution = NormalAndLongRange(request as global::Srd52Combat.Requests.NormalAndLongRangeRequest ?? new(assertions));
                 break;
             case "ranged-in-close-combat":
-                RangedInCloseCombat(request as global::Srd52Combat.Requests.RangedInCloseCombatRequest ?? new(assertions), ref resolution);
+                resolution = RangedInCloseCombat(request as global::Srd52Combat.Requests.RangedInCloseCombatRequest ?? new(assertions));
                 break;
             case "melee-within-reach":
                 MeleeWithinReach(request as global::Srd52Combat.Requests.MeleeWithinReachRequest ?? new(assertions), ref resolution);
@@ -925,10 +925,10 @@ internal static partial class Handlers
                 Reach(request as global::Srd52Combat.Requests.ReachRequest ?? new(assertions), ref resolution);
                 break;
             case "opportunity-attack":
-                OpportunityAttack(request as global::Srd52Combat.Requests.OpportunityAttackRequest ?? new(assertions), ref resolution);
+                resolution = OpportunityAttack(request as global::Srd52Combat.Requests.OpportunityAttackRequest ?? new(assertions));
                 break;
             case "opportunity-attack-avoidance":
-                OpportunityAttackAvoidance(request as global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest ?? new(assertions), ref resolution);
+                resolution = OpportunityAttackAvoidance(request as global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest ?? new(assertions));
                 break;
             case "mount-eligibility":
                 MountEligibility(request as global::Srd52Combat.Requests.MountEligibilityRequest ?? new(assertions), ref resolution);
@@ -1076,28 +1076,28 @@ internal static partial class Handlers
         "creature-space-difficult-terrain" => true,
         "no-willing-end-in-occupied-space" => true,
         "ending-turn-in-occupied-space" => true,
-        "attack-sources" => Hooked("AttackSources", typeof(global::Srd52Combat.Requests.AttackSourcesRequest)),
-        "attack-structure" => Hooked("AttackStructure", typeof(global::Srd52Combat.Requests.AttackStructureRequest)),
-        "attack-target" => Hooked("AttackTarget", typeof(global::Srd52Combat.Requests.AttackTargetRequest)),
-        "attack-modifiers" => Hooked("AttackModifiers", typeof(global::Srd52Combat.Requests.AttackModifiersRequest)),
-        "attack-resolution" => Hooked("AttackResolution", typeof(global::Srd52Combat.Requests.AttackResolutionRequest)),
+        "attack-sources" => true,
+        "attack-structure" => true,
+        "attack-target" => true,
+        "attack-modifiers" => true,
+        "attack-resolution" => true,
         "flanking" => Hooked("Flanking", typeof(global::Srd52Combat.Requests.FlankingRequest)),
-        "unseen-target-disadvantage" => Hooked("UnseenTargetDisadvantage", typeof(global::Srd52Combat.Requests.UnseenTargetDisadvantageRequest)),
-        "wrong-location-misses" => Hooked("WrongLocationMisses", typeof(global::Srd52Combat.Requests.WrongLocationMissesRequest)),
-        "unseen-attacker-advantage" => Hooked("UnseenAttackerAdvantage", typeof(global::Srd52Combat.Requests.UnseenAttackerAdvantageRequest)),
-        "hidden-attacker-revealed" => Hooked("HiddenAttackerRevealed", typeof(global::Srd52Combat.Requests.HiddenAttackerRevealedRequest)),
+        "unseen-target-disadvantage" => true,
+        "wrong-location-misses" => true,
+        "unseen-attacker-advantage" => true,
+        "hidden-attacker-revealed" => true,
         "cover-origin" => Hooked("CoverOrigin", typeof(global::Srd52Combat.Requests.CoverOriginRequest)),
         "cover-no-stacking" => Hooked("CoverNoStacking", typeof(global::Srd52Combat.Requests.CoverNoStackingRequest)),
         "cover-bonuses" => Hooked("CoverBonuses", typeof(global::Srd52Combat.Requests.CoverBonusesRequest)),
         "cover-degree" => Hooked("CoverDegree", typeof(global::Srd52Combat.Requests.CoverDegreeRequest)),
         "total-cover" => Hooked("TotalCover", typeof(global::Srd52Combat.Requests.TotalCoverRequest)),
         "single-range" => Hooked("SingleRange", typeof(global::Srd52Combat.Requests.SingleRangeRequest)),
-        "normal-and-long-range" => Hooked("NormalAndLongRange", typeof(global::Srd52Combat.Requests.NormalAndLongRangeRequest)),
-        "ranged-in-close-combat" => Hooked("RangedInCloseCombat", typeof(global::Srd52Combat.Requests.RangedInCloseCombatRequest)),
+        "normal-and-long-range" => true,
+        "ranged-in-close-combat" => true,
         "melee-within-reach" => Hooked("MeleeWithinReach", typeof(global::Srd52Combat.Requests.MeleeWithinReachRequest)),
         "reach" => Hooked("Reach", typeof(global::Srd52Combat.Requests.ReachRequest)),
-        "opportunity-attack" => Hooked("OpportunityAttack", typeof(global::Srd52Combat.Requests.OpportunityAttackRequest)),
-        "opportunity-attack-avoidance" => Hooked("OpportunityAttackAvoidance", typeof(global::Srd52Combat.Requests.OpportunityAttackAvoidanceRequest)),
+        "opportunity-attack" => true,
+        "opportunity-attack-avoidance" => true,
         "mount-eligibility" => Hooked("MountEligibility", typeof(global::Srd52Combat.Requests.MountEligibilityRequest)),
         "appropriate-anatomy" => Hooked("AppropriateAnatomy", typeof(global::Srd52Combat.Requests.AppropriateAnatomyRequest)),
         "mounting-cost" => Hooked("MountingCost", typeof(global::Srd52Combat.Requests.MountingCostRequest)),

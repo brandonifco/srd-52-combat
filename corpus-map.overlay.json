@@ -36,7 +36,7 @@
       },
       {
         "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
-        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 3; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. Under ruleset version 3 (the movement and space batch) the version mutation is 4: re-run, Ruleset.Identity named version 4, this test went red on the rendered identity and the pinned SHA-256, and no other did."
+        "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 5; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
       }
     ]
   },
@@ -315,6 +315,295 @@
       {
         "test": "MovingAroundCreaturesEntryPointTests.A_creature_that_shared_the_space_during_the_turn_but_not_at_its_end_is_not_Prone",
         "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.EndTurn made a creature that ended its turn alone Prone (`new EndOfTurnRuling(true, ...)`); this test went red and no other did."
+      }
+    ]
+  },
+  "attack-sources": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "MakingAnAttackEntryPointTests.The_Attack_action_makes_an_attack_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Sources cited attack-structure's locator (p. 15) on the answer (`new AttackMade(source, MapEntries.AttackStructure.Locator)`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.Another_action_a_Bonus_Action_or_a_Reaction_declines_citing_the_entry_that_says_which_ones",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Sources declined another action citing attack-sources' own locator instead of the Actions table's (`MapEntries.AttackSources` for `MapEntries.ActionsTable`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.An_Incapacitated_attacker_makes_no_attack_and_it_declines_citing_the_condition",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Sources ignored the Incapacitated statement (`if (false && incapacitated.Incapacitated)`), making the attack anyway; this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the AttackSources handler defaulted a missing Incapacitated statement (`request.Incapacitated ?? IncapacitatedStatement.IsNot(\"default\")`); this test went red and no other did. It went red too when the AttackResolution handler defaulted a missing DamageRules, and when the AttackModifiers handler defaulted a missing Other to `[]`."
+      }
+    ]
+  },
+  "attack-structure": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "MakingAnAttackEntryPointTests.An_attack_is_three_steps_in_order_choose_a_target_determine_modifiers_resolve_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Structure put Determine Modifiers first and Choose a Target second; this test went red and no other did."
+      }
+    ]
+  },
+  "attack-target": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "MakingAnAttackEntryPointTests.A_creature_an_object_or_a_location_within_range_is_a_legal_target_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target answered with TargetKind.Creature whatever kind was picked (`new ChosenTarget(TargetKind.Creature, ...)`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.A_target_beyond_long_range_cannot_be_picked",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target reported every target as within range (`new ChosenTarget(kind, target, true, ...)`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.A_melee_attack_or_a_single_range_attack_declines_citing_the_range_rule_that_is_not_built",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target declined a melee attack citing single-range instead of melee-within-reach (`MapEntries.SingleRange` for `MapEntries.MeleeWithinReach`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.A_target_kind_outside_the_three_is_refused",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Target skipped the check that the target kind is one of the three (`if (false && !Enum.IsDefined(kind))`); this test went red and no other did."
+      }
+    ]
+  },
+  "attack-modifiers": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "MakingAnAttackEntryPointTests.Determining_modifiers_declines_citing_cover_degree_and_names_what_it_determined",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Modifiers declined citing attack-rolls instead of cover-degree (`MapEntries.AttackRolls` for `MapEntries.CoverDegree`); this test went red and no other did. It went red too when the decline dropped the determinations it had made from Attempted (`string determined = true || determinations.Count == 0`)."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the AttackSources handler defaulted a missing Incapacitated statement (`request.Incapacitated ?? IncapacitatedStatement.IsNot(\"default\")`); this test went red and no other did. It went red too when the AttackResolution handler defaulted a missing DamageRules, and when the AttackModifiers handler defaulted a missing Other to `[]`."
+      }
+    ]
+  },
+  "attack-resolution": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "MakingAnAttackEntryPointTests.On_a_hit_damage_is_rolled_and_the_rule_that_rolls_it_is_named_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Resolve named no rule for the damage roll on a hit (`DamageAuthority: null` for `MapEntries.DamageRolls.Locator`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.On_a_miss_no_damage_is_rolled",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Resolve rolled damage on a miss too (`if (false && !outcome.Hit)`); this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.An_attack_whose_own_rules_specify_otherwise_rolls_no_damage_on_a_hit",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Resolve ignored the attack's own rules (`return false && damageRules.SpecifiesOtherwise`), rolling damage anyway; this test went red and no other did."
+      },
+      {
+        "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the AttackSources handler defaulted a missing Incapacitated statement (`request.Incapacitated ?? IncapacitatedStatement.IsNot(\"default\")`); this test went red and no other did. It went red too when the AttackResolution handler defaulted a missing DamageRules, and when the AttackModifiers handler defaulted a missing Other to `[]`."
+      }
+    ]
+  },
+  "unseen-attacker-advantage": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_creature_that_cannot_see_the_attacker_gives_the_attack_roll_Advantage_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.UnseenAttacker gave Advantage to a creature that can see the attacker and nothing to one that cannot (`seen.CanSeeYou ? RollEffect.Advantage : RollEffect.None`); this test went red, and so did the test for the seeing creature."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_creature_that_can_see_the_attacker_gives_the_roll_nothing",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.UnseenAttacker gave Advantage to a creature that can see the attacker and nothing to one that cannot (`seen.CanSeeYou ? RollEffect.Advantage : RollEffect.None`); this test went red, and so did the test for the seeing creature."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_statement_the_sidebar_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the UnseenAttackerAdvantage handler defaulted a missing statement (`request.Seen ?? AttackerSeenStatement.Seen(\"default\")`); this test went red and no other did. It went red too when the UnseenTargetDisadvantage, WrongLocationMisses and HiddenAttackerRevealed handlers each defaulted the statement they demand."
+      }
+    ]
+  },
+  "unseen-target-disadvantage": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_target_the_attacker_cannot_see_gives_the_roll_Disadvantage_whether_heard_or_guessed_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.UnseenTarget gave Disadvantage only for a guessed location, so a creature heard but not seen took none (`visibility.Visibility == TargetVisibility.LocationGuessed`); this test went red and no other did."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_target_the_attacker_can_see_gives_the_roll_nothing",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.UnseenTarget gave Disadvantage whatever the statement said (`true ? RollEffect.Disadvantage : RollEffect.None`); this test went red and no other did."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_statement_the_sidebar_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the UnseenAttackerAdvantage handler defaulted a missing statement (`request.Seen ?? AttackerSeenStatement.Seen(\"default\")`); this test went red and no other did. It went red too when the UnseenTargetDisadvantage, WrongLocationMisses and HiddenAttackerRevealed handlers each defaulted the statement they demand."
+      }
+    ]
+  },
+  "wrong-location-misses": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_target_that_is_not_in_the_targeted_location_is_missed_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.WrongLocation never missed (`false` for `!location.TargetIsThere`); this test went red and no other did."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_target_that_is_in_the_targeted_location_is_not_missed_by_this_rule",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.WrongLocation always missed (`true` for `!location.TargetIsThere`); this test went red and no other did."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_statement_the_sidebar_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the UnseenAttackerAdvantage handler defaulted a missing statement (`request.Seen ?? AttackerSeenStatement.Seen(\"default\")`); this test went red and no other did. It went red too when the UnseenTargetDisadvantage, WrongLocationMisses and HiddenAttackerRevealed handlers each defaulted the statement they demand."
+      }
+    ]
+  },
+  "hidden-attacker-revealed": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_hidden_attacker_gives_away_its_location_whether_the_attack_hits_or_misses_citing_page_14",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Revealed gave the location away only on a hit (`hidden.Hidden && outcome.Hit`); this test went red (the miss case) and no other did."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.An_attacker_that_is_not_hidden_gives_nothing_away",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Revealed gave the location away whether or not the attacker was hidden (`true` for `hidden.Hidden`); this test went red and no other did."
+      },
+      {
+        "test": "UnseenAttackersAndTargetsEntryPointTests.A_statement_the_sidebar_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the UnseenAttackerAdvantage handler defaulted a missing statement (`request.Seen ?? AttackerSeenStatement.Seen(\"default\")`); this test went red and no other did. It went red too when the UnseenTargetDisadvantage, WrongLocationMisses and HiddenAttackerRevealed handlers each defaulted the statement they demand."
+      }
+    ]
+  },
+  "normal-and-long-range": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "RangeEntryPointTests.At_normal_range_no_Disadvantage_beyond_it_Disadvantage_at_long_range_still_possible_beyond_it_not",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Range read \"beyond normal range\" as inclusive (`distanceFeet < ranges.NormalFeet`), so a target at exactly the normal range took Disadvantage; this test went red and no other did. It went red too when the long range was read the same way (`distanceFeet < ranges.LongFeet`), so a target at exactly the long range could not be attacked."
+      },
+      {
+        "test": "RangeEntryPointTests.The_long_range_is_the_larger_number_and_a_smaller_one_is_refused",
+        "mutation": "In a throwaway copy, net10.0 suite run; TwoRanges accepted a long range no larger than the normal range (`LongFeet > 0` for `LongFeet > NormalFeet`); this test went red and no other did."
+      }
+    ]
+  },
+  "ranged-in-close-combat": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "RangeEntryPointTests.A_ranged_attack_within_5_feet_of_a_seeing_capable_enemy_has_Disadvantage_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.RangedInCloseCombat never gave Disadvantage (`true ? RollEffect.None : RollEffect.Disadvantage`); this test went red and no other did."
+      },
+      {
+        "test": "RangeEntryPointTests.An_enemy_that_cannot_see_the_attacker_or_is_Incapacitated_does_not_give_Disadvantage",
+        "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.RangedInCloseCombat ignored the Incapacitated condition (`e.CanSeeYou` for `e.CanSeeYou && !e.Incapacitated`), so a stunned enemy gave Disadvantage; this test went red and no other did. It went red too when sight was ignored instead (`!e.Incapacitated`), so a blinded enemy gave Disadvantage."
+      },
+      {
+        "test": "RangeEntryPointTests.The_enemies_within_5_feet_are_stated_and_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the RangedInCloseCombat handler defaulted a missing statement to none (`request.Enemies ?? EnemiesWithinFiveFeet.None(\"default\")`); this test went red and no other did."
+      }
+    ]
+  },
+  "opportunity-attack": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "OpportunityAttackEntryPointTests.A_seen_creature_leaving_your_reach_offers_one_melee_attack_taken_as_a_Reaction_right_before_it_leaves_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make offered two melee attacks (`Attacks: 2`); this test went red and no other did."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.A_creature_the_attacker_cannot_see_offers_no_Opportunity_Attack",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make ignored whether the attacker can see the creature (`if (false && sight.CannotSee)`); this test went red and no other did."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.While_avoidance_holds_no_Opportunity_Attack_is_provoked",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make consulted avoidance only for a creature leaving by its action (`&& leaving.Means == DepartureMeans.OwnAction`), so Disengage, a Teleport and an explosion all provoked; this test went red and no other did."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.While_the_attackers_Reaction_is_spent_it_declines_citing_reactions",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make ignored a spent Reaction (`if (false && !reaction.Available)`); this test went red and no other did."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.While_the_attacker_is_Incapacitated_it_declines_citing_the_condition",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make ignored the Incapacitated condition (`if (false && incapacitated.Incapacitated)`); this test went red and no other did."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.A_creature_leaving_reach_by_none_of_the_means_the_glossary_lists_declines_citing_the_glossary",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make answered for a creature leaving reach by none of the means the glossary lists (`if (false && leaving.Means == DepartureMeans.ByNoneOfThose)`); this test went red and no other did."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
+      }
+    ]
+  },
+  "opportunity-attack-avoidance": {
+    "status": "implemented",
+    "implementedIn": {
+      "ruleset": "srd-5.2.1-combat",
+      "version": 4
+    },
+    "tests": [
+      {
+        "test": "OpportunityAttackEntryPointTests.Disengage_teleporting_and_being_moved_without_your_own_movement_do_not_provoke_citing_page_15",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance ignored the Disengage action (`if (false && leaving.DisengageTaken)`); this test went red, and so did the Opportunity Attack test for the avoided cases. It went red too when the Teleport case was dropped from the switch."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.Both_of_the_corpuss_examples_an_explosion_and_a_fall_do_not_provoke",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance dropped the \"moved without using its own movement, action, Bonus Action, or Reaction\" case from the switch; this test went red, and so did the Opportunity Attack test for the avoided cases."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.Walking_out_of_reach_is_not_avoided_by_this_rule",
+        "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance said nothing provokes (`Provokes: false` in the default arm); this test went red, and so did the Opportunity Attack tests for the offer and for a creature leaving by none of the glossary's means."
+      },
+      {
+        "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
+        "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
       }
     ]
   }
