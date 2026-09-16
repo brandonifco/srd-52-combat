@@ -27,7 +27,7 @@ public class SeededInitiativeReplayTests
     /// this seed differently, which is a decision about the ruleset version, not a number to update
     /// until green.
     /// </summary>
-    private const string RecordedReplaySha256 = "efbcdbab05c123d2fa273cd919e48ae94e601f9ddea468b9ad34ca16dd71acc0";
+    private const string RecordedReplaySha256 = "df5c2b91bf294bf2914d67baf28a8f8771454dd466920907cc2b0a2508963d35";
 
     private static readonly Combatant[] Participants =
     [
@@ -56,12 +56,12 @@ public class SeededInitiativeReplayTests
         var (other, _) = Run(new CountingSource(Pcg32.FromSeed(Seed + 1, stream: 1)), decisions: null);
         Assert.NotEqual(first.Rolls.Rolls.Select(r => r.D20), other.Rolls.Rolls.Select(r => r.D20));
 
-        // Comparable only under the same identity: ruleset srd-5.2.1-combat v2, PCG32, map 2.0.0.
+        // Comparable only under the same identity: ruleset srd-5.2.1-combat v3, PCG32, map 2.0.0.
         Assert.Equal("srd-5.2.1-combat", Ruleset.Identity.Ruleset.Id);
-        Assert.Equal(2, Ruleset.Identity.Ruleset.Version);
+        Assert.Equal(3, Ruleset.Identity.Ruleset.Version);
         Assert.Equal(RulesKernel.Identity.RandomAlgorithmId.Pcg32SetSeq64XshRr32, Ruleset.Identity.RandomAlgorithm);
         Assert.StartsWith(
-            "identity srd-5.2.1-combat v2 schema 1 map RulesFactory.Maps.Srd52Combat 2.0.0\n",
+            "identity srd-5.2.1-combat v3 schema 1 map RulesFactory.Maps.Srd52Combat 2.0.0\n",
             Encoding.UTF8.GetString(bytes),
             StringComparison.Ordinal);
     }

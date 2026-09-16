@@ -512,17 +512,17 @@ internal static partial class Handlers
     /// <summary>The grid rules apply when playing on a square grid (<c>grid-play</c>): optional.</summary>
     static partial void GridPlay(global::Srd52Combat.Requests.GridPlayRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Each square represents 5 feet (<c>grid-square-size</c>): optional.</summary>
-    static partial void GridSquareSize(global::Srd52Combat.Requests.GridSquareSizeRequest request, ref Resolution<object>? resolution);
+    /// <summary>Each square represents 5 feet (<c>grid-square-size</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> GridSquareSize(global::Srd52Combat.Requests.GridSquareSizeRequest request);
 
-    /// <summary>Speed in squares is Speed divided by 5 (<c>grid-speed-in-squares</c>): optional.</summary>
-    static partial void GridSpeedInSquares(global::Srd52Combat.Requests.GridSpeedInSquaresRequest request, ref Resolution<object>? resolution);
+    /// <summary>Speed in squares is Speed divided by 5 (<c>grid-speed-in-squares</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> GridSpeedInSquares(global::Srd52Combat.Requests.GridSpeedInSquaresRequest request);
 
-    /// <summary>Entering a square costs 1 square, or 2 for Difficult Terrain (<c>grid-entering-square</c>): optional.</summary>
-    static partial void GridEnteringSquare(global::Srd52Combat.Requests.GridEnteringSquareRequest request, ref Resolution<object>? resolution);
+    /// <summary>Entering a square costs 1 square, or 2 for Difficult Terrain (<c>grid-entering-square</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> GridEnteringSquare(global::Srd52Combat.Requests.GridEnteringSquareRequest request);
 
-    /// <summary>Diagonal movement can't cross the corner of a space-filling feature (<c>grid-corners</c>): optional.</summary>
-    static partial void GridCorners(global::Srd52Combat.Requests.GridCornersRequest request, ref Resolution<object>? resolution);
+    /// <summary>Diagonal movement can't cross the corner of a space-filling feature (<c>grid-corners</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> GridCorners(global::Srd52Combat.Requests.GridCornersRequest request);
 
     /// <summary>Range on a grid counts squares by the shortest route (<c>grid-range</c>): optional.</summary>
     static partial void GridRange(global::Srd52Combat.Requests.GridRangeRequest request, ref Resolution<object>? resolution);
@@ -530,8 +530,8 @@ internal static partial class Handlers
     /// <summary>You can move up to your Speed, or not at all (<c>move-up-to-speed</c>): optional.</summary>
     static partial void MoveUpToSpeed(global::Srd52Combat.Requests.MoveUpToSpeedRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Climbing, crawling, jumping and swimming combine with regular movement (<c>movement-modes</c>): optional.</summary>
-    static partial void MovementModes(global::Srd52Combat.Requests.MovementModesRequest request, ref Resolution<object>? resolution);
+    /// <summary>Climbing, crawling, jumping and swimming combine with regular movement (<c>movement-modes</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MovementModes(global::Srd52Combat.Requests.MovementModesRequest request);
 
     /// <summary>Each part of a move is deducted from Speed until it is used up (<c>movement-deduction</c>): optional.</summary>
     static partial void MovementDeduction(global::Srd52Combat.Requests.MovementDeductionRequest request, ref Resolution<object>? resolution);
@@ -548,26 +548,26 @@ internal static partial class Handlers
     /// <summary>A move can be split around actions, Bonus Actions and Reactions (<c>break-up-move</c>): optional.</summary>
     static partial void BreakUpMove(global::Srd52Combat.Requests.BreakUpMoveRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>You can drop Prone for free, unless your Speed is 0 (<c>dropping-prone</c>): optional.</summary>
-    static partial void DroppingProne(global::Srd52Combat.Requests.DroppingProneRequest request, ref Resolution<object>? resolution);
+    /// <summary>You can drop Prone for free, unless your Speed is 0 (<c>dropping-prone</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> DroppingProne(global::Srd52Combat.Requests.DroppingProneRequest request);
 
-    /// <summary>Size categories, ordered from Tiny to Gargantuan (<c>size-categories</c>): optional.</summary>
-    static partial void SizeCategories(global::Srd52Combat.Requests.SizeCategoriesRequest request, ref Resolution<object>? resolution);
+    /// <summary>Size categories, ordered from Tiny to Gargantuan (<c>size-categories</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> SizeCategories(global::Srd52Combat.Requests.SizeCategoriesRequest request);
 
     /// <summary>The Creature Size and Space table (<c>creature-size-space</c>): optional.</summary>
     static partial void CreatureSizeSpace(global::Srd52Combat.Requests.CreatureSizeSpaceRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Whose space you can pass through (<c>moving-through-creatures</c>): optional.</summary>
-    static partial void MovingThroughCreatures(global::Srd52Combat.Requests.MovingThroughCreaturesRequest request, ref Resolution<object>? resolution);
+    /// <summary>Whose space you can pass through (<c>moving-through-creatures</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> MovingThroughCreatures(global::Srd52Combat.Requests.MovingThroughCreaturesRequest request);
 
-    /// <summary>Another creature's space is Difficult Terrain unless it is Tiny or an ally (<c>creature-space-difficult-terrain</c>): optional.</summary>
-    static partial void CreatureSpaceDifficultTerrain(global::Srd52Combat.Requests.CreatureSpaceDifficultTerrainRequest request, ref Resolution<object>? resolution);
+    /// <summary>Another creature's space is Difficult Terrain unless it is Tiny or an ally (<c>creature-space-difficult-terrain</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> CreatureSpaceDifficultTerrain(global::Srd52Combat.Requests.CreatureSpaceDifficultTerrainRequest request);
 
-    /// <summary>You can't willingly end a move in another creature's space (<c>no-willing-end-in-occupied-space</c>): optional.</summary>
-    static partial void NoWillingEndInOccupiedSpace(global::Srd52Combat.Requests.NoWillingEndInOccupiedSpaceRequest request, ref Resolution<object>? resolution);
+    /// <summary>You can't willingly end a move in another creature's space (<c>no-willing-end-in-occupied-space</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> NoWillingEndInOccupiedSpace(global::Srd52Combat.Requests.NoWillingEndInOccupiedSpaceRequest request);
 
-    /// <summary>Ending a turn in another creature's space leaves you Prone (<c>ending-turn-in-occupied-space</c>): optional.</summary>
-    static partial void EndingTurnInOccupiedSpace(global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest request, ref Resolution<object>? resolution);
+    /// <summary>Ending a turn in another creature's space leaves you Prone (<c>ending-turn-in-occupied-space</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> EndingTurnInOccupiedSpace(global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest request);
 
     /// <summary>The Attack action and some other actions make an attack (<c>attack-sources</c>): optional.</summary>
     static partial void AttackSources(global::Srd52Combat.Requests.AttackSourcesRequest request, ref Resolution<object>? resolution);
@@ -808,16 +808,16 @@ internal static partial class Handlers
                 GridPlay(request as global::Srd52Combat.Requests.GridPlayRequest ?? new(assertions), ref resolution);
                 break;
             case "grid-square-size":
-                GridSquareSize(request as global::Srd52Combat.Requests.GridSquareSizeRequest ?? new(assertions), ref resolution);
+                resolution = GridSquareSize(request as global::Srd52Combat.Requests.GridSquareSizeRequest ?? new(assertions));
                 break;
             case "grid-speed-in-squares":
-                GridSpeedInSquares(request as global::Srd52Combat.Requests.GridSpeedInSquaresRequest ?? new(assertions), ref resolution);
+                resolution = GridSpeedInSquares(request as global::Srd52Combat.Requests.GridSpeedInSquaresRequest ?? new(assertions));
                 break;
             case "grid-entering-square":
-                GridEnteringSquare(request as global::Srd52Combat.Requests.GridEnteringSquareRequest ?? new(assertions), ref resolution);
+                resolution = GridEnteringSquare(request as global::Srd52Combat.Requests.GridEnteringSquareRequest ?? new(assertions));
                 break;
             case "grid-corners":
-                GridCorners(request as global::Srd52Combat.Requests.GridCornersRequest ?? new(assertions), ref resolution);
+                resolution = GridCorners(request as global::Srd52Combat.Requests.GridCornersRequest ?? new(assertions));
                 break;
             case "grid-range":
                 GridRange(request as global::Srd52Combat.Requests.GridRangeRequest ?? new(assertions), ref resolution);
@@ -826,7 +826,7 @@ internal static partial class Handlers
                 MoveUpToSpeed(request as global::Srd52Combat.Requests.MoveUpToSpeedRequest ?? new(assertions), ref resolution);
                 break;
             case "movement-modes":
-                MovementModes(request as global::Srd52Combat.Requests.MovementModesRequest ?? new(assertions), ref resolution);
+                resolution = MovementModes(request as global::Srd52Combat.Requests.MovementModesRequest ?? new(assertions));
                 break;
             case "movement-deduction":
                 MovementDeduction(request as global::Srd52Combat.Requests.MovementDeductionRequest ?? new(assertions), ref resolution);
@@ -844,25 +844,25 @@ internal static partial class Handlers
                 BreakUpMove(request as global::Srd52Combat.Requests.BreakUpMoveRequest ?? new(assertions), ref resolution);
                 break;
             case "dropping-prone":
-                DroppingProne(request as global::Srd52Combat.Requests.DroppingProneRequest ?? new(assertions), ref resolution);
+                resolution = DroppingProne(request as global::Srd52Combat.Requests.DroppingProneRequest ?? new(assertions));
                 break;
             case "size-categories":
-                SizeCategories(request as global::Srd52Combat.Requests.SizeCategoriesRequest ?? new(assertions), ref resolution);
+                resolution = SizeCategories(request as global::Srd52Combat.Requests.SizeCategoriesRequest ?? new(assertions));
                 break;
             case "creature-size-space":
                 CreatureSizeSpace(request as global::Srd52Combat.Requests.CreatureSizeSpaceRequest ?? new(assertions), ref resolution);
                 break;
             case "moving-through-creatures":
-                MovingThroughCreatures(request as global::Srd52Combat.Requests.MovingThroughCreaturesRequest ?? new(assertions), ref resolution);
+                resolution = MovingThroughCreatures(request as global::Srd52Combat.Requests.MovingThroughCreaturesRequest ?? new(assertions));
                 break;
             case "creature-space-difficult-terrain":
-                CreatureSpaceDifficultTerrain(request as global::Srd52Combat.Requests.CreatureSpaceDifficultTerrainRequest ?? new(assertions), ref resolution);
+                resolution = CreatureSpaceDifficultTerrain(request as global::Srd52Combat.Requests.CreatureSpaceDifficultTerrainRequest ?? new(assertions));
                 break;
             case "no-willing-end-in-occupied-space":
-                NoWillingEndInOccupiedSpace(request as global::Srd52Combat.Requests.NoWillingEndInOccupiedSpaceRequest ?? new(assertions), ref resolution);
+                resolution = NoWillingEndInOccupiedSpace(request as global::Srd52Combat.Requests.NoWillingEndInOccupiedSpaceRequest ?? new(assertions));
                 break;
             case "ending-turn-in-occupied-space":
-                EndingTurnInOccupiedSpace(request as global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest ?? new(assertions), ref resolution);
+                resolution = EndingTurnInOccupiedSpace(request as global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest ?? new(assertions));
                 break;
             case "attack-sources":
                 AttackSources(request as global::Srd52Combat.Requests.AttackSourcesRequest ?? new(assertions), ref resolution);
@@ -1057,25 +1057,25 @@ internal static partial class Handlers
         "sides-agree-to-end" => Hooked("SidesAgreeToEnd", typeof(global::Srd52Combat.Requests.SidesAgreeToEndRequest)),
         "combat-end" => Hooked("CombatEnd", typeof(global::Srd52Combat.Requests.CombatEndRequest)),
         "grid-play" => Hooked("GridPlay", typeof(global::Srd52Combat.Requests.GridPlayRequest)),
-        "grid-square-size" => Hooked("GridSquareSize", typeof(global::Srd52Combat.Requests.GridSquareSizeRequest)),
-        "grid-speed-in-squares" => Hooked("GridSpeedInSquares", typeof(global::Srd52Combat.Requests.GridSpeedInSquaresRequest)),
-        "grid-entering-square" => Hooked("GridEnteringSquare", typeof(global::Srd52Combat.Requests.GridEnteringSquareRequest)),
-        "grid-corners" => Hooked("GridCorners", typeof(global::Srd52Combat.Requests.GridCornersRequest)),
+        "grid-square-size" => true,
+        "grid-speed-in-squares" => true,
+        "grid-entering-square" => true,
+        "grid-corners" => true,
         "grid-range" => Hooked("GridRange", typeof(global::Srd52Combat.Requests.GridRangeRequest)),
         "move-up-to-speed" => Hooked("MoveUpToSpeed", typeof(global::Srd52Combat.Requests.MoveUpToSpeedRequest)),
-        "movement-modes" => Hooked("MovementModes", typeof(global::Srd52Combat.Requests.MovementModesRequest)),
+        "movement-modes" => true,
         "movement-deduction" => Hooked("MovementDeduction", typeof(global::Srd52Combat.Requests.MovementDeductionRequest)),
         "speed-and-size-sources" => Hooked("SpeedAndSizeSources", typeof(global::Srd52Combat.Requests.SpeedAndSizeSourcesRequest)),
         "difficult-terrain" => Hooked("DifficultTerrain", typeof(global::Srd52Combat.Requests.DifficultTerrainRequest)),
         "difficult-terrain-cost" => Hooked("DifficultTerrainCost", typeof(global::Srd52Combat.Requests.DifficultTerrainCostRequest)),
         "break-up-move" => Hooked("BreakUpMove", typeof(global::Srd52Combat.Requests.BreakUpMoveRequest)),
-        "dropping-prone" => Hooked("DroppingProne", typeof(global::Srd52Combat.Requests.DroppingProneRequest)),
-        "size-categories" => Hooked("SizeCategories", typeof(global::Srd52Combat.Requests.SizeCategoriesRequest)),
+        "dropping-prone" => true,
+        "size-categories" => true,
         "creature-size-space" => Hooked("CreatureSizeSpace", typeof(global::Srd52Combat.Requests.CreatureSizeSpaceRequest)),
-        "moving-through-creatures" => Hooked("MovingThroughCreatures", typeof(global::Srd52Combat.Requests.MovingThroughCreaturesRequest)),
-        "creature-space-difficult-terrain" => Hooked("CreatureSpaceDifficultTerrain", typeof(global::Srd52Combat.Requests.CreatureSpaceDifficultTerrainRequest)),
-        "no-willing-end-in-occupied-space" => Hooked("NoWillingEndInOccupiedSpace", typeof(global::Srd52Combat.Requests.NoWillingEndInOccupiedSpaceRequest)),
-        "ending-turn-in-occupied-space" => Hooked("EndingTurnInOccupiedSpace", typeof(global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest)),
+        "moving-through-creatures" => true,
+        "creature-space-difficult-terrain" => true,
+        "no-willing-end-in-occupied-space" => true,
+        "ending-turn-in-occupied-space" => true,
         "attack-sources" => Hooked("AttackSources", typeof(global::Srd52Combat.Requests.AttackSourcesRequest)),
         "attack-structure" => Hooked("AttackStructure", typeof(global::Srd52Combat.Requests.AttackStructureRequest)),
         "attack-target" => Hooked("AttackTarget", typeof(global::Srd52Combat.Requests.AttackTargetRequest)),

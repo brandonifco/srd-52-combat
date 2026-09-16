@@ -334,20 +334,20 @@ public sealed class CorrespondenceTests
         AssertDeclines("grid-play", UnresolvedReason.UnsupportedRule, EntryPoints.GridPlay.Resolve(global::Srd52Combat.Requests.GridPlayRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Playing on a Grid / p. 13"));
 
     [Fact]
-    public void grid_square_size__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("grid-square-size", UnresolvedReason.UnsupportedRule, EntryPoints.GridSquareSize.Resolve(global::Srd52Combat.Requests.GridSquareSizeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Playing on a Grid / p. 13"));
+    public void grid_square_size__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("grid-square-size"), "grid-square-size is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void grid_speed_in_squares__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("grid-speed-in-squares", UnresolvedReason.UnsupportedRule, EntryPoints.GridSpeedInSquares.Resolve(global::Srd52Combat.Requests.GridSpeedInSquaresRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Playing on a Grid / p. 13"));
+    public void grid_speed_in_squares__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("grid-speed-in-squares"), "grid-speed-in-squares is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void grid_entering_square__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("grid-entering-square", UnresolvedReason.UnsupportedRule, EntryPoints.GridEnteringSquare.Resolve(global::Srd52Combat.Requests.GridEnteringSquareRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Playing on a Grid / p. 13"));
+    public void grid_entering_square__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("grid-entering-square"), "grid-entering-square is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void grid_corners__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("grid-corners", UnresolvedReason.UnsupportedRule, EntryPoints.GridCorners.Resolve(global::Srd52Combat.Requests.GridCornersRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Playing on a Grid / p. 13"));
+    public void grid_corners__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("grid-corners"), "grid-corners is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void grid_range__declines_UnsupportedRule_row_2() =>
@@ -358,8 +358,8 @@ public sealed class CorrespondenceTests
         AssertDeclines("move-up-to-speed", UnresolvedReason.UnsupportedRule, EntryPoints.MoveUpToSpeed.Resolve(global::Srd52Combat.Requests.MoveUpToSpeedRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Movement and Position / p. 14"));
 
     [Fact]
-    public void movement_modes__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("movement-modes", UnresolvedReason.UnsupportedRule, EntryPoints.MovementModes.Resolve(global::Srd52Combat.Requests.MovementModesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Movement and Position / p. 14"));
+    public void movement_modes__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("movement-modes"), "movement-modes is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void movement_deduction__declines_UnsupportedRule_row_2() =>
@@ -382,32 +382,32 @@ public sealed class CorrespondenceTests
         AssertDeclines("break-up-move", UnresolvedReason.UnsupportedRule, EntryPoints.BreakUpMove.Resolve(global::Srd52Combat.Requests.BreakUpMoveRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Breaking Up Your Move / p. 14"));
 
     [Fact]
-    public void dropping_prone__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("dropping-prone", UnresolvedReason.UnsupportedRule, EntryPoints.DroppingProne.Resolve(global::Srd52Combat.Requests.DroppingProneRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Dropping Prone / p. 14"));
+    public void dropping_prone__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("dropping-prone"), "dropping-prone is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void size_categories__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("size-categories", UnresolvedReason.UnsupportedRule, EntryPoints.SizeCategories.Resolve(global::Srd52Combat.Requests.SizeCategoriesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Creature Size / p. 14"));
+    public void size_categories__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("size-categories"), "size-categories is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void creature_size_space__declines_UnsupportedRule_row_2() =>
         AssertDeclines("creature-size-space", UnresolvedReason.UnsupportedRule, EntryPoints.CreatureSizeSpace.Resolve(global::Srd52Combat.Requests.CreatureSizeSpaceRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Creature Size / p. 14"));
 
     [Fact]
-    public void moving_through_creatures__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("moving-through-creatures", UnresolvedReason.UnsupportedRule, EntryPoints.MovingThroughCreatures.Resolve(global::Srd52Combat.Requests.MovingThroughCreaturesRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Moving around Other Creatures / p. 14"));
+    public void moving_through_creatures__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("moving-through-creatures"), "moving-through-creatures is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void creature_space_difficult_terrain__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("creature-space-difficult-terrain", UnresolvedReason.UnsupportedRule, EntryPoints.CreatureSpaceDifficultTerrain.Resolve(global::Srd52Combat.Requests.CreatureSpaceDifficultTerrainRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Moving around Other Creatures / p. 14"));
+    public void creature_space_difficult_terrain__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("creature-space-difficult-terrain"), "creature-space-difficult-terrain is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void no_willing_end_in_occupied_space__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("no-willing-end-in-occupied-space", UnresolvedReason.UnsupportedRule, EntryPoints.NoWillingEndInOccupiedSpace.Resolve(global::Srd52Combat.Requests.NoWillingEndInOccupiedSpaceRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Moving around Other Creatures / p. 14"));
+    public void no_willing_end_in_occupied_space__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("no-willing-end-in-occupied-space"), "no-willing-end-in-occupied-space is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void ending_turn_in_occupied_space__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("ending-turn-in-occupied-space", UnresolvedReason.UnsupportedRule, EntryPoints.EndingTurnInOccupiedSpace.Resolve(global::Srd52Combat.Requests.EndingTurnInOccupiedSpaceRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Moving around Other Creatures / p. 14"));
+    public void ending_turn_in_occupied_space__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("ending-turn-in-occupied-space"), "ending-turn-in-occupied-space is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void attack_sources__declines_UnsupportedRule_row_2() =>
