@@ -26,7 +26,10 @@ public static class InitiativeRules
     /// <item>the GM uses Initiative scores: <see cref="UnresolvedReason.OutsideCurrentScope"/>, citing
     /// <c>initiative-score-option</c> (p. 184), the gate outside the slice that suspends this entry;</item>
     /// <item>a group of identical creatures, for which the GM makes a single roll:
-    /// <see cref="UnresolvedReason.UnsupportedRule"/>, citing <c>group-initiative</c>, which is not built;</item>
+    /// <see cref="UnresolvedReason.RequiresInterpretation"/>, citing <c>group-initiative</c>, which is built
+    /// and declines — map 2.0.0's <c>draws</c> counts one d20 per participant "not in a group of identical
+    /// creatures, whose roll is group-initiative's", and what makes such a group the corpus never says
+    /// (decision 0005);</item>
     /// <item>a roll with Advantage, Disadvantage, or both: <see cref="UnresolvedReason.OutsideCurrentScope"/>,
     /// citing <c>advantage-disadvantage</c> (p. 7). Map 2.0.0's <c>draws</c> counts one d20 for a roll with
     /// both, because they cancel; the cancelling is that <c>scope: out</c> entry's rule (decision 0002).</item>
@@ -76,8 +79,9 @@ public static class InitiativeRules
         if (!identicalCreatures.Groups.IsEmpty)
         {
             return Decline(
-                UnresolvedReason.UnsupportedRule,
-                $"{attempted} while {identicalCreatures}: a single roll for a group is '{MapEntries.GroupInitiative.Id}', which is not built",
+                UnresolvedReason.RequiresInterpretation,
+                $"{attempted} while {identicalCreatures}: the roll of a participant in a group is '{MapEntries.GroupInitiative.Id}'"
+                + " [map draws], whose question the corpus leaves open, so how many d20s this combat throws is not fixed",
                 MapEntries.GroupInitiative);
         }
 

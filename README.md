@@ -15,7 +15,7 @@ Citations are by heading path and printed page (`Combat / Initiative / p. 13`). 
 
 ## State
 
-Twenty-eight entries are implemented.
+Thirty-eight entries are implemented.
 
 - **Initiative**, "Combat / Initiative / p. 13": `initiative-roll`, `initiative-order`,
   `initiative-ties` and `initiative-ties-uncovered` (ruleset version 2).
@@ -32,6 +32,11 @@ Twenty-eight entries are implemented.
   `attack-resolution`, `unseen-attacker-advantage`, `unseen-target-disadvantage`,
   `wrong-location-misses`, `hidden-attacker-revealed`, `normal-and-long-range`,
   `ranged-in-close-combat`, `opportunity-attack` and `opportunity-attack-avoidance`.
+- **The turn and the round** (ruleset version 5): "Combat / Your Turn", pp. 13-14 —
+  `turn-move-and-action`, `break-up-move` (p. 14), `doing-nothing`, `free-object-interaction`,
+  `communication-cost` and the GM's assertion `gm-requires-action`; and the shape of a combat —
+  `combat-steps` (p. 13), `next-round` (p. 13), and, on Initiative, `surprise-disadvantage` and
+  `group-initiative`.
 
 Every other in-scope entry declines through its generated entry point with the reason the map's
 correspondence table gives and its own citation. The rules still to build are listed in `backlog/`,
@@ -41,7 +46,7 @@ and what building these found about the map is in [MAP-FINDINGS.md](MAP-FINDINGS
 
 | | |
 |---|---|
-| `src/Srd52Combat/Rules` | The rules: `InitiativeRules`, `MovementRules`, `GridRules`, `AttackRules`, `OpportunityAttackRules`. Hand-written. |
+| `src/Srd52Combat/Rules` | The rules: `InitiativeRules`, `MovementRules`, `GridRules`, `AttackRules`, `OpportunityAttackRules`, `TurnRules`, `RoundRules`, `SurpriseRules`, `GroupInitiativeRules`. Hand-written. |
 | `src/Srd52Combat/Handlers` | One file per implemented map entry: the handler the generated contract requires, a thin adapter over the rule, and the inputs it reads, declared on the entry's partial request type. Hand-written. |
 | `src/Srd52Combat/Initiative`, `Ruleset.cs` | Combatants, the caller's statements, rolls, tie breaks and the order; the replay identity. Hand-written. |
 | `src/Srd52Combat/Movement` | Sizes, the grid, and what the caller states about a creature, a square, a terrain feature and a move; the rulings the movement rules answer with. Hand-written. |
@@ -77,7 +82,7 @@ var order = EntryPoints.InitiativeOrder.Resolve(
 |---|---|---|
 | Roll, every statement allowing one d20 each | the rolls, drawn from the seeded source in participant order | `Combat / Initiative / p. 13` |
 | Roll, the GM uses Initiative scores | `OutsideCurrentScope`, nothing drawn, the statement recorded | `Rules Glossary / Initiative / p. 184` (`initiative-score-option`) |
-| Roll, a group of identical creatures stated | `UnsupportedRule`, nothing drawn | `group-initiative` (not built) |
+| Roll, a group of identical creatures stated | `RequiresInterpretation`, nothing drawn: how many rolls a group takes is not stated | `Combat / Initiative / p. 13` (`group-initiative`) |
 | Roll, a roll with Advantage, Disadvantage, or both (from any source: Surprise, Incapacitated, Invisible) | `OutsideCurrentScope`, nothing drawn | `Playing the Game / Advantage/Disadvantage / p. 7` |
 | Roll, a statement missing | `ArgumentException`: never inferred | |
 | Order | highest to lowest, the same every round, each tie as its tie break states | `Combat / Initiative / p. 13` |
@@ -190,15 +195,67 @@ var resolved = EntryPoints.AttackResolution.Resolve(new AttackResolutionRequest
 See [decision 0004](docs/decisions/0004-an-attack-names-what-lies-outside-the-slice-and-performs-what-does-not.md)
 and [MAP-FINDINGS.md](MAP-FINDINGS.md).
 
+## Your turn, and the round
+
+```csharp
+// The turn's steps are the caller's, in the order the creature takes them. The corpus's own
+// example of breaking up a move: Speed 30, 10 feet, an action, then 20 feet.
+var move = EntryPoints.BreakUpMove.Resolve(new BreakUpMoveRequest
+{
+    Speed = 30,
+    Steps = [TurnStep.Moves(10), TurnStep.Acts("the Attack action"), TurnStep.Moves(20)],
+    StatedBy = "the players",
+});
+// Resolved: BrokenMove, 10 feet with 20 left, then 20 feet after the action with 0 left:
+// the remainder, never a fresh Speed. Authority Combat / Breaking Up Your Move / p. 14
+
+// Whether the GM requires an action for an activity is the GM's own determination, asserted.
+var interactions = EntryPoints.FreeObjectInteraction.Resolve(
+    new FreeObjectInteractionRequest(RuleRequest.Empty.Assert("gm-requires-action",
+        GmActionRequirement.Of("the GM", RequiredActivity.Interaction("a stuck door"))))
+    {
+        Interactions = [new ObjectInteraction("a stuck door", InteractionTiming.DuringMove),
+                        new ObjectInteraction("the lantern", InteractionTiming.DuringAction)],
+    });
+// Resolved: TurnInteractions, the stuck door requiring an action (p. 14), the lantern free (p. 13)
+```
+
+| Asked | Answers | Cites |
+|---|---|---|
+| A turn's steps | the distance moved, what is left of the Speed, the action taken, and what (if anything) goes past the turn: a move beyond the Speed, a second action | `Combat / Your Turn / p. 13` |
+| A move broken up around an action, a Bonus Action or a Reaction | each part, what it follows, and the movement left after it - the remainder of the one Speed | `Combat / Breaking Up Your Move / p. 14` |
+| Forgoing the move, the action, or everything | permitted; nothing is required of the turn, and there is no delay | `Combat / Your Turn / p. 14` |
+| The turn's first object interaction, during the move or the action | free | `Combat / Your Turn / p. 13` |
+| A second object | the Utilize action | `Combat / Your Turn / p. 13` |
+| An interaction the GM requires an action for | an action; it is not the turn's free one | `Combat / Your Turn / p. 14` (`gm-requires-action`) |
+| An object whose own description always requires an action | an action; it is not the turn's free one | `Combat / Your Turn / p. 13` |
+| Brief or extended communication, as the caller classifies it | free; an action | `Combat / Your Turn / p. 13` |
+| Communication the GM's requirement names | `RequiresInterpretation`: whether that requirement reaches communication is not stated | `Combat / Your Turn / p. 13` (`communication-cost`) |
+| Either of those two, the GM's requirement not asserted | `AssertionRequiredException`: never inferred | |
+| The steps of a combat | establish positions (as stated), roll Initiative, take turns in Initiative order | `Combat / Combat Step by Step / p. 13` |
+| The steps, with no Initiative order | `ArgumentException`: no turn is taken before Initiative is rolled | |
+| After a round, everyone having acted and neither side defeated | the fight continues to the next round | `Combat / The Order of Combat / p. 13` |
+| After a round, a side defeated as stated | no further round; and before everyone has acted, the round is not over | `Combat / The Order of Combat / p. 13` |
+| After a round, neither defeated and both sides agreeing to end, as stated | `RequiresInterpretation`: p. 13 begins another round and p. 14 ends the combat | `Combat / The Order of Combat / p. 13` (`next-round`) |
+| What surprise gives a combatant stated to be surprised | Disadvantage on their Initiative roll, and nothing else; nothing at all for one that is not surprised | `Combat / Initiative / p. 13` |
+| Surprise, while the GM uses Initiative scores | `OutsideCurrentScope`: there is no roll | `Rules Glossary / Initiative / p. 184` (`initiative-score-option`) |
+| Who the GM rolls for | the monsters | `Combat / Initiative / p. 13` |
+| A group of identical creatures | `RequiresInterpretation`, nothing drawn: what makes such a group is not stated, so how many rolls are made is not fixed | `Combat / Initiative / p. 13` (`group-initiative`) |
+| Any of them, a statement the caller owes left out | `ArgumentException`: never inferred | |
+
+See [decision 0005](docs/decisions/0005-the-turn-and-the-round-are-stated-by-the-caller-and-a-group-of-identical-creatures-declines.md)
+and [MAP-FINDINGS.md](MAP-FINDINGS.md).
+
 ## Randomness and replay
 
 The corpus declares `randomness: seeded`. Every draw goes through `RulesKernel.Randomness`
 (`IRandomSource`, `UniformInt`) from a source the caller seeds, and `Ruleset.Identity` names PCG32.
 `SeededInitiativeReplayTests` rolls a seven-combatant start with three ties through the entry points,
 replays it from the seed and the recorded tie breaks, compares the bytes, and pins their SHA-256. The
-bytes name the ruleset (`srd-5.2.1-combat` v4) and the map version (2.0.0). Only Initiative draws:
-nothing in movement, the grid or the attack entries does (decisions 0003 and 0004), so none of them
-enters the replay.
+bytes name the ruleset (`srd-5.2.1-combat` v5) and the map version (2.0.0). Only Initiative draws:
+nothing in movement, the grid, the attack entries or the turn and round entries does (decisions
+0003, 0004 and 0005), so none of them enters the replay. `group-initiative` is the one entry whose
+rule would draw, and it declines rather than fix a draw count the corpus does not state.
 
 ## How this engine is produced
 

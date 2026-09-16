@@ -452,23 +452,23 @@ internal static partial class Handlers
     /// <summary>A round represents about 6 seconds (<c>round-duration</c>): optional.</summary>
     static partial void RoundDuration(global::Srd52Combat.Requests.RoundDurationRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>The fight continues to the next round if neither side is defeated (<c>next-round</c>): optional.</summary>
-    static partial void NextRound(global::Srd52Combat.Requests.NextRoundRequest request, ref Resolution<object>? resolution);
+    /// <summary>The fight continues to the next round if neither side is defeated (<c>next-round</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> NextRound(global::Srd52Combat.Requests.NextRoundRequest request);
 
-    /// <summary>Combat step by step: establish positions, roll Initiative, take turns (<c>combat-steps</c>): optional.</summary>
-    static partial void CombatSteps(global::Srd52Combat.Requests.CombatStepsRequest request, ref Resolution<object>? resolution);
+    /// <summary>Combat step by step: establish positions, roll Initiative, take turns (<c>combat-steps</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> CombatSteps(global::Srd52Combat.Requests.CombatStepsRequest request);
 
     /// <summary>Every participant rolls Initiative, a Dexterity check (<c>initiative-roll</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> InitiativeRoll(global::Srd52Combat.Requests.InitiativeRollRequest request);
 
-    /// <summary>The GM makes one Initiative roll for a group of identical creatures (<c>group-initiative</c>): optional.</summary>
-    static partial void GroupInitiative(global::Srd52Combat.Requests.GroupInitiativeRequest request, ref Resolution<object>? resolution);
+    /// <summary>The GM makes one Initiative roll for a group of identical creatures (<c>group-initiative</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> GroupInitiative(global::Srd52Combat.Requests.GroupInitiativeRequest request);
 
     /// <summary>Whether a combatant is surprised by combat starting (<c>surprised</c>): optional.</summary>
     static partial void Surprised(global::Srd52Combat.Requests.SurprisedRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>A surprised combatant has Disadvantage on Initiative (<c>surprise-disadvantage</c>): optional.</summary>
-    static partial void SurpriseDisadvantage(global::Srd52Combat.Requests.SurpriseDisadvantageRequest request, ref Resolution<object>? resolution);
+    /// <summary>A surprised combatant has Disadvantage on Initiative (<c>surprise-disadvantage</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> SurpriseDisadvantage(global::Srd52Combat.Requests.SurpriseDisadvantageRequest request);
 
     /// <summary>Combatants act from highest to lowest Initiative, in the same order every round (<c>initiative-order</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> InitiativeOrder(global::Srd52Combat.Requests.InitiativeOrderRequest request);
@@ -479,8 +479,8 @@ internal static partial class Handlers
     /// <summary>Initiative ties the tie rule does not assign (<c>initiative-ties-uncovered</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> InitiativeTiesUncovered(global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest request);
 
-    /// <summary>On your turn, move up to your Speed and take one action, in either order (<c>turn-move-and-action</c>): optional.</summary>
-    static partial void TurnMoveAndAction(global::Srd52Combat.Requests.TurnMoveAndActionRequest request, ref Resolution<object>? resolution);
+    /// <summary>On your turn, move up to your Speed and take one action, in either order (<c>turn-move-and-action</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> TurnMoveAndAction(global::Srd52Combat.Requests.TurnMoveAndActionRequest request);
 
     /// <summary>Action options come from the Actions table, character features and stat blocks (<c>action-options</c>): optional.</summary>
     static partial void ActionOptions(global::Srd52Combat.Requests.ActionOptionsRequest request, ref Resolution<object>? resolution);
@@ -488,17 +488,17 @@ internal static partial class Handlers
     /// <summary>Where brief communication ends and extended communication begins (<c>brief-or-extended-communication</c>): optional.</summary>
     static partial void BriefOrExtendedCommunication(global::Srd52Combat.Requests.BriefOrExtendedCommunicationRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>Brief communication is free; extended communication takes an action (<c>communication-cost</c>): optional.</summary>
-    static partial void CommunicationCost(global::Srd52Combat.Requests.CommunicationCostRequest request, ref Resolution<object>? resolution);
+    /// <summary>Brief communication is free; extended communication takes an action (<c>communication-cost</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> CommunicationCost(global::Srd52Combat.Requests.CommunicationCostRequest request);
 
-    /// <summary>One free object interaction per turn; a second needs the Utilize action (<c>free-object-interaction</c>): optional.</summary>
-    static partial void FreeObjectInteraction(global::Srd52Combat.Requests.FreeObjectInteractionRequest request, ref Resolution<object>? resolution);
+    /// <summary>One free object interaction per turn; a second needs the Utilize action (<c>free-object-interaction</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> FreeObjectInteraction(global::Srd52Combat.Requests.FreeObjectInteractionRequest request);
 
     /// <summary>The GM may require an action for an activity needing special care or presenting an unusual obstacle (<c>gm-requires-action</c>): optional.</summary>
     static partial void GmRequiresAction(global::Srd52Combat.Requests.GmRequiresActionRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>You can forgo moving, acting, or doing anything on your turn (<c>doing-nothing</c>): optional.</summary>
-    static partial void DoingNothing(global::Srd52Combat.Requests.DoingNothingRequest request, ref Resolution<object>? resolution);
+    /// <summary>You can forgo moving, acting, or doing anything on your turn (<c>doing-nothing</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> DoingNothing(global::Srd52Combat.Requests.DoingNothingRequest request);
 
     /// <summary>When a side is defeated (<c>side-defeated</c>): optional.</summary>
     static partial void SideDefeated(global::Srd52Combat.Requests.SideDefeatedRequest request, ref Resolution<object>? resolution);
@@ -545,8 +545,8 @@ internal static partial class Handlers
     /// <summary>Every foot in Difficult Terrain costs 1 extra foot, without stacking (<c>difficult-terrain-cost</c>): optional.</summary>
     static partial void DifficultTerrainCost(global::Srd52Combat.Requests.DifficultTerrainCostRequest request, ref Resolution<object>? resolution);
 
-    /// <summary>A move can be split around actions, Bonus Actions and Reactions (<c>break-up-move</c>): optional.</summary>
-    static partial void BreakUpMove(global::Srd52Combat.Requests.BreakUpMoveRequest request, ref Resolution<object>? resolution);
+    /// <summary>A move can be split around actions, Bonus Actions and Reactions (<c>break-up-move</c>): required, the entry is implemented.</summary>
+    internal static partial Resolution<object> BreakUpMove(global::Srd52Combat.Requests.BreakUpMoveRequest request);
 
     /// <summary>You can drop Prone for free, unless your Speed is 0 (<c>dropping-prone</c>): required, the entry is implemented.</summary>
     internal static partial Resolution<object> DroppingProne(global::Srd52Combat.Requests.DroppingProneRequest request);
@@ -748,22 +748,22 @@ internal static partial class Handlers
                 RoundDuration(request as global::Srd52Combat.Requests.RoundDurationRequest ?? new(assertions), ref resolution);
                 break;
             case "next-round":
-                NextRound(request as global::Srd52Combat.Requests.NextRoundRequest ?? new(assertions), ref resolution);
+                resolution = NextRound(request as global::Srd52Combat.Requests.NextRoundRequest ?? new(assertions));
                 break;
             case "combat-steps":
-                CombatSteps(request as global::Srd52Combat.Requests.CombatStepsRequest ?? new(assertions), ref resolution);
+                resolution = CombatSteps(request as global::Srd52Combat.Requests.CombatStepsRequest ?? new(assertions));
                 break;
             case "initiative-roll":
                 resolution = InitiativeRoll(request as global::Srd52Combat.Requests.InitiativeRollRequest ?? new(assertions));
                 break;
             case "group-initiative":
-                GroupInitiative(request as global::Srd52Combat.Requests.GroupInitiativeRequest ?? new(assertions), ref resolution);
+                resolution = GroupInitiative(request as global::Srd52Combat.Requests.GroupInitiativeRequest ?? new(assertions));
                 break;
             case "surprised":
                 Surprised(request as global::Srd52Combat.Requests.SurprisedRequest ?? new(assertions), ref resolution);
                 break;
             case "surprise-disadvantage":
-                SurpriseDisadvantage(request as global::Srd52Combat.Requests.SurpriseDisadvantageRequest ?? new(assertions), ref resolution);
+                resolution = SurpriseDisadvantage(request as global::Srd52Combat.Requests.SurpriseDisadvantageRequest ?? new(assertions));
                 break;
             case "initiative-order":
                 resolution = InitiativeOrder(request as global::Srd52Combat.Requests.InitiativeOrderRequest ?? new(assertions));
@@ -775,7 +775,7 @@ internal static partial class Handlers
                 resolution = InitiativeTiesUncovered(request as global::Srd52Combat.Requests.InitiativeTiesUncoveredRequest ?? new(assertions));
                 break;
             case "turn-move-and-action":
-                TurnMoveAndAction(request as global::Srd52Combat.Requests.TurnMoveAndActionRequest ?? new(assertions), ref resolution);
+                resolution = TurnMoveAndAction(request as global::Srd52Combat.Requests.TurnMoveAndActionRequest ?? new(assertions));
                 break;
             case "action-options":
                 ActionOptions(request as global::Srd52Combat.Requests.ActionOptionsRequest ?? new(assertions), ref resolution);
@@ -784,16 +784,16 @@ internal static partial class Handlers
                 BriefOrExtendedCommunication(request as global::Srd52Combat.Requests.BriefOrExtendedCommunicationRequest ?? new(assertions), ref resolution);
                 break;
             case "communication-cost":
-                CommunicationCost(request as global::Srd52Combat.Requests.CommunicationCostRequest ?? new(assertions), ref resolution);
+                resolution = CommunicationCost(request as global::Srd52Combat.Requests.CommunicationCostRequest ?? new(assertions));
                 break;
             case "free-object-interaction":
-                FreeObjectInteraction(request as global::Srd52Combat.Requests.FreeObjectInteractionRequest ?? new(assertions), ref resolution);
+                resolution = FreeObjectInteraction(request as global::Srd52Combat.Requests.FreeObjectInteractionRequest ?? new(assertions));
                 break;
             case "gm-requires-action":
                 GmRequiresAction(request as global::Srd52Combat.Requests.GmRequiresActionRequest ?? new(assertions), ref resolution);
                 break;
             case "doing-nothing":
-                DoingNothing(request as global::Srd52Combat.Requests.DoingNothingRequest ?? new(assertions), ref resolution);
+                resolution = DoingNothing(request as global::Srd52Combat.Requests.DoingNothingRequest ?? new(assertions));
                 break;
             case "side-defeated":
                 SideDefeated(request as global::Srd52Combat.Requests.SideDefeatedRequest ?? new(assertions), ref resolution);
@@ -841,7 +841,7 @@ internal static partial class Handlers
                 DifficultTerrainCost(request as global::Srd52Combat.Requests.DifficultTerrainCostRequest ?? new(assertions), ref resolution);
                 break;
             case "break-up-move":
-                BreakUpMove(request as global::Srd52Combat.Requests.BreakUpMoveRequest ?? new(assertions), ref resolution);
+                resolution = BreakUpMove(request as global::Srd52Combat.Requests.BreakUpMoveRequest ?? new(assertions));
                 break;
             case "dropping-prone":
                 resolution = DroppingProne(request as global::Srd52Combat.Requests.DroppingProneRequest ?? new(assertions));
@@ -1037,22 +1037,22 @@ internal static partial class Handlers
     {
         "combat-rounds" => Hooked("CombatRounds", typeof(global::Srd52Combat.Requests.CombatRoundsRequest)),
         "round-duration" => Hooked("RoundDuration", typeof(global::Srd52Combat.Requests.RoundDurationRequest)),
-        "next-round" => Hooked("NextRound", typeof(global::Srd52Combat.Requests.NextRoundRequest)),
-        "combat-steps" => Hooked("CombatSteps", typeof(global::Srd52Combat.Requests.CombatStepsRequest)),
+        "next-round" => true,
+        "combat-steps" => true,
         "initiative-roll" => true,
-        "group-initiative" => Hooked("GroupInitiative", typeof(global::Srd52Combat.Requests.GroupInitiativeRequest)),
+        "group-initiative" => true,
         "surprised" => Hooked("Surprised", typeof(global::Srd52Combat.Requests.SurprisedRequest)),
-        "surprise-disadvantage" => Hooked("SurpriseDisadvantage", typeof(global::Srd52Combat.Requests.SurpriseDisadvantageRequest)),
+        "surprise-disadvantage" => true,
         "initiative-order" => true,
         "initiative-ties" => Hooked("InitiativeTies", typeof(global::Srd52Combat.Requests.InitiativeTiesRequest)),
         "initiative-ties-uncovered" => true,
-        "turn-move-and-action" => Hooked("TurnMoveAndAction", typeof(global::Srd52Combat.Requests.TurnMoveAndActionRequest)),
+        "turn-move-and-action" => true,
         "action-options" => Hooked("ActionOptions", typeof(global::Srd52Combat.Requests.ActionOptionsRequest)),
         "brief-or-extended-communication" => Hooked("BriefOrExtendedCommunication", typeof(global::Srd52Combat.Requests.BriefOrExtendedCommunicationRequest)),
-        "communication-cost" => Hooked("CommunicationCost", typeof(global::Srd52Combat.Requests.CommunicationCostRequest)),
-        "free-object-interaction" => Hooked("FreeObjectInteraction", typeof(global::Srd52Combat.Requests.FreeObjectInteractionRequest)),
+        "communication-cost" => true,
+        "free-object-interaction" => true,
         "gm-requires-action" => Hooked("GmRequiresAction", typeof(global::Srd52Combat.Requests.GmRequiresActionRequest)),
-        "doing-nothing" => Hooked("DoingNothing", typeof(global::Srd52Combat.Requests.DoingNothingRequest)),
+        "doing-nothing" => true,
         "side-defeated" => Hooked("SideDefeated", typeof(global::Srd52Combat.Requests.SideDefeatedRequest)),
         "sides-agree-to-end" => Hooked("SidesAgreeToEnd", typeof(global::Srd52Combat.Requests.SidesAgreeToEndRequest)),
         "combat-end" => Hooked("CombatEnd", typeof(global::Srd52Combat.Requests.CombatEndRequest)),
@@ -1068,7 +1068,7 @@ internal static partial class Handlers
         "speed-and-size-sources" => Hooked("SpeedAndSizeSources", typeof(global::Srd52Combat.Requests.SpeedAndSizeSourcesRequest)),
         "difficult-terrain" => Hooked("DifficultTerrain", typeof(global::Srd52Combat.Requests.DifficultTerrainRequest)),
         "difficult-terrain-cost" => Hooked("DifficultTerrainCost", typeof(global::Srd52Combat.Requests.DifficultTerrainCostRequest)),
-        "break-up-move" => Hooked("BreakUpMove", typeof(global::Srd52Combat.Requests.BreakUpMoveRequest)),
+        "break-up-move" => true,
         "dropping-prone" => true,
         "size-categories" => true,
         "creature-size-space" => Hooked("CreatureSizeSpace", typeof(global::Srd52Combat.Requests.CreatureSizeSpaceRequest)),

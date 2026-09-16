@@ -242,28 +242,28 @@ public sealed class CorrespondenceTests
         AssertDeclines("round-duration", UnresolvedReason.UnsupportedRule, EntryPoints.RoundDuration.Resolve(global::Srd52Combat.Requests.RoundDurationRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / The Order of Combat / p. 13"));
 
     [Fact]
-    public void next_round__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("next-round", UnresolvedReason.UnsupportedRule, EntryPoints.NextRound.Resolve(global::Srd52Combat.Requests.NextRoundRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / The Order of Combat / p. 13"));
+    public void next_round__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("next-round"), "next-round is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void combat_steps__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("combat-steps", UnresolvedReason.UnsupportedRule, EntryPoints.CombatSteps.Resolve(global::Srd52Combat.Requests.CombatStepsRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Combat Step by Step / p. 13"));
+    public void combat_steps__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("combat-steps"), "combat-steps is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void initiative_roll__is_implemented_so_a_hand_written_handler_answers_it() =>
         Assert.True(Registry.HasImplementation("initiative-roll"), "initiative-roll is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void group_initiative__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("group-initiative", UnresolvedReason.UnsupportedRule, EntryPoints.GroupInitiative.Resolve(global::Srd52Combat.Requests.GroupInitiativeRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
+    public void group_initiative__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("group-initiative"), "group-initiative is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void surprised__declines_UnsupportedRule_row_2() =>
         AssertDeclines("surprised", UnresolvedReason.UnsupportedRule, EntryPoints.Surprised.Resolve(global::Srd52Combat.Requests.SurprisedRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
 
     [Fact]
-    public void surprise_disadvantage__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("surprise-disadvantage", UnresolvedReason.UnsupportedRule, EntryPoints.SurpriseDisadvantage.Resolve(global::Srd52Combat.Requests.SurpriseDisadvantageRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Initiative / p. 13"));
+    public void surprise_disadvantage__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("surprise-disadvantage"), "surprise-disadvantage is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void initiative_order__is_implemented_so_a_hand_written_handler_answers_it() =>
@@ -290,8 +290,8 @@ public sealed class CorrespondenceTests
         Assert.True(Registry.HasImplementation("initiative-ties-uncovered"), "initiative-ties-uncovered is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void turn_move_and_action__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("turn-move-and-action", UnresolvedReason.UnsupportedRule, EntryPoints.TurnMoveAndAction.Resolve(global::Srd52Combat.Requests.TurnMoveAndActionRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Your Turn / p. 13"));
+    public void turn_move_and_action__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("turn-move-and-action"), "turn-move-and-action is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void action_options__declines_OutsideCurrentScope_row_1() =>
@@ -302,20 +302,32 @@ public sealed class CorrespondenceTests
         AssertDeclines("brief-or-extended-communication", UnresolvedReason.UnsupportedRule, EntryPoints.BriefOrExtendedCommunication.Resolve(global::Srd52Combat.Requests.BriefOrExtendedCommunicationRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Your Turn / p. 13"));
 
     [Fact]
-    public void communication_cost__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("communication-cost", UnresolvedReason.UnsupportedRule, EntryPoints.CommunicationCost.Resolve(global::Srd52Combat.Requests.CommunicationCostRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Your Turn / p. 13"));
+    public void communication_cost__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("communication-cost"), "communication-cost is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void free_object_interaction__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("free-object-interaction", UnresolvedReason.UnsupportedRule, EntryPoints.FreeObjectInteraction.Resolve(global::Srd52Combat.Requests.FreeObjectInteractionRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Your Turn / p. 13"));
+    public void free_object_interaction__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("free-object-interaction"), "free-object-interaction is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
-    public void gm_requires_action__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("gm-requires-action", UnresolvedReason.UnsupportedRule, EntryPoints.GmRequiresAction.Resolve(global::Srd52Combat.Requests.GmRequiresActionRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Your Turn / p. 14"));
+    public void gm_requires_action__is_implemented_and_answers_or_demands_the_assertion()
+    {
+        if (Registry.HasImplementation("gm-requires-action"))
+        {
+            return;
+        }
+
+        var value = new object();
+        var resolved = Registry.Resolve("gm-requires-action", RuleRequest.Empty.Assert("gm-requires-action", value)).Match<object?>(v => v, _ => null);
+        Assert.Same(value, resolved);
+        var typed = EntryPoints.GmRequiresAction.Resolve(global::Srd52Combat.Requests.GmRequiresActionRequest.Asserting(value)).Match<object?>(v => v, _ => null);
+        Assert.Same(value, typed);
+        Assert.Throws<AssertionRequiredException>(() => Registry.Resolve("gm-requires-action", RuleRequest.Empty));
+    }
 
     [Fact]
-    public void doing_nothing__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("doing-nothing", UnresolvedReason.UnsupportedRule, EntryPoints.DoingNothing.Resolve(global::Srd52Combat.Requests.DoingNothingRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Your Turn / p. 14"));
+    public void doing_nothing__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("doing-nothing"), "doing-nothing is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void side_defeated__declines_UnsupportedRule_row_2() =>
@@ -378,8 +390,8 @@ public sealed class CorrespondenceTests
         AssertDeclines("difficult-terrain-cost", UnresolvedReason.UnsupportedRule, EntryPoints.DifficultTerrainCost.Resolve(global::Srd52Combat.Requests.DifficultTerrainCostRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Difficult Terrain / p. 14"));
 
     [Fact]
-    public void break_up_move__declines_UnsupportedRule_row_2() =>
-        AssertDeclines("break-up-move", UnresolvedReason.UnsupportedRule, EntryPoints.BreakUpMove.Resolve(global::Srd52Combat.Requests.BreakUpMoveRequest.Empty), new SourceLocator("srd-5.2.1", "Combat / Breaking Up Your Move / p. 14"));
+    public void break_up_move__is_implemented_so_a_hand_written_handler_answers_it() =>
+        Assert.True(Registry.HasImplementation("break-up-move"), "break-up-move is implemented in the overlay and has no [Implements] handler");
 
     [Fact]
     public void dropping_prone__is_implemented_so_a_hand_written_handler_answers_it() =>
