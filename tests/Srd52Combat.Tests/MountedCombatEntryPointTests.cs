@@ -32,6 +32,7 @@ public class MountedCombatEntryPointTests
             Candidate = "the warhorse",
             CandidateSize = CreatureSize.Large,
             Willing = WillingStatement.IsNot(Gm),
+            Anatomy = AnatomyStatement.NotStated("the warhorse", Gm),
         }));
 
         Assert.False(unwilling.CanServeAsAMount);
@@ -47,6 +48,7 @@ public class MountedCombatEntryPointTests
                 Candidate = "the mastiff",
                 CandidateSize = size,
                 Willing = WillingStatement.Is(Gm),
+                Anatomy = AnatomyStatement.NotStated("the mastiff", Gm),
             }));
 
             Assert.False(tooSmall.CanServeAsAMount);
@@ -63,6 +65,7 @@ public class MountedCombatEntryPointTests
             Candidate = "the giant spider",
             CandidateSize = CreatureSize.Large,
             Willing = WillingStatement.Is(Gm),
+            Anatomy = AnatomyStatement.NotStated("the giant spider", Gm),
         }));
 
         Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
@@ -72,16 +75,99 @@ public class MountedCombatEntryPointTests
     }
 
     [Fact]
-    public void What_anatomy_is_appropriate_states_no_measure_and_declines_RequiresInterpretation()
+    public void A_willing_larger_creature_the_GM_calls_appropriately_shaped_can_serve_as_a_mount_naming_the_ruling()
+    {
+        var eligible = Value<MountEligibility>(EntryPoints.MountEligibility.Resolve(new MountEligibilityRequest
+        {
+            Rider = CreatureSize.Medium,
+            Candidate = "the giant spider",
+            CandidateSize = CreatureSize.Large,
+            Willing = WillingStatement.Is(Gm),
+            Anatomy = AnatomyStatement.Appropriate("the giant spider", Gm),
+        }));
+
+        Assert.True(eligible.CanServeAsAMount);
+
+        // The anatomy limb is what decided it, so the answer carries appropriate-anatomy's ruling.
+        Assert.Equal(OwnerRulings.TheGmDecidesTheAnatomy, Assert.Single(eligible.Rulings));
+
+        // And the GM's refusal is an answer too, on the same ruling.
+        var refused = Value<MountEligibility>(EntryPoints.MountEligibility.Resolve(new MountEligibilityRequest
+        {
+            Rider = CreatureSize.Medium,
+            Candidate = "the giant spider",
+            CandidateSize = CreatureSize.Large,
+            Willing = WillingStatement.Is(Gm),
+            Anatomy = AnatomyStatement.NotAppropriate("the giant spider", Gm),
+        }));
+
+        Assert.False(refused.CanServeAsAMount);
+        Assert.Equal(OwnerRulings.TheGmDecidesTheAnatomy, Assert.Single(refused.Rulings));
+
+        // A limb the rule measures itself relies on no ruling at all.
+        var unwilling = Value<MountEligibility>(EntryPoints.MountEligibility.Resolve(new MountEligibilityRequest
+        {
+            Rider = CreatureSize.Medium,
+            Candidate = "the giant spider",
+            CandidateSize = CreatureSize.Large,
+            Willing = WillingStatement.IsNot(Gm),
+            Anatomy = AnatomyStatement.Appropriate("the giant spider", Gm),
+        }));
+
+        Assert.Empty(unwilling.Rulings);
+    }
+
+    [Fact]
+    public void A_GM_statement_that_the_anatomy_is_appropriate_answers_naming_the_owners_ruling()
+    {
+        var ruling = Value<AnatomyRuling>(EntryPoints.AppropriateAnatomy.Resolve(new AppropriateAnatomyRequest
+        {
+            Anatomy = AnatomyStatement.Appropriate("the giant spider", Gm),
+        }));
+
+        Assert.True(ruling.Appropriate);
+        Assert.Equal("Combat / Mounted Combat / p. 15", ruling.Authority.Citation);
+        Assert.Equal(EntryPoints.AppropriateAnatomy.Registered.Locator, ruling.Authority);
+
+        // Brandon's, not the corpus's: the answer says so, and says where to read it.
+        var owners = Assert.Single(ruling.Rulings);
+        Assert.Equal("appropriate-anatomy/gm-decides", owners.Id);
+        Assert.Equal("appropriate-anatomy", owners.EntryId);
+        Assert.Equal("Brandon", owners.RuledBy);
+        Assert.Equal(new DateOnly(2026, 9, 16), owners.RuledOn);
+        Assert.Equal("docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md", owners.Record);
+        Assert.Contains("names nobody who decides", owners.Span, StringComparison.Ordinal);
+
+        // The GM's refusal is an answer too, and rests on the same ruling.
+        var notAppropriate = Value<AnatomyRuling>(EntryPoints.AppropriateAnatomy.Resolve(new AppropriateAnatomyRequest
+        {
+            Anatomy = AnatomyStatement.NotAppropriate("the giant spider", Gm),
+        }));
+
+        Assert.False(notAppropriate.Appropriate);
+        Assert.Equal(owners, Assert.Single(notAppropriate.Rulings));
+    }
+
+    [Fact]
+    public void With_no_GM_statement_the_engine_never_assumes_an_anatomy_and_declines()
     {
         var declined = Declined(EntryPoints.AppropriateAnatomy.Resolve(new AppropriateAnatomyRequest
         {
-            Candidate = "the giant spider",
+            Anatomy = AnatomyStatement.NotStated("the giant spider", Gm),
         }));
 
         Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
         Assert.Equal(EntryPoints.AppropriateAnatomy.Registered.Locator, declined.Locator);
         Assert.Contains("no measure", declined.Attempted, StringComparison.Ordinal);
+        Assert.Contains("has determined nothing", declined.Attempted, StringComparison.Ordinal);
+
+        // A decline relies on no ruling and names none (rules-factory 0027 § 4).
+        Assert.DoesNotContain("gm-decides", declined.Attempted, StringComparison.Ordinal);
+
+        // And the statement is demanded, never inferred in either direction.
+        var missing = Assert.Throws<ArgumentException>(() =>
+            EntryPoints.AppropriateAnatomy.Resolve(AppropriateAnatomyRequest.Empty));
+        Assert.Equal("Anatomy", missing.ParamName);
     }
 
     [Fact]
@@ -200,11 +286,49 @@ public class MountedCombatEntryPointTests
             Assert.True(control.CanBeControlled);
             Assert.Equal("Combat / Controlling a Mount / p. 16", control.Authority.Citation);
             Assert.Equal(EntryPoints.MountControlRequiresTraining.Registered.Locator, control.Authority);
+
+            // The corpus names these two itself, so this answer is the corpus's and names no ruling.
+            Assert.Empty(control.Rulings);
         }
     }
 
     [Fact]
-    public void Whether_another_creature_is_trained_declines_RequiresInterpretation_citing_page_16()
+    public void A_creature_the_corpus_does_not_name_is_trained_when_the_caller_states_it_naming_the_owners_ruling()
+    {
+        var trained = Value<MountControl>(EntryPoints.MountControlRequiresTraining.Resolve(
+            new MountControlRequiresTrainingRequest
+            {
+                Creature = MountCreatureStatement.AnotherCreature("the giant elk", Gm, trained: true),
+                Mount = Ridden,
+            }));
+
+        Assert.True(trained.CanBeControlled);
+
+        var owners = Assert.Single(trained.Rulings);
+        Assert.Equal("mount-control-requires-training/training-is-stated", owners.Id);
+        Assert.Equal("Brandon", owners.RuledBy);
+        Assert.Equal(new DateOnly(2026, 9, 16), owners.RuledOn);
+        Assert.Equal("docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md", owners.Record);
+
+        // The caller may state the other way, and that rests on the ruling too.
+        var untrained = Value<MountControl>(EntryPoints.MountControlRequiresTraining.Resolve(
+            new MountControlRequiresTrainingRequest
+            {
+                Creature = MountCreatureStatement.AnotherCreature("the giant elk", Gm, trained: false),
+                Mount = Ridden,
+            }));
+
+        Assert.False(untrained.CanBeControlled);
+        Assert.Equal(owners, Assert.Single(untrained.Rulings));
+
+        // The corpus's own instances are not the caller's to contradict.
+        var contradicted = Assert.Throws<ArgumentException>(() =>
+            new MountCreatureStatement(MountCreatureKind.DomesticatedHorse, "the horse", Gm, MountTraining.NotTrained));
+        Assert.Equal("Training", contradicted.ParamName);
+    }
+
+    [Fact]
+    public void With_no_stated_training_a_creature_the_corpus_does_not_name_declines()
     {
         var declined = Declined(EntryPoints.MountControlRequiresTraining.Resolve(
             new MountControlRequiresTrainingRequest
@@ -217,6 +341,9 @@ public class MountedCombatEntryPointTests
         Assert.Equal(EntryPoints.MountControlRequiresTraining.Registered.Locator, declined.Locator);
         Assert.Contains("'mount-control-requires-training'", declined.Attempted, StringComparison.Ordinal);
         Assert.Contains("similar creatures", declined.Attempted, StringComparison.Ordinal);
+
+        // A decline relies on no ruling and names none (rules-factory 0027 § 4).
+        Assert.DoesNotContain("training-is-stated", declined.Attempted, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -238,6 +365,37 @@ public class MountedCombatEntryPointTests
         Assert.True(turn.Allows(ControlledMountAction.Dodge));
         Assert.Equal("Combat / Controlling a Mount / p. 16", turn.Authority.Citation);
         Assert.Equal(EntryPoints.ControlledMountTurn.Registered.Locator, turn.Authority);
+
+        // A horse is trained by the corpus's own words, so this turn rests on no ruling.
+        Assert.Empty(turn.Rulings);
+    }
+
+    [Fact]
+    public void A_controlled_mount_trained_by_the_callers_statement_carries_that_ruling_into_its_turn()
+    {
+        var turn = Value<ControlledMountTurn>(EntryPoints.ControlledMountTurn.Resolve(new ControlledMountTurnRequest
+        {
+            Creature = MountCreatureStatement.AnotherCreature("the giant elk", Gm, trained: true),
+            Mount = Ridden,
+        }));
+
+        Assert.True(turn.MovesOnYourTurnAsYouDirect);
+        Assert.True(turn.Control.CanBeControlled);
+
+        // This rule has no ruling of its own; it carries its input's (0027 § 4, as amended).
+        Assert.Equal(OwnerRulings.TrainingIsAStatedFact, Assert.Single(turn.Rulings));
+        Assert.Equal(turn.Control.Rulings.ToArray(), turn.Rulings.ToArray());
+
+        // A mount the caller states is not trained is not controlled, on the same ruling.
+        var untrained = Value<ControlledMountTurn>(EntryPoints.ControlledMountTurn.Resolve(new ControlledMountTurnRequest
+        {
+            Creature = MountCreatureStatement.AnotherCreature("the giant elk", Gm, trained: false),
+            Mount = Ridden,
+        }));
+
+        Assert.False(untrained.MovesOnYourTurnAsYouDirect);
+        Assert.Empty(untrained.ActionOptions);
+        Assert.Equal(OwnerRulings.TrainingIsAStatedFact, Assert.Single(untrained.Rulings));
     }
 
     [Fact]
@@ -256,7 +414,7 @@ public class MountedCombatEntryPointTests
     }
 
     [Fact]
-    public void A_controlled_mounts_turn_declines_where_the_mounts_training_is_the_open_question()
+    public void A_controlled_mounts_turn_declines_where_nothing_states_the_mounts_training()
     {
         var declined = Declined(EntryPoints.ControlledMountTurn.Resolve(new ControlledMountTurnRequest
         {

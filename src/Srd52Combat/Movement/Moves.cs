@@ -85,13 +85,23 @@ public sealed record DroppingProneRuling(bool Allowed, int SpeedInFeet, SourceLo
 /// <param name="YourSize">Your size category, as the caller stated it.</param>
 /// <param name="Other">The creature whose space it is, as the caller stated it.</param>
 /// <param name="Authority">The rule: <c>moving-through-creatures</c>, "Combat / Moving around Other Creatures / p. 14".</param>
+/// <param name="Rulings">
+/// The owner's rulings this answer relies on: <c>moving-through-creatures/two-or-more</c> where the
+/// creature is more than two sizes larger or smaller, and none for the four kinds of space the
+/// sentence itself names.
+/// </param>
 public sealed record PassageRuling(
     bool MayPassThrough,
     string Because,
     CreatureSize YourSize,
     CreatureInSpace Other,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
 {
+    /// <summary>The rulings, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
+
     /// <inheritdoc/>
     public override string ToString() =>
         $"you ({YourSize}) can pass through {Other.Id}'s space: {Because} [{Authority}]";

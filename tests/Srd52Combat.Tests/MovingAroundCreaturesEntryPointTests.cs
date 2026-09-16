@@ -34,18 +34,46 @@ public class MovingAroundCreaturesEntryPointTests
             Assert.Contains(because, ruling.Because, StringComparison.Ordinal);
             Assert.Equal(EntryPoints.MovingThroughCreatures.Registered.Locator, ruling.Authority);
             Assert.Equal("Combat / Moving around Other Creatures / p. 14", ruling.Authority.Citation);
+
+            // Each of the four is the sentence's own case, and rests on no ruling of the owner's.
+            Assert.Empty(ruling.Rulings);
         }
     }
 
     [Fact]
-    public void A_creature_more_than_two_sizes_away_or_matching_none_of_the_four_cases_declines_RequiresInterpretation()
+    public void A_creature_more_than_two_sizes_away_may_be_passed_through_naming_the_owners_ruling()
     {
         foreach (var (yourSize, other) in new[]
         {
-            // More than two sizes away: read literally the sentence does not name it.
+            // Three sizes larger, and three sizes smaller.
             (CreatureSize.Medium, CreatureInSpace.Stranger("a dragon", CreatureSize.Gargantuan, Gm)),
+            (CreatureSize.Gargantuan, CreatureInSpace.Stranger("a bandit", CreatureSize.Medium, Gm)),
+        })
+        {
+            var ruling = Value<PassageRuling>(Pass(yourSize, other));
+
+            Assert.True(ruling.MayPassThrough);
+            Assert.Contains("two or more", ruling.Because, StringComparison.Ordinal);
+
+            // Read literally the sentence names only a creature exactly two sizes away. That it
+            // reaches further is Brandon's ruling, and the answer says whose it is.
+            var owners = Assert.Single(ruling.Rulings);
+            Assert.Equal("moving-through-creatures/two-or-more", owners.Id);
+            Assert.Equal("moving-through-creatures", owners.EntryId);
+            Assert.Equal("Brandon", owners.RuledBy);
+            Assert.Equal(new DateOnly(2026, 9, 16), owners.RuledOn);
+            Assert.Equal("docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md", owners.Record);
+            Assert.Contains("exactly two sizes, or two or more", owners.Span, StringComparison.Ordinal);
+        }
+    }
+
+    [Fact]
+    public void A_creature_fewer_than_two_sizes_away_is_the_part_of_the_question_nobody_has_ruled_on()
+    {
+        foreach (var (yourSize, other) in new[]
+        {
             // Fewer than two sizes away and none of the other cases: the sentence does not say that
-            // every other creature's space cannot be passed through.
+            // every other creature's space cannot be passed through, and nobody has ruled that it does.
             (CreatureSize.Medium, CreatureInSpace.Stranger("a bandit", CreatureSize.Medium, Gm)),
             (CreatureSize.Medium, CreatureInSpace.Stranger("an ogre", CreatureSize.Large, Gm)),
         })
@@ -56,6 +84,10 @@ public class MovingAroundCreaturesEntryPointTests
             Assert.Equal(EntryPoints.MovingThroughCreatures.Registered.Locator, declined.Locator);
             Assert.Contains("'moving-through-creatures'", declined.Attempted, StringComparison.Ordinal);
             Assert.Contains(other.Id, declined.Attempted, StringComparison.Ordinal);
+            Assert.Contains("does not say that every other creature's space", declined.Attempted, StringComparison.Ordinal);
+
+            // This is the span the overlay's `declines` names, so it says nothing of the ruling.
+            Assert.DoesNotContain("two or more", declined.Attempted, StringComparison.Ordinal);
         }
     }
 

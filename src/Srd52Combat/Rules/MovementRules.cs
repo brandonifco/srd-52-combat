@@ -94,42 +94,62 @@ public static class MovementRules
     /// sizes larger or smaller than you."
     /// </summary>
     /// <remarks>
-    /// The four cases the sentence names resolve. Everything else turns on the entry's unresolved
-    /// question -- whether "two sizes larger or smaller" means exactly two or two or more, and
-    /// whether the sentence makes every other creature's space impassable -- so a creature more than
-    /// two sizes away, and one fewer than two sizes away that is neither Tiny nor an ally nor
-    /// Incapacitated, both decline <see cref="UnresolvedReason.RequiresInterpretation"/> citing this
-    /// entry. The engine does not choose a reading.
+    /// The four cases the sentence names resolve on the corpus's own words, and name no ruling.
+    /// <para>
+    /// The entry's question has two parts, and the owner has ruled on one. **Brandon ruled on
+    /// 2026-09-16 that "two sizes larger or smaller" means two or more**
+    /// (<c>moving-through-creatures/two-or-more</c>, <c>docs/decisions/0007</c>), so a creature more
+    /// than two sizes larger or smaller may be passed through — a Medium creature passes through a
+    /// Huge or a Gargantuan one — and that answer names the ruling in
+    /// <see cref="PassageRuling.Rulings"/>.
+    /// </para>
+    /// <para>
+    /// The other part is still declined: the sentence permits passage through four kinds of space
+    /// without saying that every other creature's space is impassable. So a creature fewer than two
+    /// sizes away that is neither Tiny nor an ally nor Incapacitated still declines
+    /// <see cref="UnresolvedReason.RequiresInterpretation"/> citing this entry, and the engine chooses
+    /// no reading of it. The overlay's <c>declines</c> names that part and its test.
+    /// </para>
     /// </remarks>
     /// <param name="yourSize">Your size category, as the caller states it.</param>
     /// <param name="other">The creature whose space it is, as the caller states it.</param>
-    /// <returns>That you may pass through, or the decline.</returns>
+    /// <returns>That you may pass through, or the decline of the part nobody has ruled on.</returns>
     public static Resolution<PassageRuling> PassThrough(CreatureSize yourSize, CreatureInSpace other)
     {
         ArgumentNullException.ThrowIfNull(other);
         Checks.Defined(yourSize, nameof(yourSize));
 
+        int steps = Math.Abs(Order.Steps(yourSize, other.Size));
         string? because =
             other.IsYourAlly ? "it is your ally"
             : other.HasIncapacitatedCondition ? "it has the Incapacitated condition"
             : other.Size == CreatureSize.Tiny ? "it is Tiny"
-            : Math.Abs(Order.Steps(yourSize, other.Size)) == TwoSizes ? "it is two sizes larger or smaller than you"
+            : steps == TwoSizes ? "it is two sizes larger or smaller than you"
             : null;
         if (because is not null)
         {
-            return Resolution<PassageRuling>.FromValue(
-                new PassageRuling(true, because, yourSize, other, MapEntries.MovingThroughCreatures.Locator));
+            return Resolution<PassageRuling>.FromValue(new PassageRuling(
+                true, because, yourSize, other, MapEntries.MovingThroughCreatures.Locator, OwnerRulings.None));
         }
 
-        int steps = Math.Abs(Order.Steps(yourSize, other.Size));
-        string situation = steps > TwoSizes
-            ? $"{other.Id} is {steps} sizes {(Order.IsLarger(other.Size, yourSize) ? "larger" : "smaller")} than you, and whether "
-              + "“two sizes larger or smaller” means exactly two or two or more is not stated"
-            : $"{other.Id} is none of the four kinds of creature the sentence names, and the sentence does not say that "
-              + "every other creature's space cannot be passed through";
+        if (steps > TwoSizes)
+        {
+            // The owner's ruling, not the corpus's words: "two sizes larger or smaller" is two or more.
+            return Resolution<PassageRuling>.FromValue(new PassageRuling(
+                true,
+                $"it is {steps} sizes {(Order.IsLarger(other.Size, yourSize) ? "larger" : "smaller")} than you, and "
+                + "“two sizes larger or smaller” means two or more",
+                yourSize,
+                other,
+                MapEntries.MovingThroughCreatures.Locator,
+                [OwnerRulings.TwoSizesMeansTwoOrMore]));
+        }
+
         return Resolution<PassageRuling>.FromUnresolved(new UnresolvedResult(
             UnresolvedReason.RequiresInterpretation,
-            $"{Cited.Attempting(MapEntries.MovingThroughCreatures)} for you ({yourSize}) and {other}: {situation}",
+            $"{Cited.Attempting(MapEntries.MovingThroughCreatures)} for you ({yourSize}) and {other}: {other.Id} is none of "
+            + "the four kinds of creature the sentence names, and the sentence does not say that every other creature's space "
+            + "cannot be passed through",
             MapEntries.MovingThroughCreatures.Locator));
     }
 

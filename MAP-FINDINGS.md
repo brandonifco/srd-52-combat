@@ -13,6 +13,15 @@ reader would otherwise have to rediscover, four gaps in the method rather than i
 questions for the engine's owner (6, 11, 17, 21). No batch has found an entry that was the wrong
 *unit* of work.
 
+**Brandon ruled on six questions on 2026-09-15 and 2026-09-16** (ruleset version 7,
+[decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)).
+Five are owner's rulings held in this engine's overlay under rules-factory 0027; the sixth,
+Disengage, is the engine's own recorded decision, because the entry it concerns records no open
+question for a ruling to sit on. **None of them is a finding against the map**: each answers where
+the corpus says nothing, and every map entry stays as it was. They close findings 11, 12, 14, 17 and
+21, and the ruled half of 3; each of those sections says below what it now records. **Finding 6 is
+still open**: nobody has ruled on whether `dropping-prone` should ask whose turn it is.
+
 ---
 
 ## 1. Four entries in one batch rested on two `kind: value` entries in none
@@ -46,6 +55,11 @@ limb already covers, so the smaller half of the limb first does any work for a L
 sizes smaller is Small). It is worth knowing when reading the tests, which demonstrate the smaller
 half with a Large creature and a Small one.
 
+*Ruled by the owner (version 7, [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)):* "two sizes larger or smaller" means two or more
+(`moving-through-creatures/two-or-more`), so the limb now reaches a Gargantuan creature for a Medium
+one, and the smaller half reaches Tiny for a Huge one. The observation stands for the exactly-two
+cases the tests still demonstrate.
+
 ## 4. An Incapacitated creature's space can be passed through and is still Difficult Terrain
 
 `moving-through-creatures` names four kinds of space you can pass through, the Incapacitated
@@ -68,6 +82,9 @@ parameter for it. The engine answers the permission the rule grants and takes on
 does not ask whether it is your turn, and so cannot refuse a caller who asks off-turn. Recorded as
 a question for the engine's owner rather than a fault: the alternative is a caller-supplied "it is
 my turn" statement on an entry whose evidence makes it a condition.
+
+*Still open at version 7.* The rulings of 2026-09-15 and 2026-09-16 did not reach this one, and
+`dropping-prone` still answers the permission without asking whose turn it is.
 
 ---
 
@@ -148,6 +165,15 @@ out of it again on someone else's turn, is still protected — is not a case the
 the engine's answer comes from the narrower text not being in it. It is listed here rather than
 guessed at.
 
+*Answered, and not by a 0027 ruling (version 7, [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)).* Brandon decided on 2026-09-16 that the engine
+follows the glossary: the Disengage action's protection covers your own movement for the rest of your
+turn, and no longer. Because this entry is `clarity: clear` and carries no `ambiguity.question`,
+there is no span for an owner's ruling to quote, and `rulings` on its overlay item would be refused
+by the factory. So it is held as this engine's own `OwnerDecision`, named on every verdict and offer
+that rests on it, and the map is unchanged: the slice's sentence really is clear, and it is the
+narrower glossary rule — which the map already names in `dependsOn` and `crossReferences` — that the
+owner chose to follow.
+
 ---
 
 ## 12. An unresolved question with `affectsDraws: true` takes two entries out of service
@@ -162,6 +188,13 @@ visible; nothing in a backlog item says that building one entry of such a pair c
 answer. Building `group-initiative` moved `initiative-roll`'s stated-group decline from
 `UnsupportedRule` to `RequiresInterpretation`
 ([decision 0005](docs/decisions/0005-the-turn-and-the-round-are-stated-by-the-caller-and-a-group-of-identical-creatures-declines.md)).
+
+*Closed by the owner's ruling (version 7, [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)).* Brandon ruled on 2026-09-15 that every creature rolls
+its own Initiative and this engine never groups (`group-initiative/no-grouping`). Both entries answer
+again: `group-initiative` records the statement and gives the GM no roll, `initiative-roll` throws one
+d20 per participant, and each names the ruling. The shape the finding describes — an unresolved
+question with `affectsDraws: true` taking two entries out of service — is real, and an owner's ruling
+is what put them back.
 
 ## 13. Nothing in the method says what an entry answers when an *in-slice* gate holds
 
@@ -182,6 +215,13 @@ are answered. An entry marked unresolved is not an entry that can only decline, 
 criterion says as much ("where the answer turns on the question"). Worth recording because the shape
 recurs: `communication-cost` and `group-initiative` in this batch each answer one half and decline
 the other.
+
+*Closed for `next-round` by the owner's ruling (version 7, [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)).* Brandon ruled on 2026-09-15 that
+combat ends where both sides agree and neither is defeated (`next-round/agreement-ends-it`), so the
+fourth case answers too. The same question sits on `combat-end`, which is not built: a ruling is held
+per entry, and only on an entry the overlay marks `implemented`, so that entry carries no ruling yet
+and still declines as an unbuilt in-scope rule. When it is built it takes a second ruling, with the
+same answer and its own span.
 
 ## 15. Part of `free-object-interaction`'s span is a rule the extent does not cover
 
@@ -228,6 +268,16 @@ spider and the engine will price the mounting.
 The ruling worth having: is "an appropriate anatomy" the GM's call, in which case the entry should
 carry an `assertedBy` and the statement is an assertion rather than a parameter? Or is the gate
 what this engine made it, a fact of the table's fiction that the engine records and never checks?
+
+*Ruled by the owner (version 7, [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)).* Brandon ruled on 2026-09-16 that it is the GM's call
+(`appropriate-anatomy/gm-decides`): the caller supplies the determination explicitly, in the shape
+`gm-requires-action`'s GM assertion has, and the engine never assumes one. `appropriate-anatomy` now
+answers where the GM has determined something, naming the ruling, and declines where the GM has not;
+`mount-eligibility` answers with it, so a chain of rules inside the engine does reach a creature that
+serves as a mount. **The map is unchanged, and no `assertedBy` is filed as a finding**: that the GM
+decides is Brandon's answer to a question the corpus leaves open, not something the corpus says, so
+it belongs in this engine's overlay and binds no other engine built from the map. `MountStatement`
+stays as decision 0006 made it.
 
 ## 18. `falling-off` declares a draw its own dependency puts outside the engine
 
@@ -281,6 +331,13 @@ speak to training — it gives instances — and the question the map asks is pr
 list. A ruling from the engine's owner would settle whether "trained to accept a rider" is a
 caller-supplied fact with an `assertedBy`, or a gap that stays declined until a corpus outside this
 extent defines it.
+
+*Ruled by the owner (version 7, [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md)).* Brandon ruled on 2026-09-16 that it is a caller-supplied fact,
+as a Swim Speed is (`mount-control-requires-training/training-is-stated`). The creatures the corpus
+names — a domesticated horse, a mule — still answer on the corpus's own words and name no ruling; any
+other creature answers from the caller's statement and names the ruling, and declines where nothing is
+stated. As with finding 17 the map does not move, and the engine files no `assertedBy` finding against
+it.
 
 ## 22. `movement-deduction` prices a part of a move, not a fraction of one
 

@@ -5,24 +5,63 @@ using Srd52Combat.Movement;
 namespace Srd52Combat.Mounts;
 
 /// <summary>
-/// What <c>mount-eligibility</c> can say of a candidate: "A willing creature that is at least one
-/// size larger than a rider and that has an appropriate anatomy can serve as a mount", "Combat /
-/// Mounted Combat / p. 15". The rule answers only where a limb it can measure fails; where
-/// willingness and size both hold, what remains is <c>appropriate-anatomy</c>, and the engine
-/// declines rather than choosing a reading.
+/// What <c>appropriate-anatomy</c> answers, "Combat / Mounted Combat / p. 15": whether this
+/// creature has an anatomy appropriate to a mount. The corpus states no measure and names nobody who
+/// decides; Brandon ruled on 2026-09-16 that it is the GM's call
+/// (<c>appropriate-anatomy/gm-decides</c>, <c>docs/decisions/0007</c>), so the answer is the GM's
+/// determination, reported with the ruling that makes it the answer. Where the GM has determined
+/// nothing the rule declines instead, and a decline names no ruling.
 /// </summary>
-/// <param name="CanServeAsAMount">False: the answer this rule gives is the refusal.</param>
+/// <param name="Appropriate">What the GM determined.</param>
+/// <param name="Statement">The GM's determination, as the caller supplied it.</param>
+/// <param name="Because">Why, in the engine's words.</param>
+/// <param name="Authority">The rule: "Combat / Mounted Combat / p. 15".</param>
+/// <param name="Rulings">The owner's ruling this answer relies on: <c>appropriate-anatomy/gm-decides</c>, always.</param>
+public sealed record AnatomyRuling(
+    bool Appropriate,
+    AnatomyStatement Statement,
+    string Because,
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
+{
+    /// <summary>The rulings, checked to be present.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
+
+    /// <inheritdoc/>
+    public override string ToString() =>
+        $"{Statement.Candidate} {(Appropriate ? "has" : "does not have")} an anatomy appropriate to a mount: {Because} [{Authority.Citation}]";
+}
+
+/// <summary>
+/// What <c>mount-eligibility</c> says of a candidate: "A willing creature that is at least one
+/// size larger than a rider and that has an appropriate anatomy can serve as a mount", "Combat /
+/// Mounted Combat / p. 15". Two limbs the rule measures itself; the third is
+/// <c>appropriate-anatomy</c>, which the GM decides under Brandon's ruling, so where willingness and
+/// size hold the answer follows the GM's determination and names that ruling.
+/// </summary>
+/// <param name="CanServeAsAMount">Whether the creature can serve as a mount.</param>
 /// <param name="Rider">The rider's size category.</param>
 /// <param name="Candidate">The candidate's size category.</param>
-/// <param name="Because">Which limb of the sentence fails, in the engine's words.</param>
+/// <param name="Because">Which limb of the sentence decided it, in the engine's words.</param>
 /// <param name="Authority">The rule: "Combat / Mounted Combat / p. 15".</param>
+/// <param name="Rulings">
+/// The owner's rulings this answer relies on: <c>appropriate-anatomy/gm-decides</c> where the
+/// anatomy limb is what decided it, carried from <c>appropriate-anatomy</c>'s own answer, and none
+/// where willingness or size decided it, which the rule measures for itself.
+/// </param>
 public sealed record MountEligibility(
     bool CanServeAsAMount,
     CreatureSize Rider,
     CreatureSize Candidate,
     string Because,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
 {
+    /// <summary>The rulings, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
+
     /// <inheritdoc/>
     public override string ToString() =>
         $"a {Candidate} creature {(CanServeAsAMount ? "can" : "can't")} serve as a mount for a {Rider} rider: {Because} [{Authority.Citation}]";
@@ -57,16 +96,26 @@ public sealed record MountingMove(
 /// Whether a mount can be controlled: <c>mount-control-requires-training</c>, "Combat / Controlling
 /// a Mount / p. 16". "You can control a mount only if it has been trained to accept a rider."
 /// </summary>
-/// <param name="CanBeControlled">True when the corpus names the creature as having such training.</param>
+/// <param name="CanBeControlled">True when the corpus names the creature as having such training, or the caller states it.</param>
 /// <param name="Creature">The creature, as the caller stated it.</param>
 /// <param name="Because">Why, in the engine's words.</param>
 /// <param name="Authority">The rule: "Combat / Controlling a Mount / p. 16".</param>
+/// <param name="Rulings">
+/// The owner's rulings this answer relies on: <c>mount-control-requires-training/training-is-stated</c>
+/// where the caller stated the training of a creature the corpus does not name, and none for a
+/// domesticated horse or a mule, whom the corpus itself names.
+/// </param>
 public sealed record MountControl(
     bool CanBeControlled,
     MountCreatureStatement Creature,
     string Because,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
 {
+    /// <summary>The rulings, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
+
     /// <inheritdoc/>
     public override string ToString() =>
         $"the mount {(CanBeControlled ? "can" : "can't")} be controlled: {Because} [{Authority.Citation}]";
@@ -81,14 +130,24 @@ public sealed record MountControl(
 /// <param name="ActsOnTheTurnItIsMounted">"A controlled mount can move and act even on the turn that you mount it."</param>
 /// <param name="Control">What <c>mount-control-requires-training</c> said of the mount.</param>
 /// <param name="Authority">The rule: "Combat / Controlling a Mount / p. 16".</param>
+/// <param name="Rulings">
+/// The owner's rulings this turn relies on: whatever <see cref="Control"/> relied on, carried through,
+/// because a controlled mount's turn rests on its being trained (rules-factory decision 0027 § 4, as
+/// amended on 2026-09-15). This rule has no ruling of its own.
+/// </param>
 public sealed record ControlledMountTurn(
     bool InitiativeMatchesTheRider,
     bool MovesOnYourTurnAsYouDirect,
     ImmutableArray<ControlledMountAction> ActionOptions,
     bool ActsOnTheTurnItIsMounted,
     MountControl Control,
-    SourceLocator Authority)
+    SourceLocator Authority,
+    ImmutableArray<OwnerRuling> Rulings)
 {
+    /// <summary>The rulings, checked to be present, even when there are none.</summary>
+    public ImmutableArray<OwnerRuling> Rulings { get; } =
+        Rulings.IsDefault ? throw new ArgumentNullException(nameof(Rulings)) : Rulings;
+
     /// <summary>Whether an action is one of the three the rule allows.</summary>
     /// <param name="action">The action asked about.</param>
     /// <returns>True when the rule allows it.</returns>
@@ -96,8 +155,10 @@ public sealed record ControlledMountTurn(
 
     /// <inheritdoc/>
     public override string ToString() =>
-        $"the mount's Initiative changes to match the rider's, it moves on the rider's turn as directed, its only action options are "
-        + $"{string.Join(", ", ActionOptions)}, and it can move and act even on the turn it is mounted [{Authority.Citation}]";
+        MovesOnYourTurnAsYouDirect
+            ? $"the mount's Initiative changes to match the rider's, it moves on the rider's turn as directed, its only action options are "
+              + $"{string.Join(", ", ActionOptions)}, and it can move and act even on the turn it is mounted [{Authority.Citation}]"
+            : $"the mount is not controlled, so this rule gives it nothing: {Control} [{Authority.Citation}]";
 }
 
 /// <summary>

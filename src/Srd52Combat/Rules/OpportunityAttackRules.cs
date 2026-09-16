@@ -23,30 +23,55 @@ public static class OpportunityAttackRules
     /// taking the Disengage action. You also don't provoke an Opportunity Attack when you Teleport
     /// or when you are moved without using your movement, action, Bonus Action, or Reaction."
     /// </summary>
+    /// <remarks>
+    /// The slice's sentence states no limit on what the Disengage action protects. The Rules
+    /// Glossary's <c>disengage-action</c> (p. 181, <c>scope: out</c>, which this entry names in
+    /// <c>dependsOn</c>) limits it to "your movement" and to "the rest of the current turn", and the
+    /// map records the difference in the entry's <c>note</c> without asking a question
+    /// (MAP-FINDINGS finding 11). **Brandon decided on 2026-09-16 that the engine follows the
+    /// glossary** (<see cref="OwnerDecisions.DisengageCoversYourOwnMovementThisTurn"/>,
+    /// <c>docs/decisions/0007</c>). That is this engine's decision and not an owner's ruling of
+    /// rules-factory 0027: the entry is <c>clarity: clear</c>, so it has no open question to hold a
+    /// ruling. A verdict the Disengage action decided names the decision in
+    /// <see cref="ProvocationVerdict.Decisions"/>; the other limbs are the slice's own and name
+    /// nothing.
+    /// </remarks>
     /// <param name="leaving">How the creature left reach, and whether it took the Disengage action. Never defaulted.</param>
     /// <returns>Whether the movement provokes, as far as this rule says.</returns>
     public static Resolution<ProvocationVerdict> Avoidance(LeavingReach leaving)
     {
         ArgumentNullException.ThrowIfNull(leaving);
         var locator = MapEntries.OpportunityAttackAvoidance.Locator;
-        if (leaving.DisengageTaken)
+        var followsTheGlossary = OwnerDecisions.DisengageCoversYourOwnMovementThisTurn;
+        if (leaving.ProtectedByDisengage)
         {
             return Resolution<ProvocationVerdict>.FromValue(new ProvocationVerdict(
-                Provokes: false, $"the creature took the Disengage action; {leaving}", locator));
+                Provokes: false,
+                $"the creature took the Disengage action, and this is its own movement on that turn; {leaving}",
+                locator,
+                [followsTheGlossary]));
         }
 
         return leaving.Means switch
         {
             DepartureMeans.Teleport => Resolution<ProvocationVerdict>.FromValue(new ProvocationVerdict(
-                Provokes: false, $"the creature Teleports; {leaving}", locator)),
+                Provokes: false, $"the creature Teleports; {leaving}", locator, OwnerDecisions.None)),
             DepartureMeans.MovedWithoutItsOwn => Resolution<ProvocationVerdict>.FromValue(new ProvocationVerdict(
                 Provokes: false,
                 $"the creature is moved without using its movement, action, Bonus Action, or Reaction; {leaving}",
-                locator)),
+                locator,
+                OwnerDecisions.None)),
+            _ when leaving.DisengageTaken => Resolution<ProvocationVerdict>.FromValue(new ProvocationVerdict(
+                Provokes: true,
+                "the creature took the Disengage action on an earlier turn, and its protection covers your own movement for the "
+                + $"rest of the turn it is taken on ('{MapEntries.DisengageAction.Id}' [{MapEntries.DisengageAction.Locator.Citation}]); {leaving}",
+                locator,
+                [followsTheGlossary])),
             _ => Resolution<ProvocationVerdict>.FromValue(new ProvocationVerdict(
                 Provokes: true,
                 $"the creature neither took the Disengage action, nor Teleported, nor was moved without using its own movement, action, Bonus Action, or Reaction; {leaving}",
-                locator)),
+                locator,
+                OwnerDecisions.None)),
         };
     }
 
@@ -93,15 +118,17 @@ public static class OpportunityAttackRules
         var verdict = avoided.Match<ProvocationVerdict?>(v => v, _ => null);
         if (verdict is { Provokes: false })
         {
+            // Derived from the avoidance rule's verdict, so it carries whatever that verdict relied on.
             return Resolution<OpportunityAttackOffer>.FromValue(
-                OpportunityAttackOffer.None(verdict.Because, verdict.Authority));
+                OpportunityAttackOffer.None(verdict.Because, verdict.Authority, OwnerDecisions.InOrder(verdict.Decisions)));
         }
 
         if (sight.CannotSee)
         {
             return Resolution<OpportunityAttackOffer>.FromValue(OpportunityAttackOffer.None(
                 $"an Opportunity Attack is made when a creature that you can see leaves your reach, and {sight}",
-                MapEntries.OpportunityAttack.Locator));
+                MapEntries.OpportunityAttack.Locator,
+                OwnerDecisions.None));
         }
 
         if (leaving.Means == DepartureMeans.ByNoneOfThose)
@@ -120,6 +147,7 @@ public static class OpportunityAttackRules
             [MeleeAttackOption.Weapon, MeleeAttackOption.UnarmedStrike],
             OpportunityAttackOffer.RightBefore,
             $"{sight}, and {leaving}; {reaction}",
-            MapEntries.OpportunityAttack.Locator));
+            MapEntries.OpportunityAttack.Locator,
+            OwnerDecisions.InOrder(verdict?.Decisions ?? OwnerDecisions.None)));
     }
 }

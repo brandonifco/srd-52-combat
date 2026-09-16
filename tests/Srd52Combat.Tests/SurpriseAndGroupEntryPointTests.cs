@@ -116,28 +116,67 @@ public class SurpriseAndGroupEntryPointTests
     }
 
     [Fact]
-    public void A_stated_group_of_identical_creatures_declines_citing_page_13_and_nothing_is_drawn()
+    public void A_stated_group_of_identical_creatures_rolls_one_d20_each_naming_the_owners_ruling()
     {
-        var declined = Declined(Groups(IdenticalCreaturesStatement.Grouped(Gm, ["Goblin", "Orc"])));
+        var group = IdenticalCreaturesStatement.Grouped(Gm, ["Goblin", "Orc"]);
 
-        Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
-        Assert.Equal(EntryPoints.GroupInitiative.Registered.Locator, declined.Locator);
-        Assert.Contains("group-initiative", declined.Attempted, StringComparison.Ordinal);
-        Assert.Contains("what makes creatures a group of identical creatures", declined.Attempted, StringComparison.Ordinal);
+        var rolls = Value<GroupInitiativeRolls>(Groups(group));
 
-        // The same group put to initiative-roll draws nothing either, and declines the same way.
+        // The statement is recorded and changes nothing: this rule still gives the GM no roll.
+        Assert.Equal(new[] { "Goblin", "Orc" }, rolls.MonstersTheGmRollsFor);
+        Assert.Equal(0, rolls.Draws);
+        Assert.Same(group, rolls.Groups);
+
+        // That the group takes no single roll is Brandon's ruling, not the corpus's silence.
+        var owners = Assert.Single(rolls.Rulings);
+        Assert.Equal("group-initiative/no-grouping", owners.Id);
+        Assert.Equal("group-initiative", owners.EntryId);
+        Assert.Equal("Brandon", owners.RuledBy);
+        Assert.Equal(new DateOnly(2026, 9, 15), owners.RuledOn);
+        Assert.Equal("docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md", owners.Record);
+        Assert.Contains("group of identical creatures", owners.Span, StringComparison.Ordinal);
+
+        // The same group put to initiative-roll now rolls one d20 per participant, naming the ruling.
         var source = new CountingSource(Pcg32.FromSeed(7UL, stream: 1));
-        var roll = Declined(EntryPoints.InitiativeRoll.Resolve(new InitiativeRollRequest
+        var rolled = Value<InitiativeRolls>(EntryPoints.InitiativeRoll.Resolve(new InitiativeRollRequest
         {
             Participants = Participants,
             StatedBy = Gm,
             ScoreOption = Rolling,
-            IdenticalCreatures = IdenticalCreaturesStatement.Grouped(Gm, ["Goblin", "Orc"]),
+            IdenticalCreatures = group,
             Source = source,
         }));
-        Assert.Equal(UnresolvedReason.RequiresInterpretation, roll.Reason);
-        Assert.Equal(EntryPoints.GroupInitiative.Registered.Locator, roll.Locator);
-        Assert.Equal(0, source.Drawn);
+
+        Assert.Equal(Participants.Length, rolled.Rolls.Length);
+        Assert.Equal(Participants.Length, source.Drawn);
+        Assert.Equal(owners, Assert.Single(rolled.Rulings));
+
+        // Each member of the "group" has its own d20, which is what the ruling says.
+        Assert.Equal(
+            Participants.Select(p => p.Id),
+            rolled.Rolls.Select(r => r.CombatantId));
+    }
+
+    [Fact]
+    public void The_owners_ruling_is_named_only_where_a_group_was_stated()
+    {
+        Assert.Empty(Value<GroupInitiativeRolls>(Groups(NoGroups)).Rulings);
+
+        var source = new CountingSource(Pcg32.FromSeed(7UL, stream: 1));
+        var rolled = Value<InitiativeRolls>(EntryPoints.InitiativeRoll.Resolve(new InitiativeRollRequest
+        {
+            Participants = Participants,
+            StatedBy = Gm,
+            ScoreOption = Rolling,
+            IdenticalCreatures = NoGroups,
+            Source = source,
+        }));
+
+        Assert.Empty(rolled.Rulings);
+        Assert.Equal(Participants.Length, source.Drawn);
+
+        // The ruling the overlay holds is the one the engine names, and the registry has it once.
+        Assert.Single(OwnerRulings.All.Where(r => r.EntryId == "group-initiative"));
     }
 
     [Fact]

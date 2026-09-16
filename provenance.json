@@ -250,6 +250,10 @@
       "sha256": "9e39fd44805b43fb68eaa3a4bdd13ce83987023e7bd119484140727cb31bf7ad"
     },
     {
+      "path": "src/Srd52Combat/Generated/Rulings.g.cs",
+      "sha256": "b3cbd742f92578491e8cd0b003b3a91d095d0e81a2f0b9d71d0ec3e034d68ece"
+    },
+    {
       "path": "tests/Srd52Combat.Tests/Generated/CorrespondenceTests.g.cs",
       "sha256": "314e76221d9aa6c18d9db674add977b78df7a2fc3ef26bc8e33ce0257d08f9d4"
     },
@@ -316,7 +320,7 @@
     },
     {
       "path": "corpus-map.overlay.json",
-      "sha256": "ab36b2e0c8013b9517da4902d172e63f91db0a02792c952d3379ecd8ac8b308f"
+      "sha256": "6e33fd2eb1c60f9d79ff4c5ec4201bb674e473a71847f9c062b1d99ade45ac8c"
     },
     {
       "path": "src/Srd52Combat/Srd52Combat.csproj",
@@ -335,5 +339,57 @@
       "sha256": "01e6ee82cfaaaf040c0323eef960b62837a0fbbd2ed84d4ede7db6642e04382c"
     }
   ],
-  "randomness": "seeded"
+  "randomness": "seeded",
+  "rulings": [
+    {
+      "id": "moving-through-creatures/two-or-more",
+      "entry": "moving-through-creatures",
+      "span": "Does “a creature that is two sizes larger or smaller than you” mean exactly two sizes, or two or more? Read literally, a Medium creature can pass through a Huge creature's space and not a Gargantuan one's.",
+      "answer": "Two or more: a creature two or more sizes larger or smaller than you may be passed through, so a Medium creature passes through a Huge or a Gargantuan one.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
+    },
+    {
+      "id": "next-round/agreement-ends-it",
+      "entry": "next-round",
+      "span": "p. 13 says the fight continues to the next round if neither side is defeated; p. 14 (Ending Combat) says combat can also end when both sides agree to end it, which is a case where neither side is defeated. When both sides agree and neither is defeated, does another round begin (p. 13) or does combat end (p. 14)?",
+      "answer": "Combat ends: where both sides agree to end it and neither side is defeated, no further round begins.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-15",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
+    },
+    {
+      "id": "group-initiative/no-grouping",
+      "entry": "group-initiative",
+      "span": "What makes creatures a “group of identical creatures”? The corpus does not say whether identical means the same stat block, whether every identical monster in the combat forms one group or the GM may divide them into several, or whether a monster with no identical companion is its own group of one. No measure or set of values is stated, so it is a gap, not a delegated choice.",
+      "answer": "Every creature rolls its own Initiative: the engine never groups identical creatures, whatever the caller states.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-15",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
+    },
+    {
+      "id": "appropriate-anatomy/gm-decides",
+      "entry": "appropriate-anatomy",
+      "span": "“An appropriate anatomy” states no measure and no set of values, and names nobody who decides. Is a Large spider an appropriate mount for a Medium rider? The corpus does not say.",
+      "answer": "The GM decides: an appropriate anatomy is the GM's call, stated to the engine, and the engine never assumes one.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
+    },
+    {
+      "id": "mount-control-requires-training/training-is-stated",
+      "entry": "mount-control-requires-training",
+      "span": "Which creatures have been trained to accept a rider? The corpus gives instances (“Domesticated horses, mules, and similar creatures”) and no definition, and “similar” states no measure. For a creature not named, nothing in the slice says whether it is trained or who decides.",
+      "answer": "The caller states it: training to accept a rider is a fact the caller supplies, and the horse and the mule the corpus names are trained without being told.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
+    }
+  ]
 }

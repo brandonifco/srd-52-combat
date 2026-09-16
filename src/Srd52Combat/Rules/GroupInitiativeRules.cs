@@ -16,15 +16,16 @@ public static class GroupInitiativeRules
     /// Who the GM rolls for, and how many rolls a group takes.
     /// </summary>
     /// <remarks>
-    /// The first sentence is answered: the GM rolls for every participant the caller states is a
-    /// monster. The second cannot be. What makes creatures a "group of identical creatures" is not
-    /// stated anywhere in the corpus — whether identical means the same stat block, whether every
-    /// identical monster forms one group or the GM may divide them, whether a lone monster is a
-    /// group of one — and that is what fixes how many d20s are thrown. It is a gap, not a choice the
-    /// corpus delegates, so a stated group declines
-    /// <see cref="UnresolvedReason.RequiresInterpretation"/> citing <c>group-initiative</c>, and
-    /// nothing is drawn: a seeded combat that drew a different number of d20s than the table would
-    /// changes every later draw of its replay.
+    /// The first sentence is answered by the corpus: the GM rolls for every participant the caller
+    /// states is a monster. The second is not. What makes creatures a "group of identical creatures"
+    /// is not stated anywhere in the corpus — whether identical means the same stat block, whether
+    /// every identical monster forms one group or the GM may divide them, whether a lone monster is a
+    /// group of one — and that is what would fix how many d20s are thrown. **Brandon ruled on
+    /// 2026-09-15 that every creature rolls its own Initiative and this engine never groups**
+    /// (<c>group-initiative/no-grouping</c>, <c>docs/decisions/0007</c>). So a stated group is
+    /// recorded, takes no roll of its own, and the answer names the ruling; an answer given where no
+    /// group was stated relies on the corpus alone and names none. This rule still draws nothing: the
+    /// d20s are <c>initiative-roll</c>'s.
     /// </remarks>
     /// <param name="participants">Every participant, as the caller states them.</param>
     /// <param name="statedBy">Who stated the participants and their kinds.</param>
@@ -58,18 +59,14 @@ public static class GroupInitiativeRules
                 nameof(identicalCreatures));
         }
 
-        if (!identicalCreatures.Groups.IsEmpty)
-        {
-            return Resolution<GroupInitiativeRolls>.FromUnresolved(new UnresolvedResult(
-                UnresolvedReason.RequiresInterpretation,
-                $"resolve the map entry '{MapEntries.GroupInitiative.Id}' [{MapEntries.GroupInitiative.Locator.Citation}] "
-                + $"while {identicalCreatures}: the corpus does not say what makes creatures a group of identical creatures, "
-                + "so how many rolls are made is not fixed and nothing is drawn",
-                MapEntries.GroupInitiative.Locator));
-        }
-
         var monsters = participants.Where(p => p.Kind == CombatantKind.Monster).Select(p => p.Id).ToImmutableArray();
-        return Resolution<GroupInitiativeRolls>.FromValue(
-            new GroupInitiativeRolls(monsters, identicalCreatures, statedBy, MapEntries.GroupInitiative.Locator));
+        return Resolution<GroupInitiativeRolls>.FromValue(new GroupInitiativeRolls(
+            monsters,
+            identicalCreatures,
+            statedBy,
+            MapEntries.GroupInitiative.Locator,
+            identicalCreatures.Groups.IsEmpty
+                ? OwnerRulings.None
+                : [OwnerRulings.EveryCreatureRollsItsOwnInitiative]));
     }
 }

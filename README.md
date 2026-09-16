@@ -50,22 +50,64 @@ Fifty-four entries are implemented.
   `TurnRules` and which `mounting-cost` spends. With them, `attack-modifiers` and `attack-target`
   answer for the first time (`implementedIn` version 6).
 
+- **The owner's rulings** (ruleset version 7), which changed what six of those entries answer
+  without changing the map: `group-initiative` and `initiative-roll` (every creature rolls its own
+  Initiative), `next-round` (both sides agreeing ends the combat), `moving-through-creatures` ("two
+  sizes larger or smaller" means two or more), `appropriate-anatomy` and `mount-eligibility` (the GM
+  decides the anatomy), `mount-control-requires-training` and `controlled-mount-turn` (training is a
+  fact the caller states), and `opportunity-attack-avoidance` and `opportunity-attack` (Disengage
+  protects your own movement for the rest of your turn). See below and [decision 0007](docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md).
+
 Every other in-scope entry declines through its generated entry point with the reason the map's
 correspondence table gives and its own citation. The rules still to build are listed in `backlog/`,
 and what building these found about the map is in [MAP-FINDINGS.md](MAP-FINDINGS.md).
+
+## The owner's rulings, and what is the corpus's
+
+Five of this engine's answers rest on **an owner's ruling**: Brandon's answer to part of a question
+the SRD leaves open, held in `corpus-map.overlay.json` under
+[rules-factory decision 0027](https://github.com/brandonifco/rules-factory/blob/main/docs/decisions/0027-an-owners-ruling-is-held-by-the-engine-and-checked-by-the-factory.md),
+generated into `OwnerRulings` and checked against the map on every `factory produce`. **A ruling is
+never the corpus's**, so every result that relies on one carries it in a `Rulings` property — as does
+every result derived from such a result — and a decline carries none.
+
+| Ruling | Entry | What it settles |
+|---|---|---|
+| `group-initiative/no-grouping` | `group-initiative` | Every creature rolls its own Initiative; the engine never groups identical creatures |
+| `next-round/agreement-ends-it` | `next-round` | Both sides agreeing ends the combat, though neither side is defeated |
+| `moving-through-creatures/two-or-more` | `moving-through-creatures` | "Two sizes larger or smaller" means two or more |
+| `appropriate-anatomy/gm-decides` | `appropriate-anatomy` | An appropriate anatomy is the GM's call, stated to the engine |
+| `mount-control-requires-training/training-is-stated` | `mount-control-requires-training` | Training to accept a rider is a fact the caller supplies |
+
+A sixth ruling has no such carrier. `opportunity-attack-avoidance` is `clarity: clear`, so the map
+records no open question for a ruling to quote a span of, and the factory would refuse one there.
+Brandon's decision that the Disengage action's protection follows the Rules Glossary — your own
+movement, for the rest of your turn — is therefore **this engine's own recorded decision**, carried
+by `OwnerDecisions`, a type deliberately distinct from `OwnerRuling`, and named the same way on every
+answer that rests on it.
+
+```csharp
+var rolls = Value<InitiativeRolls>(EntryPoints.InitiativeRoll.Resolve(request));
+foreach (var ruling in rolls.Rulings)
+{
+    // group-initiative/no-grouping, Brandon, 2026-09-15, docs/decisions/0007-....md
+    Console.WriteLine($"{ruling.Id} (not the corpus): {ruling.Answer}");
+}
+```
 
 ## What is here
 
 | | |
 |---|---|
+| `src/Srd52Combat/OwnerRulings.cs`, `OwnerDecisions.cs` | Names for the generated owner's rulings and the order results list them in; and this engine's own decision where 0027 has no carrier. Hand-written. |
 | `src/Srd52Combat/Rules` | The rules: `InitiativeRules`, `MovementRules`, `MovementBudgetRules`, `GridRules`, `AttackRules`, `OpportunityAttackRules`, `TurnRules`, `RoundRules`, `SurpriseRules`, `GroupInitiativeRules`, `TargetingRules`, `CoverRules`, `MountRules`, `UnderwaterRules`. Hand-written. |
 | `src/Srd52Combat/Handlers` | One file per implemented map entry: the handler the generated contract requires, a thin adapter over the rule, and the inputs it reads, declared on the entry's partial request type. Hand-written. |
 | `src/Srd52Combat/Initiative`, `Ruleset.cs` | Combatants, the caller's statements, rolls, tie breaks and the order; the replay identity. Hand-written. |
 | `src/Srd52Combat/Movement` | Sizes, the grid, and what the caller states about a creature, a square, a terrain feature and a move; the rulings the movement rules answer with. Hand-written. |
 | `src/Srd52Combat/Cover`, `Mounts`, `Underwater` | What the caller states about an obstacle between attacker and target, about who is riding what and whether a mount is trained or independent, and about being underwater, having a Swim Speed and what a weapon deals; and the rulings those rules answer with. Hand-written. |
 | `src/Srd52Combat/Attacks` | The attack types: what the caller states about what can be seen, what is within 5 feet, whether a roll hit, and how a creature left reach; and what the attack rules answer with. Hand-written. |
-| `src/Srd52Combat/Generated`, `tests/Srd52Combat.Tests/Generated` | `MapEntries`, `Registry`, `EntryPoints`, the request types, the embedded provenance, and the correspondence and provenance tests. Generated by `factory produce`; never edited. |
-| `corpus-map.overlay.json` | The only part of the map this engine owns: `status`, `implementedIn` and `tests` on the implemented entries, each test with the mutation that turned it red. |
+| `src/Srd52Combat/Generated`, `tests/Srd52Combat.Tests/Generated` | `MapEntries`, `Registry`, `EntryPoints`, `OwnerRulings`, the request types, the embedded provenance, and the correspondence and provenance tests. Generated by `factory produce`; never edited. |
+| `corpus-map.overlay.json` | The only part of the map this engine owns: `status`, `implementedIn` and `tests` on the implemented entries, each test with the mutation that turned it red; and, on five of them, the owner's `rulings` and the `declines` beside them (rules-factory decision 0027). |
 | `docs/decisions`, `MAP-FINDINGS.md` | Why the engine reads the map the way it does, and where building it found the map wanting. |
 | `MAP-FINDINGS.md` | What building from the map found: where it is wrong, and what is worth recording where it is right. |
 | `provenance.json`, `scripts/`, `.github/workflows/validate.yml`, `RulesFactory.Packages.g.props`, `backlog/`, `corpus/` | What the engine was produced from, the gate and its CI, the pins, the backlog, and the pinned corpus. Generated. |
@@ -95,7 +137,7 @@ var order = EntryPoints.InitiativeOrder.Resolve(
 |---|---|---|
 | Roll, every statement allowing one d20 each | the rolls, drawn from the seeded source in participant order | `Combat / Initiative / p. 13` |
 | Roll, the GM uses Initiative scores | `OutsideCurrentScope`, nothing drawn, the statement recorded | `Rules Glossary / Initiative / p. 184` (`initiative-score-option`) |
-| Roll, a group of identical creatures stated | `RequiresInterpretation`, nothing drawn: how many rolls a group takes is not stated | `Combat / Initiative / p. 13` (`group-initiative`) |
+| Roll, a group of identical creatures stated | one d20 each all the same, the statement recorded, naming the owner's ruling `group-initiative/no-grouping` | `Combat / Initiative / p. 13` (`group-initiative`) |
 | Roll, a roll with Advantage, Disadvantage, or both (from any source: Surprise, Incapacitated, Invisible) | `OutsideCurrentScope`, nothing drawn | `Playing the Game / Advantage/Disadvantage / p. 7` |
 | Roll, a statement missing | `ArgumentException`: never inferred | |
 | Order | highest to lowest, the same every round, each tie as its tie break states | `Combat / Initiative / p. 13` |
@@ -202,7 +244,9 @@ var resolved = EntryPoints.AttackResolution.Resolve(new AttackResolutionRequest
 | Range, at the normal range, beyond it, at the long range, beyond it | none, Disadvantage, Disadvantage, and no attack | `Combat / Range / p. 15` |
 | A ranged attack within 5 feet of a seeing, capable enemy | the attack roll has Disadvantage | `Combat / Ranged Attacks in Close Combat / p. 15` |
 | A seen creature leaving your reach | take a Reaction for one melee attack with a weapon or an Unarmed Strike, right before it leaves | `Combat / Opportunity Attacks / p. 15` |
-| the same, after Disengage, a Teleport, or being moved without its own movement | no Opportunity Attack is provoked | `Combat / Opportunity Attacks / p. 15` |
+| the same, after a Teleport or being moved without its own movement | no Opportunity Attack is provoked | `Combat / Opportunity Attacks / p. 15` |
+| the same, after Disengage, moving on that turn | no Opportunity Attack is provoked, naming the engine's decision `disengage-protection-follows-the-glossary` | `Combat / Opportunity Attacks / p. 15`, `disengage-action` |
+| the same, having Disengaged on an earlier turn | it provokes: the protection covered that turn | `Combat / Opportunity Attacks / p. 15`, `disengage-action` |
 | the same, with the Reaction spent, or while Incapacitated | `OutsideCurrentScope` | `reactions`, `incapacitated-condition` |
 | the same, leaving reach by none of the means the glossary lists | `OutsideCurrentScope` | `opportunity-attacks-glossary` |
 | Any of them, a statement the caller owes left out | `ArgumentException`: never inferred | |
@@ -252,11 +296,11 @@ var interactions = EntryPoints.FreeObjectInteraction.Resolve(
 | The steps, with no Initiative order | `ArgumentException`: no turn is taken before Initiative is rolled | |
 | After a round, everyone having acted and neither side defeated | the fight continues to the next round | `Combat / The Order of Combat / p. 13` |
 | After a round, a side defeated as stated | no further round; and before everyone has acted, the round is not over | `Combat / The Order of Combat / p. 13` |
-| After a round, neither defeated and both sides agreeing to end, as stated | `RequiresInterpretation`: p. 13 begins another round and p. 14 ends the combat | `Combat / The Order of Combat / p. 13` (`next-round`) |
+| After a round, neither defeated and both sides agreeing to end, as stated | the combat ends and no further round begins, naming the owner's ruling `next-round/agreement-ends-it` | `Combat / The Order of Combat / p. 13` (`next-round`) |
 | What surprise gives a combatant stated to be surprised | Disadvantage on their Initiative roll, and nothing else; nothing at all for one that is not surprised | `Combat / Initiative / p. 13` |
 | Surprise, while the GM uses Initiative scores | `OutsideCurrentScope`: there is no roll | `Rules Glossary / Initiative / p. 184` (`initiative-score-option`) |
 | Who the GM rolls for | the monsters | `Combat / Initiative / p. 13` |
-| A group of identical creatures | `RequiresInterpretation`, nothing drawn: what makes such a group is not stated, so how many rolls are made is not fixed | `Combat / Initiative / p. 13` (`group-initiative`) |
+| A group of identical creatures | the statement is recorded and takes no roll of its own; every creature rolls its own Initiative, naming the owner's ruling `group-initiative/no-grouping` | `Combat / Initiative / p. 13` (`group-initiative`) |
 | Any of them, a statement the caller owes left out | `ArgumentException`: never inferred | |
 
 See [decision 0005](docs/decisions/0005-the-turn-and-the-round-are-stated-by-the-caller-and-a-group-of-identical-creatures-declines.md)
@@ -297,8 +341,8 @@ var deduction = EntryPoints.MovementDeduction.Resolve(new MovementDeductionReque
 ## Mounted combat, and underwater
 
 ```csharp
-// Who is on what is a fact the caller states: appropriate-anatomy never resolves, so no chain of
-// rules in this engine makes a creature a mount (decision 0006).
+// Who is on what is a fact the caller states (decision 0006); since the owner's ruling of
+// 2026-09-16 the GM's determination of the anatomy also reaches mount-eligibility (decision 0007).
 var horse = MountStatement.Ridden("the horse", "the GM");
 
 var turn = EntryPoints.ControlledMountTurn.Resolve(new ControlledMountTurnRequest
@@ -320,12 +364,14 @@ var impeded = EntryPoints.UnderwaterMelee.Resolve(new UnderwaterMeleeRequest
 | Asked | Answers | Cites |
 |---|---|---|
 | Can this creature be a mount: unwilling, or not at least one size larger | no | `Combat / Mounted Combat / p. 15` |
-| the same, willing and large enough | `RequiresInterpretation`: what is left is "an appropriate anatomy", which states no measure | `Combat / Mounted Combat / p. 15` (`appropriate-anatomy`) |
-| What anatomy is appropriate | `RequiresInterpretation`: no measure, no values, nobody who decides | `Combat / Mounted Combat / p. 15` (`appropriate-anatomy`) |
+| the same, willing, large enough, and an anatomy the GM has determined | what the GM determined, naming the owner's ruling `appropriate-anatomy/gm-decides` | `Combat / Mounted Combat / p. 15` (`appropriate-anatomy`) |
+| the same, with the GM having determined nothing | `RequiresInterpretation`: the engine never assumes an anatomy | `Combat / Mounted Combat / p. 15` (`appropriate-anatomy`) |
+| What anatomy is appropriate | the GM's determination, naming the owner's ruling; `RequiresInterpretation` where the GM has made none | `Combat / Mounted Combat / p. 15` (`appropriate-anatomy`) |
 | Mounting or dismounting | half the Speed, rounded down, deducted from the movement left | `Combat / Mounting and Dismounting / p. 15` |
 | the same, less movement left than the cost, or a creature more than 5 feet away | it is not done | `Combat / Mounting and Dismounting / p. 15` |
 | Can the mount be controlled: a domesticated horse or a mule | yes: the corpus names them as trained | `Combat / Controlling a Mount / p. 16` |
-| the same, any other creature | `RequiresInterpretation`: "similar creatures" states no measure and names no decider | `Combat / Controlling a Mount / p. 16` (`mount-control-requires-training`) |
+| the same, any other creature whose training the caller states | what the caller stated, naming the owner's ruling `mount-control-requires-training/training-is-stated` | `Combat / Controlling a Mount / p. 16` (`mount-control-requires-training`) |
+| the same, any other creature whose training nothing states | `RequiresInterpretation`: "similar creatures" states no measure, and the engine is not told | `Combat / Controlling a Mount / p. 16` (`mount-control-requires-training`) |
 | A controlled mount's turn | the rider's Initiative, moving on the rider's turn, and only Dash, Disengage and Dodge; it acts on the turn it is mounted | `Combat / Controlling a Mount / p. 16` |
 | the same, what one of those three actions does | `OutsideCurrentScope` | `actions-table` |
 | A mount that ignores the rider's control | it is independent: it keeps its place in the Initiative order and moves and acts as it likes | `Combat / Controlling a Mount / p. 16` |
@@ -347,11 +393,13 @@ The corpus declares `randomness: seeded`. Every draw goes through `RulesKernel.R
 (`IRandomSource`, `UniformInt`) from a source the caller seeds, and `Ruleset.Identity` names PCG32.
 `SeededInitiativeReplayTests` rolls a seven-combatant start with three ties through the entry points,
 replays it from the seed and the recorded tie breaks, compares the bytes, and pins their SHA-256. The
-bytes name the ruleset (`srd-5.2.1-combat` v6) and the map version (2.0.0). Only Initiative draws:
+bytes name the ruleset (`srd-5.2.1-combat` v7), the replay schema (2, which is the record's
+`rulings` line: the owner's rulings its answers relied on) and the map version (2.0.0). Only Initiative draws:
 nothing in movement, the grid, the attack entries, the turn and round entries, or the mounted-combat,
 underwater and cover entries does (decisions 0003, 0004, 0005 and 0006), so none of them enters the
-replay. `group-initiative` is the one entry whose rule would draw, and it declines rather than fix a
-draw count the corpus does not state; `falling-off` carries a `draws` in the map and draws nothing
+replay. `group-initiative` is the one entry whose rule would draw, and under the owner's ruling it draws
+nothing: every participant's d20 is `initiative-roll`'s, whatever the caller states about identical
+creatures; `falling-off` carries a `draws` in the map and draws nothing
 here, because the saving throw is `saving-throws`', outside the extent (MAP-FINDINGS finding 18).
 
 ## How this engine is produced

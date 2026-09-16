@@ -131,25 +131,66 @@ public class RoundEntryPointTests
     }
 
     [Fact]
-    public void Both_sides_agreeing_to_end_with_neither_defeated_declines_citing_page_13()
+    public void Both_sides_agreeing_with_neither_defeated_ends_the_combat_naming_the_owners_ruling()
     {
-        var declined = Declined(NextRound(
+        var outcome = Value<NextRoundOutcome>(NextRound(
             2,
             ["Aria", "Goblin", "Bram"],
             SideDefeatedStatement.Neither(Gm),
             SidesAgreementStatement.Agreed(Gm)));
 
-        Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
-        Assert.Equal(EntryPoints.NextRound.Registered.Locator, declined.Locator);
-        Assert.Contains("next-round", declined.Attempted, StringComparison.Ordinal);
-        Assert.Contains("combat-end", declined.Attempted, StringComparison.Ordinal);
+        Assert.True(outcome.RoundOver);
+        Assert.False(outcome.Continues);
+        Assert.Null(outcome.Next);
+        Assert.Contains("combat-end", outcome.Why, StringComparison.Ordinal);
+        Assert.Equal(EntryPoints.NextRound.Registered.Locator, outcome.Authority);
 
-        // With a side defeated as well, the question does not arise: no round follows.
+        // p. 13 continues the fight and p. 14 ends the combat. Which governs is Brandon's, not the
+        // corpus's, and the answer says so.
+        var owners = Assert.Single(outcome.Rulings);
+        Assert.Equal("next-round/agreement-ends-it", owners.Id);
+        Assert.Equal("next-round", owners.EntryId);
+        Assert.Equal("Brandon", owners.RuledBy);
+        Assert.Equal(new DateOnly(2026, 9, 15), owners.RuledOn);
+        Assert.Equal("docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md", owners.Record);
+        Assert.Contains("does another round begin", owners.Span, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void The_owners_ruling_is_named_only_where_both_sides_agreed_and_neither_was_defeated()
+    {
+        // With a side defeated the question does not arise, whatever was agreed: no round follows,
+        // and the corpus's own sentence says so.
         var defeated = Value<NextRoundOutcome>(NextRound(
             2,
             ["Aria", "Goblin", "Bram"],
             SideDefeatedStatement.Defeated(Gm, "the goblins"),
             SidesAgreementStatement.Agreed(Gm)));
+
         Assert.False(defeated.Continues);
+        Assert.Empty(defeated.Rulings);
+
+        // Neither defeated and no agreement: the fight continues, on the corpus alone.
+        var continues = Value<NextRoundOutcome>(NextRound(
+            2,
+            ["Aria", "Goblin", "Bram"],
+            SideDefeatedStatement.Neither(Gm),
+            SidesAgreementStatement.NotAgreed(Gm)));
+
+        Assert.True(continues.Continues);
+        Assert.Empty(continues.Rulings);
+
+        // And before everyone has taken a turn, nothing of the question is reached.
+        var early = Value<NextRoundOutcome>(EntryPoints.NextRound.Resolve(new NextRoundRequest
+        {
+            Round = 2,
+            Order = ["Aria", "Goblin", "Bram"],
+            TurnsTaken = ["Aria"],
+            Defeat = SideDefeatedStatement.Neither(Gm),
+            Agreement = SidesAgreementStatement.Agreed(Gm),
+        }));
+
+        Assert.False(early.RoundOver);
+        Assert.Empty(early.Rulings);
     }
 }

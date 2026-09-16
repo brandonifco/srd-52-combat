@@ -87,20 +87,27 @@ public class InitiativeRollEntryPointTests
     }
 
     [Fact]
-    public void A_group_of_identical_creatures_declines_citing_group_initiative_without_drawing()
+    public void A_group_of_identical_creatures_rolls_one_d20_each_naming_group_initiatives_ruling()
     {
         var source = new CountingSource(Pcg32.FromSeed(7UL, stream: 1));
         var grouped = IdenticalCreaturesStatement.Grouped(Gm, ["Goblin 1", "Goblin 2"]);
+        Combatant[] participants = [Pc("Aria", 3), Monster("Goblin 1", 2), Monster("Goblin 2", 2)];
 
-        var declined = Declined(Roll([Pc("Aria", 3), Monster("Goblin 1", 2), Monster("Goblin 2", 2)], source, identical: grouped));
+        var rolls = Value<InitiativeRolls>(Roll(participants, source, identical: grouped));
 
-        // group-initiative is built now, and declines: what makes creatures a group of identical
-        // creatures is not stated, so how many d20s the combat throws is not fixed (decision 0005).
-        Assert.Equal(UnresolvedReason.RequiresInterpretation, declined.Reason);
-        Assert.Equal(EntryPoints.GroupInitiative.Registered.Locator, declined.Locator);
-        Assert.Contains("'group-initiative'", declined.Attempted, StringComparison.Ordinal);
-        Assert.Contains(grouped.ToString(), declined.Attempted, StringComparison.Ordinal);
-        Assert.Equal(0, source.Drawn);
+        // Map 2.0.0's draws would have the group's roll be group-initiative's. Brandon ruled on
+        // 2026-09-15 that every creature rolls its own, so three participants throw three d20s, and
+        // the two "identical" goblins can differ.
+        Assert.Equal(3, source.Drawn);
+        Assert.Equal(3, rolls.Rolls.Length);
+        Assert.Same(grouped, rolls.IdenticalCreatures);
+        Assert.Equal(OwnerRulings.EveryCreatureRollsItsOwnInitiative, Assert.Single(rolls.Rulings));
+        Assert.Equal("group-initiative/no-grouping", rolls.Rulings[0].Id);
+
+        // Without a stated group the same roll relies on nothing but the corpus.
+        var ungrouped = Value<InitiativeRolls>(Roll(participants, new CountingSource(Pcg32.FromSeed(7UL, stream: 1))));
+        Assert.Empty(ungrouped.Rulings);
+        Assert.Equal(rolls.Rolls.Select(r => r.D20), ungrouped.Rolls.Select(r => r.D20));
     }
 
     [Theory]
