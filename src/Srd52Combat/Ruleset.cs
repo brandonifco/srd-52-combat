@@ -11,7 +11,7 @@ public static class Ruleset
     /// and every draw goes through RulesKernel.Randomness's PCG32, so a combat replays from its seed
     /// only under this identity.
     /// </summary>
-    public static ReplayCompatibilityIdentity Identity { get; } = new(
+    public static EngineIdentity Identity { get; } = new(
         ruleset: new RulesetVersion("srd-5.2.1-combat", 2),
         replaySchema: new ReplaySchemaVersion(1),
         sourceBaselines: [MapEntries.Baseline],
