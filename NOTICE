@@ -9,9 +9,8 @@ This repository is under two sets of terms.
 2. Creative Commons Attribution 4.0 International (CC-BY-4.0),
    https://creativecommons.org/licenses/by/4.0/legalcode: text of the System Reference Document
    5.2.1 wherever it appears here. That is corpus/srd-5.2.1.txt (the whole corpus, as text
-   extracted from the official PDF) and the verbatim quotations of it in backlog/ (each item's
-   evidence, and any note or question quoting it) and in any other file that quotes it. The Apache
-   License does not apply to that text.
+   extracted from the official PDF) and the verbatim quotations of it in any file that quotes it.
+   The Apache License does not apply to that text.
 
 The attribution statement the SRD 5.2.1 requires, verbatim:
 
