@@ -1,0 +1,116 @@
+{
+  "claimSha256": "8f081927bbed81f5b9f15e917be3212b2060d1d737660ab30ad3cb3a43828605",
+  "classes": {
+    "action-dependency-interactions": {
+      "outcome": "tested",
+      "tests": [
+        "A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater"
+      ]
+    },
+    "caller-controlled-sizes": {
+      "outcome": "not-applicable",
+      "reason": "the request carries no size or count; the only caller-controlled magnitude on the arithmetic round-down governs is grid-speed-in-squares's Speed, attacked at int.MaxValue by A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater"
+    },
+    "count-semantics": {
+      "outcome": "tested",
+      "tests": [
+        "A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater"
+      ]
+    },
+    "empty-collections": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_declines_outside_scope_citing_page_5_whatever_the_request_asserts"
+      ]
+    },
+    "exact-min-max": {
+      "outcome": "tested",
+      "tests": [
+        "A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater"
+      ]
+    },
+    "exception-leakage": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_never_throws_for_a_request_it_accepts_and_refuses_a_null_one_by_name"
+      ]
+    },
+    "exclusive-or": {
+      "outcome": "not-applicable",
+      "reason": "the evidence states one rule, round down, with no disjunction; 'Some rules make an exception and tell you to round up' names no rule in this engine's extent"
+    },
+    "idempotence": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_declines_outside_scope_citing_page_5_whatever_the_request_asserts"
+      ]
+    },
+    "immutability": {
+      "outcome": "not-applicable",
+      "reason": "RuleRequest.Assert returns a new request and RoundDownRequest exposes only get-only properties, so nothing a caller holds can move after the call; round-down is declined (scope out); its request carries no inputs but assertions, and the registry answers it with its row's decline before any hand-written hook runs (Registry.Answer dispatches handlers only for implemented entries)"
+    },
+    "integer-extremes": {
+      "outcome": "tested",
+      "tests": [
+        "A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater",
+        "A_negative_Speed_is_refused_before_any_rounding"
+      ]
+    },
+    "invalid-construction": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_never_throws_for_a_request_it_accepts_and_refuses_a_null_one_by_name"
+      ]
+    },
+    "invalid-intermediate-state": {
+      "outcome": "not-applicable",
+      "reason": "the entry has no dependsOn, and no public surface builds a state it reads; round-down is declined (scope out); its request carries no inputs but assertions, and the registry answers it with its row's decline before any hand-written hook runs (Registry.Answer dispatches handlers only for implemented entries)"
+    },
+    "invalid-public-input": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_declines_outside_scope_citing_page_5_whatever_the_request_asserts",
+        "Round_down_never_throws_for_a_request_it_accepts_and_refuses_a_null_one_by_name",
+        "A_negative_Speed_is_refused_before_any_rounding"
+      ]
+    },
+    "missing-content-masking": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_declines_outside_scope_citing_page_5_whatever_the_request_asserts"
+      ]
+    },
+    "order-dependence": {
+      "outcome": "not-applicable",
+      "reason": "the request carries at most a set of assertions keyed by entry id, which has no order, and round-down is declined (scope out); its request carries no inputs but assertions, and the registry answers it with its row's decline before any hand-written hook runs (Registry.Answer dispatches handlers only for implemented entries)"
+    },
+    "overflow-underflow": {
+      "outcome": "tested",
+      "tests": [
+        "A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater"
+      ]
+    },
+    "partial-mutation-before-refusal": {
+      "outcome": "not-applicable",
+      "reason": "nothing on the path holds state: RuleRequest and RoundDownRequest are immutable and the decline is computed from the registered entry alone"
+    },
+    "phase-state-boundaries": {
+      "outcome": "not-applicable",
+      "reason": "the entry names no phase or state; round-down is declined (scope out); its request carries no inputs but assertions, and the registry answers it with its row's decline before any hand-written hook runs (Registry.Answer dispatches handlers only for implemented entries)"
+    },
+    "refusal-classification": {
+      "outcome": "tested",
+      "tests": [
+        "Round_down_declines_outside_scope_citing_page_5_whatever_the_request_asserts"
+      ]
+    },
+    "sentinel-wraparound": {
+      "outcome": "tested",
+      "tests": [
+        "A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater"
+      ]
+    }
+  },
+  "entry": "round-down",
+  "selfReviewFormat": 1
+}
