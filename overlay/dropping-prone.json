@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovementEntryPointTests.A_creature_can_drop_Prone_for_free_unless_its_Speed_is_zero_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.DropProne allowed it at Speed 0 (`new DroppingProneRuling(true, ...)`); this test went red and no other did."
+    },
+    {
+      "test": "MovementEntryPointTests.A_movement_input_left_out_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the MovementModes handler defaulted missing modes to regular movement (`request.Modes ?? [MovementMode.Regular]`); this test went red and no other did."
+    }
+  ]
+}

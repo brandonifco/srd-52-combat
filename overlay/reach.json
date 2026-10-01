@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "ReachAndRangeEntryPointTests.A_creature_has_a_five_foot_reach_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; TargetingValues.DefaultReachFeet was 10; this test went red, and so did the greater-reach test, melee-within-reach's test and attack-target's."
+    },
+    {
+      "test": "ReachAndRangeEntryPointTests.A_greater_reach_the_caller_states_is_the_creatures_reach_and_a_smaller_one_is_refused",
+      "mutation": "In a throwaway copy, net10.0 suite run; GreaterReach accepted any positive reach (`Feet > 0` for `Feet > TargetingValues.DefaultReachFeet`), so a stated reach of 5 feet was taken for one \"greater than 5 feet\"; this test went red and no other did. It went red too under the 10-foot default above."
+    }
+  ]
+}

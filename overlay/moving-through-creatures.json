@@ -1,0 +1,46 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovingAroundCreaturesEntryPointTests.You_can_pass_through_an_ally_an_Incapacitated_or_Tiny_creature_or_one_exactly_two_sizes_away_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough dropped the ally case (`false` for `other.IsYourAlly`), so passing through an ally's space declined; this test went red and no other did."
+    },
+    {
+      "test": "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_may_be_passed_through_naming_the_owners_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough declined a creature more than two sizes away again (`if (false && steps > TwoSizes)`), which is what version 6 did before the ruling; this test went red and no other did."
+    },
+    {
+      "test": "MovingAroundCreaturesEntryPointTests.A_statement_about_another_creature_left_out_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the MovingThroughCreatures handler defaulted a missing size to Medium (`request.YourSize ?? CreatureSize.Medium`); this test went red and no other did."
+    },
+    {
+      "test": "MovingAroundCreaturesEntryPointTests.A_creature_fewer_than_two_sizes_away_is_the_part_of_the_question_nobody_has_ruled_on",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.PassThrough let every other creature's space be passed through (`if (steps != TwoSizes)`), reading the half of the question nobody has ruled on; this test went red and no other did."
+    }
+  ],
+  "rulings": [
+    {
+      "id": "moving-through-creatures/two-or-more",
+      "span": "Does “a creature that is two sizes larger or smaller than you” mean exactly two sizes, or two or more? Read literally, a Medium creature can pass through a Huge creature's space and not a Gargantuan one's.",
+      "answer": "Two or more: a creature two or more sizes larger or smaller than you may be passed through, so a Medium creature passes through a Huge or a Gargantuan one.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "tests": [
+        "MovingAroundCreaturesEntryPointTests.A_creature_more_than_two_sizes_away_may_be_passed_through_naming_the_owners_ruling"
+      ]
+    }
+  ],
+  "declines": [
+    {
+      "span": "And the sentence permits passage through four kinds of space without saying that every other creature's space is impassable, though that is the evident reading.",
+      "tests": [
+        "MovingAroundCreaturesEntryPointTests.A_creature_fewer_than_two_sizes_away_is_the_part_of_the_question_nobody_has_ruled_on"
+      ]
+    }
+  ]
+}

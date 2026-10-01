@@ -1,0 +1,33 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "CoverEntryPointTests.An_object_covering_half_three_quarters_or_the_whole_target_gives_that_degree_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree read the Three-Quarters row as needing 80 per cent (`covered >= 80`), so an object covering three-quarters gave Half Cover; this test went red, and so did attack-modifiers' test of the step's answer."
+    },
+    {
+      "test": "CoverEntryPointTests.An_object_covering_less_than_half_of_the_target_gives_no_degree_of_cover",
+      "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree gave Half Cover to an object covering anything at all (`covered >= 0` for `covered >= CoveringObstacle.Half`); this test went red and no other did."
+    },
+    {
+      "test": "CoverEntryPointTests.A_creature_covering_at_least_half_gives_Half_Cover_and_never_more",
+      "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree read a creature by the object rows (`if (false && obstacle.Kind == Obstacle.Creature)`), so a creature covering 80 per cent gave Three-Quarters Cover and one covering 30 per cent gave none; this test went red, and so did the creature-below-half decline and attack-modifiers' decline."
+    },
+    {
+      "test": "CoverEntryPointTests.A_creature_covering_less_than_half_declines_RequiresInterpretation_citing_cover_degree",
+      "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree dropped the entry's question from the decline (the \"Another creature\" limb out of Attempted); this test went red and no other did. It went red too under the creature-read-as-an-object mutation above, which answered where the corpus does not choose."
+    },
+    {
+      "test": "CoverEntryPointTests.More_than_one_source_of_cover_declines_citing_cover_no_stacking",
+      "mutation": "In a throwaway copy, net10.0 suite run; CoverRules.Degree answered from the first of several stated sources of cover (`obstacles.Count > 99` for `obstacles.Count > 1`); this test went red and no other did."
+    },
+    {
+      "test": "CoverEntryPointTests.The_obstacles_between_attacker_and_target_are_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the CoverDegree handler defaulted missing Obstacles to `[]`; this test went red and no other did."
+    }
+  ]
+}

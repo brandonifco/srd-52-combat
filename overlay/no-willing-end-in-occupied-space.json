@@ -1,0 +1,13 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovingAroundCreaturesEntryPointTests.A_move_cant_willingly_end_in_an_occupied_space_and_an_unwilling_one_is_not_forbidden_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.EndMove ignored the willingness statement (`occupant is null` for `occupant is null || !willingly`), so a move the creature was made to take was forbidden too; this test went red and no other did."
+    }
+  ]
+}

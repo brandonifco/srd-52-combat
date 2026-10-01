@@ -1,0 +1,32 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MountedCombatEntryPointTests.With_no_GM_statement_the_engine_never_assumes_an_anatomy_and_declines",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy read an unstated anatomy as appropriate (`if (false && anatomy.Verdict == AnatomyVerdict.NotStated)`), which is the assumption the ruling forbids; this test went red, and so did mount-eligibility's decline where the GM has said nothing."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_GM_statement_that_the_anatomy_is_appropriate_answers_naming_the_owners_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy answered the GM's determination while naming no ruling (`OwnerRulings.None`), so the GM's call read as the corpus's; this test went red, and so did mount-eligibility's answer for a creature the GM calls appropriately shaped, which carries the same ruling."
+    }
+  ],
+  "rulings": [
+    {
+      "id": "appropriate-anatomy/gm-decides",
+      "span": "“An appropriate anatomy” states no measure and no set of values, and names nobody who decides. Is a Large spider an appropriate mount for a Medium rider? The corpus does not say.",
+      "answer": "The GM decides: an appropriate anatomy is the GM's call, stated to the engine, and the engine never assumes one.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "tests": [
+        "MountedCombatEntryPointTests.A_GM_statement_that_the_anatomy_is_appropriate_answers_naming_the_owners_ruling",
+        "MountedCombatEntryPointTests.With_no_GM_statement_the_engine_never_assumes_an_anatomy_and_declines"
+      ]
+    }
+  ],
+  "declines": []
+}

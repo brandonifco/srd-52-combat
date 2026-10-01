@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "UnderwaterEntryPointTests.Underwater_a_ranged_weapon_attack_misses_beyond_normal_range_and_has_Disadvantage_within_it_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Ranged read \"beyond the weapon's normal range\" as inclusive (`distanceFeet >= ranges.NormalFeet`), so a target at exactly the normal range was missed automatically; this test went red and no other did. It went red too when a target within normal range took no Disadvantage (`var effect = RollEffect.None`)."
+    },
+    {
+      "test": "UnderwaterEntryPointTests.Out_of_the_water_the_ranged_rule_gives_the_attack_roll_nothing",
+      "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Ranged missed beyond normal range out of the water too (`bool misses = beyondNormal`); this test went red and no other did."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "InitiativeOrderEntryPointTests.Combatants_act_from_highest_to_lowest_Initiative_the_same_in_every_round",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Order ranked lowest first (`.OrderBy(c => c.Initiative)`); this test went red. It went red too when TurnOrder.TurnsInRound reversed the order in even rounds, and when a tie break was demanded where there was no tie (`assignments.IsEmpty && assignments.Length > 99`)."
+    },
+    {
+      "test": "InitiativeOrderEntryPointTests.A_tie_is_ordered_as_its_decider_stated_and_the_statement_is_recorded",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Order ignored the stated tie breaks, keeping tied combatants in listing order (`.ThenBy(c => 0)`); this test went red, and so did the seeded replay. It went red too under the ascending-order mutation."
+    }
+  ]
+}

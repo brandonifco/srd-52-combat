@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "GridEntryPointTests.Each_square_represents_five_feet_on_a_grid_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules' square was 6 feet (`private const int FeetPerSquare = 6`); this test went red, and so did the Speed-in-squares test (30 feet then translated into 5 squares)."
+    },
+    {
+      "test": "GridEntryPointTests.Off_the_grid_every_grid_rule_declines_citing_grid_play",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`), so the grid rules answered off the grid; this test went red, and so did the entering-a-square one."
+    }
+  ]
+}

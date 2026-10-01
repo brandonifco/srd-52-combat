@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "GridEntryPointTests.A_Speed_of_thirty_feet_is_six_squares_and_one_of_twelve_feet_is_two_rounded_down_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.SpeedInSquares rounded the fraction up (`(speedInFeet + square.Feet - 1) / square.Feet`), so 12 feet was 3 squares; this test went red and no other did. It went red too when the square was 6 feet."
+    },
+    {
+      "test": "GridEntryPointTests.Off_the_grid_every_grid_rule_declines_citing_grid_play",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`), so the grid rules answered off the grid; this test went red, and so did the entering-a-square one."
+    },
+    {
+      "test": "GridEntryPointTests.A_grid_statement_left_out_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the GridSquareSize handler defaulted a missing statement to a grid (`request.Play ?? GridPlayStatement.OnAGrid(\"default\")`); this test went red and no other did."
+    }
+  ]
+}

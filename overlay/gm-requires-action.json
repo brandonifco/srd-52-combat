@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "YourTurnEntryPointTests.The_GMs_requirement_is_recorded_as_stated_and_the_engine_applies_no_measure_of_its_own",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Requires returned a requirement of the engine's own making, dropping the activities the GM named (`new GmActionRequirement(requirement.Requirer, [], requirement.StatedBy)`); this test went red and no other did."
+    },
+    {
+      "test": "YourTurnEntryPointTests.The_parties_a_requirement_may_name_are_exactly_the_maps_assertedBy_for_gm_requires_action",
+      "mutation": "In a throwaway copy, net10.0 suite run; ActionRequirers.Named skipped the map's assertedBy and matched the engine's own party (`if (false && !MapEntries.GmRequiresAction.AssertedBy.Contains(party, ...))`); this test went red and no other did."
+    }
+  ]
+}

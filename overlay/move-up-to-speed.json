@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovementBudgetEntryPointTests.A_distance_equal_to_the_Speed_or_less_may_be_moved_and_more_may_not",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementBudgetRules.UpToSpeed read the turn rule's answer as \"movement left over\" (`turn.MovementRemaining > 0` for `turn.WithinTurn`), so a move of exactly the Speed was refused; this test went red and no other did. It went red too when the rule stopped reading turn-move-and-action at all (`bool allowed = true`), which also turned movement-deduction's and mounting-cost's tests red."
+    },
+    {
+      "test": "MovementBudgetEntryPointTests.A_figure_a_movement_rule_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the MoveUpToSpeed handler defaulted a missing DistanceFeet to 0 (`request.DistanceFeet ?? 0`); this test went red and no other did. It went red too when that handler defaulted a missing StatedBy, and when the MovementDeduction handler defaulted missing Parts to `[]`."
+    }
+  ]
+}

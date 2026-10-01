@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovementEntryPointTests.A_move_can_mix_modes_or_be_entirely_one_and_all_of_them_draw_on_the_same_Speed_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.Combine reversed the modes the caller stated (`[.. modes.Reverse()]`); this test went red and no other did."
+    },
+    {
+      "test": "MovementEntryPointTests.What_a_mode_costs_declines_citing_the_Rules_Glossary",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.Combine answered a request for a mode's cost instead of declining (`askingWhatAModeCosts is { } asked && asked == (MovementMode)99`); this test went red and no other did."
+    },
+    {
+      "test": "MovementEntryPointTests.A_movement_input_left_out_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the MovementModes handler defaulted missing modes to regular movement (`request.Modes ?? [MovementMode.Regular]`); this test went red and no other did."
+    }
+  ]
+}

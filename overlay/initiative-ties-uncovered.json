@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "InitiativeOrderEntryPointTests.Ties_among_monsters_or_between_monsters_and_player_characters_are_the_GMs_and_among_characters_the_players",
+      "mutation": "In a throwaway copy, net10.0 suite run, under map 2.0.0; InitiativeRules.Assign named the GM only for all-monster ties (`TieDeciders.Named(tie.All(c => c.Kind == CombatantKind.Monster) ? \"GM\" : \"players\")`), so a monster tied with a player character went to the players; this test went red, and so did the seeded replay. It had gone red under the same mutation under map 1.0.0."
+    },
+    {
+      "test": "InitiativeOrderEntryPointTests.A_tie_between_a_monster_and_a_non_player_character_declines_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Assign assigned a monster tied with a non-player character to the GM (`if (false && monster && nonPlayerCharacter)`); this test went red. It went red too when the decline's Attempted named initiative-ties instead of initiative-ties-uncovered (both entries cite the same page, so only Attempted tells them apart), and when the decline cited initiative-score-option's locator."
+    },
+    {
+      "test": "InitiativeOrderEntryPointTests.Players_who_state_they_did_not_agree_decline_citing_page_13_with_the_statement_recorded",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules resolved a tie the players stated they did not agree on, ordering it as listed (`if (false && tieBreak.PlayersDidNotAgree)`); this test went red and no other did. Re-run under map 2.0.0: red again, and no other test."
+    }
+  ]
+}

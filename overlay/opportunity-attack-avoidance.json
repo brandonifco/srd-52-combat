@@ -1,0 +1,33 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "OpportunityAttackEntryPointTests.Disengage_teleporting_and_being_moved_without_your_own_movement_do_not_provoke_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance ignored the Disengage action (`if (false && leaving.ProtectedByDisengage)`); this test went red, and so did the two Disengage tests of this rule and the Opportunity Attack test for the avoided cases. It went red too when the Teleport case was dropped from the switch."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.Both_of_the_corpuss_examples_an_explosion_and_a_fall_do_not_provoke",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance dropped the \"moved without using its own movement, action, Bonus Action, or Reaction\" case from the switch; this test went red, and so did the Opportunity Attack test for the avoided cases."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.Walking_out_of_reach_is_not_avoided_by_this_rule",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance said nothing provokes (`Provokes: false` in the default arm); this test went red, and so did the Opportunity Attack tests for the offer and for a creature leaving by none of the glossary's means."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.Disengage_protects_your_own_movement_on_your_turn_naming_the_engines_decision",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Avoidance named no decision where the Disengage action decided the verdict (`OwnerDecisions.None`), so the engine's narrowing read as the slice's own sentence; this test went red, and so did the offer that carries it."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.A_creature_that_Disengaged_on_an_earlier_turn_provokes_again",
+      "mutation": "In a throwaway copy, net10.0 suite run; LeavingReach.ProtectedByDisengage went back to the slice's unlimited sentence (`DisengageTaken`), so the protection outlasted the turn it was taken on; this test went red and no other did."
+    }
+  ]
+}

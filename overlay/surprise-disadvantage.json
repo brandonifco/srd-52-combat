@@ -1,0 +1,29 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "SurpriseAndGroupEntryPointTests.A_surprised_combatant_has_Disadvantage_on_their_Initiative_roll_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; SurpriseRules.OnInitiative gave a surprised combatant nothing (`new SurpriseEffect(statement, false, ...)`); this test went red, and so did the roll-mode test that passes it to initiative-roll."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.A_combatant_who_is_not_surprised_gets_nothing_from_this_rule",
+      "mutation": "In a throwaway copy, net10.0 suite run; SurpriseEffect reported a combatant that is not surprised as rolling Straight (`: D20Mode.Straight`), which claims more than surprise decides; this test went red and no other did."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.While_the_GM_uses_Initiative_scores_surprise_declines_citing_page_184",
+      "mutation": "In a throwaway copy, net10.0 suite run; SurpriseRules.OnInitiative ignored the Initiative-score statement (`if (false && scoreOption.InUse)`), answering with Disadvantage on a roll that is not made; this test went red and no other did."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.Surprise_is_stated_never_inferred_and_so_is_the_Initiative_score_option",
+      "mutation": "In a throwaway copy, net10.0 suite run; the SurpriseDisadvantage handler defaulted a missing surprise statement to not surprised and a missing ScoreOption to rolling; this test went red and no other did."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.The_Disadvantage_surprise_gives_is_the_roll_mode_the_caller_states_to_initiative_roll",
+      "mutation": "In a throwaway copy, net10.0 suite run; SurpriseRules.OnInitiative gave a surprised combatant nothing (`new SurpriseEffect(statement, false, ...)`), so there was no Disadvantage to state to initiative-roll; this test went red, and so did the Disadvantage test."
+    }
+  ]
+}

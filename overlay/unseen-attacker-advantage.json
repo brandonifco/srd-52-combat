@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "UnseenAttackersAndTargetsEntryPointTests.A_creature_that_cannot_see_the_attacker_gives_the_attack_roll_Advantage_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.UnseenAttacker gave Advantage to a creature that can see the attacker and nothing to one that cannot (`seen.CanSeeYou ? RollEffect.Advantage : RollEffect.None`); this test went red, and so did the test for the seeing creature."
+    },
+    {
+      "test": "UnseenAttackersAndTargetsEntryPointTests.A_creature_that_can_see_the_attacker_gives_the_roll_nothing",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.UnseenAttacker gave Advantage to a creature that can see the attacker and nothing to one that cannot (`seen.CanSeeYou ? RollEffect.Advantage : RollEffect.None`); this test went red, and so did the test for the seeing creature."
+    },
+    {
+      "test": "UnseenAttackersAndTargetsEntryPointTests.A_statement_the_sidebar_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the UnseenAttackerAdvantage handler defaulted a missing statement (`request.Seen ?? AttackerSeenStatement.Seen(\"default\")`); this test went red and no other did. It went red too when the UnseenTargetDisadvantage, WrongLocationMisses and HiddenAttackerRevealed handlers each defaulted the statement they demand."
+    }
+  ]
+}

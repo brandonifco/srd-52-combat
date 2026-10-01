@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "RangeEntryPointTests.A_ranged_attack_within_5_feet_of_a_seeing_capable_enemy_has_Disadvantage_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.RangedInCloseCombat never gave Disadvantage (`true ? RollEffect.None : RollEffect.Disadvantage`); this test went red and no other did."
+    },
+    {
+      "test": "RangeEntryPointTests.An_enemy_that_cannot_see_the_attacker_or_is_Incapacitated_does_not_give_Disadvantage",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.RangedInCloseCombat ignored the Incapacitated condition (`e.CanSeeYou` for `e.CanSeeYou && !e.Incapacitated`), so a stunned enemy gave Disadvantage; this test went red and no other did. It went red too when sight was ignored instead (`!e.Incapacitated`), so a blinded enemy gave Disadvantage."
+    },
+    {
+      "test": "RangeEntryPointTests.The_enemies_within_5_feet_are_stated_and_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the RangedInCloseCombat handler defaulted a missing statement to none (`request.Enemies ?? EnemiesWithinFiveFeet.None(\"default\")`); this test went red and no other did."
+    }
+  ]
+}

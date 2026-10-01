@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "UnderwaterEntryPointTests.Anything_underwater_has_Resistance_to_Fire_damage_naming_where_Resistance_is_explained_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Fire stopped naming resistance as the authority for what Resistance does (`null` for `where.Underwater ? MapEntries.Resistance.Locator : null`); this test went red and no other did."
+    },
+    {
+      "test": "UnderwaterEntryPointTests.Out_of_the_water_the_rule_gives_no_Resistance_to_Fire_damage",
+      "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Fire gave the Resistance whatever the caller stated (`true` for `where.Underwater`); this test went red and no other did."
+    },
+    {
+      "test": "UnderwaterEntryPointTests.A_statement_an_underwater_rule_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the UnderwaterMelee handler defaulted a missing Where to `UnderwaterStatement.Is(\"default\")`; this test went red and no other did. It went red too when the UnderwaterFireResistance handler defaulted the same way."
+    }
+  ]
+}
