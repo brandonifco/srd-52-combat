@@ -1,0 +1,40 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "SurpriseAndGroupEntryPointTests.The_GM_rolls_for_the_monsters_when_no_group_of_identical_creatures_is_stated",
+      "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll had the GM roll for every participant, not only the monsters (`participants.Select(p => p.Id)`); this test went red and no other did."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.A_stated_group_of_identical_creatures_rolls_one_d20_each_naming_the_owners_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll named no ruling on an answer given under a stated group (`OwnerRulings.None` in every case), so the owner's answer was passed off as the corpus's; this test went red and no other did. Restoring version 6's decline for a stated group (`return Resolution<GroupInitiativeRolls>.FromUnresolved(...)`) turned it red too, along with initiative-roll's roll of a stated group and the seeded record that names the ruling."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.A_group_naming_someone_who_is_not_a_participant_is_refused",
+      "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll accepted a group naming someone who is not a participant (`unknown.Length > 99`); this test went red and no other did."
+    },
+    {
+      "test": "SurpriseAndGroupEntryPointTests.The_owners_ruling_is_named_only_where_a_group_was_stated",
+      "mutation": "In a throwaway copy, net10.0 suite run; GroupInitiativeRules.Roll named the ruling on every answer (`[OwnerRulings.EveryCreatureRollsItsOwnInitiative]` unconditionally), so an answer the corpus settles claimed to rest on Brandon's; this test went red and no other did."
+    }
+  ],
+  "rulings": [
+    {
+      "id": "group-initiative/no-grouping",
+      "span": "What makes creatures a “group of identical creatures”? The corpus does not say whether identical means the same stat block, whether every identical monster in the combat forms one group or the GM may divide them into several, or whether a monster with no identical companion is its own group of one. No measure or set of values is stated, so it is a gap, not a delegated choice.",
+      "answer": "Every creature rolls its own Initiative: the engine never groups identical creatures, whatever the caller states.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-15",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "tests": [
+        "SurpriseAndGroupEntryPointTests.A_stated_group_of_identical_creatures_rolls_one_d20_each_naming_the_owners_ruling",
+        "SurpriseAndGroupEntryPointTests.The_owners_ruling_is_named_only_where_a_group_was_stated"
+      ]
+    }
+  ],
+  "declines": []
+}

@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "RangeEntryPointTests.At_normal_range_no_Disadvantage_beyond_it_Disadvantage_at_long_range_still_possible_beyond_it_not",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Range read \"beyond normal range\" as inclusive (`distanceFeet < ranges.NormalFeet`), so a target at exactly the normal range took Disadvantage; this test went red and no other did. It went red too when the long range was read the same way (`distanceFeet < ranges.LongFeet`), so a target at exactly the long range could not be attacked."
+    },
+    {
+      "test": "RangeEntryPointTests.The_long_range_is_the_larger_number_and_a_smaller_one_is_refused",
+      "mutation": "In a throwaway copy, net10.0 suite run; TwoRanges accepted a long range no larger than the normal range (`LongFeet > 0` for `LongFeet > NormalFeet`); this test went red and no other did."
+    }
+  ]
+}

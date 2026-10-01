@@ -1,0 +1,13 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovingAroundCreaturesEntryPointTests.Another_creatures_space_is_Difficult_Terrain_unless_it_is_Tiny_or_your_ally_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules.SpaceOf dropped the ally exception (`false` for `other.IsYourAlly`); this test went red, and so did the grid test of the square an ally holds."
+    }
+  ]
+}

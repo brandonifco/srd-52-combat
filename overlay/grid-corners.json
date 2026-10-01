@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "GridEntryPointTests.Diagonal_movement_cant_cross_the_corner_of_a_feature_that_fills_its_space_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Corner let every corner be crossed (`features.FirstOrDefault(f => false)`); this test went red and no other did."
+    },
+    {
+      "test": "GridEntryPointTests.A_feature_that_does_not_fill_its_space_and_an_orthogonal_step_are_not_stopped",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Corner stopped an orthogonal step at the same corner (`true` for `adjacency == SquareAdjacency.Diagonal`); this test went red and no other did."
+    },
+    {
+      "test": "GridEntryPointTests.Off_the_grid_every_grid_rule_declines_citing_grid_play",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`), so the grid rules answered off the grid; this test went red, and so did the entering-a-square one."
+    }
+  ]
+}

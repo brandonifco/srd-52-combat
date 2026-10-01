@@ -1,0 +1,13 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovementEntryPointTests.The_size_categories_run_from_Tiny_to_Gargantuan_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementRules' size order ran from Gargantuan to Tiny (the array reversed); this test went red, and so did the ending-a-turn test, because \"of a larger size\" then counted the wrong way."
+    }
+  ]
+}

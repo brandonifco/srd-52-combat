@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "TurnEntryPointTests.On_your_turn_you_move_up_to_your_Speed_and_take_one_action_in_either_order",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules counted only the movement before the first action (`steps.TakeWhile(s => s.Kind != TurnStepKind.Action)`), so the same steps in the other order gave a different budget; this test went red, and so did the broken-up move."
+    },
+    {
+      "test": "TurnEntryPointTests.A_turn_beyond_the_Speed_or_with_a_second_action_is_named_as_beyond_what_the_turn_allows",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules never counted a move as beyond the Speed (`used > speed + 99`); this test went red. It went red too when a second action was allowed (`actions > 99`), and when a Bonus Action or a Reaction was counted as an action (`steps.Count(s => s.Kind != TurnStepKind.Move)`)."
+    },
+    {
+      "test": "TurnEntryPointTests.A_turn_stated_without_its_Speed_or_its_steps_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the TurnMoveAndAction handler defaulted a missing Speed to 30, missing Steps to none and a missing StatedBy to \"default\"; this test went red and no other did."
+    }
+  ]
+}

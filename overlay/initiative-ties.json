@@ -1,0 +1,25 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "InitiativeOrderEntryPointTests.A_tie_with_no_tie_break_stated_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.BreakTies caught AssertionRequiredException and inferred each tie's order as listed, attributed to \"inferred\"; this test went red and no other did."
+    },
+    {
+      "test": "InitiativeOrderEntryPointTests.The_tie_breaks_resolve_checked_against_the_ties_and_nothing_is_demanded_without_one",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.BreakTies read the assertion even with no tie (`assignments.IsEmpty && assignments.Length > 99`); this test went red. It went red too when a tie between a monster and a player character was assigned to the players."
+    },
+    {
+      "test": "InitiativeOrderEntryPointTests.A_tie_break_by_the_wrong_decider_or_of_other_combatants_is_refused",
+      "mutation": "In a throwaway copy, net10.0 suite run, under map 2.0.0; InitiativeRules dropped the check of the stated party against the map's assertedBy party for the tie (`if (false && statedParty != TieDeciders.AssertedBy(tie.Decider))`); this test went red and no other did. Under map 1.0.0 (the check then `tieBreak.DecidedBy != tie.Decider`) it went red the same way (the two wrong-decider cases), when a tie break ordering more than the tied set was accepted (`IsSupersetOf` for `SetEquals`), and, after the \"no tie exists\" case was added (it had stayed green without it), when tie breaks for no tie were accepted (`remaining.Count > 99`)."
+    },
+    {
+      "test": "InitiativeOrderEntryPointTests.The_deciders_a_tie_break_may_name_are_exactly_the_maps_assertedBy_for_initiative_ties",
+      "mutation": "In a throwaway copy, net10.0 suite run; TieDeciders.Named skipped the map's assertedBy and matched the engine's own deciders (`if (false && !MapEntries.InitiativeTies.AssertedBy.Contains(party, ...))`); this test went red and no other did. It went red too when the engine's word for the players was not the map's (`TieDecider.Players => \"the players\"`), and when the generated MapEntries.InitiativeTies.AssertedBy was narrowed to [\"GM\"] (so did every test with a players' tie, and the seeded replay)."
+    }
+  ]
+}

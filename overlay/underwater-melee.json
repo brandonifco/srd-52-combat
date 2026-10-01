@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "UnderwaterEntryPointTests.Underwater_a_melee_weapon_attack_has_Disadvantage_only_without_a_Swim_Speed_and_without_Piercing_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Melee dropped the Piercing exception (`where.Underwater && !swimSpeed.HasSwimSpeed`); this test went red and no other did. It went red too when the Swim Speed was not read (`where.Underwater && !weapon.DealsPiercingDamage`)."
+    },
+    {
+      "test": "UnderwaterEntryPointTests.Out_of_the_water_the_melee_rule_gives_the_attack_roll_nothing",
+      "mutation": "In a throwaway copy, net10.0 suite run; UnderwaterRules.Melee applied out of the water too (the `where.Underwater` conjunct dropped); this test went red and no other did."
+    },
+    {
+      "test": "UnderwaterEntryPointTests.A_statement_an_underwater_rule_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the UnderwaterMelee handler defaulted a missing Where to `UnderwaterStatement.Is(\"default\")`; this test went red and no other did. It went red too when the UnderwaterFireResistance handler defaulted the same way."
+    }
+  ]
+}

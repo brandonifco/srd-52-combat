@@ -1,0 +1,25 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "YourTurnEntryPointTests.The_first_interaction_is_free_during_the_move_or_during_the_action_and_a_second_needs_the_Utilize_action",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Interactions never spent the turn's free interaction (`freeTaken = false`), so a second object was free too; this test went red and no other did."
+    },
+    {
+      "test": "YourTurnEntryPointTests.An_interaction_the_GM_requires_an_action_for_is_not_free_and_cites_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Interactions ignored the GM's requirement (`if (false && requirement.Requires(ActivityKind.ObjectInteraction, ...))`); this test went red and no other did. It went red too when the handler defaulted the unasserted requirement to `GmActionRequirement.None(\"default\")`."
+    },
+    {
+      "test": "YourTurnEntryPointTests.An_object_whose_description_always_requires_an_action_is_not_the_free_interaction",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Interactions ignored an object whose own description always requires an action (`if (false && interaction.AlwaysRequiresAction)`), making it the free interaction; this test went red and no other did."
+    },
+    {
+      "test": "YourTurnEntryPointTests.The_GMs_requirement_is_demanded_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the FreeObjectInteraction and CommunicationCost handlers defaulted the unasserted requirement to `GmActionRequirement.None(\"default\")` instead of demanding it; this test went red, and so did the two tests whose answers the requirement decides."
+    }
+  ]
+}

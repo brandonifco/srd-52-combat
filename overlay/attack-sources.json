@@ -1,0 +1,25 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MakingAnAttackEntryPointTests.The_Attack_action_makes_an_attack_citing_page_14",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Sources cited attack-structure's locator (p. 15) on the answer (`new AttackMade(source, MapEntries.AttackStructure.Locator)`); this test went red and no other did."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.Another_action_a_Bonus_Action_or_a_Reaction_declines_citing_the_entry_that_says_which_ones",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Sources declined another action citing attack-sources' own locator instead of the Actions table's (`MapEntries.AttackSources` for `MapEntries.ActionsTable`); this test went red and no other did."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.An_Incapacitated_attacker_makes_no_attack_and_it_declines_citing_the_condition",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Sources ignored the Incapacitated statement (`if (false && incapacitated.Incapacitated)`), making the attack anyway; this test went red and no other did."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the AttackSources handler defaulted a missing Incapacitated statement (`request.Incapacitated ?? IncapacitatedStatement.IsNot(\"default\")`); this test went red and no other did. It went red too when the AttackResolution handler defaulted a missing DamageRules, and when the AttackModifiers handler defaulted a missing Other to `[]`."
+    }
+  ]
+}

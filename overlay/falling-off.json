@@ -1,0 +1,25 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MountedCombatEntryPointTests.Each_of_the_three_cases_demands_a_DC_10_Dexterity_saving_throw_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.FallingOffDc was 12; this test went red, and so did the successful-save test."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_successful_save_keeps_the_rider_on_the_mount",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.FallingOff read the save the other way round (`if (!outcome.Succeeded)`), so a success fell off and a failure stayed on; this test went red, and so did the failed-save decline. It went red too under the DC 12 mutation."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_failed_save_declines_RequiresInterpretation_naming_the_space_the_rider_lands_in",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.FallingOff read the save the other way round (`if (!outcome.Succeeded)`), so a failed save answered that the rider stays on; this test went red, and so did the successful-save test."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_statement_a_mounted_combat_rule_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the FallingOff handler defaulted a missing Trigger to `FallTrigger.RiderKnockedProne`; this test went red and no other did."
+    }
+  ]
+}

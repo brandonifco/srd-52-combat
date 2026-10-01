@@ -27,9 +27,11 @@ public class SeededInitiativeReplayTests
     /// this seed differently, which is a decision about the ruleset version, not a number to update
     /// until green. Re-pinned for ruleset version 7 and replay schema 2 (<c>docs/decisions/0007</c>):
     /// the identity line moved, and the record gained its <c>rulings</c> line. The d20s and the order
-    /// are unchanged — this combat states no group, so no ruling touches it.
+    /// are unchanged — this combat states no group, so no ruling touches it. Re-pinned again for map
+    /// 3.0.0 (#75): the identity line names the map version, and that is all that moved; with 2.0.0 put
+    /// back the record hashes to the previous pin, cf5bf4bb….
     /// </summary>
-    private const string RecordedReplaySha256 = "cf5bf4bb41275ba86e2dcbd196f97c26202c9f5c618a4fd7126aa768b695273c";
+    private const string RecordedReplaySha256 = "9fc4b7d499d1f0967e5a358693ebe8fc41f2f7b5c281c9ebcbb229a1ba1e195d";
 
     private static readonly Combatant[] Participants =
     [
@@ -58,13 +60,13 @@ public class SeededInitiativeReplayTests
         var (other, _) = Run(new CountingSource(Pcg32.FromSeed(Seed + 1, stream: 1)), decisions: null);
         Assert.NotEqual(first.Rolls.Rolls.Select(r => r.D20), other.Rolls.Rolls.Select(r => r.D20));
 
-        // Comparable only under the same identity: ruleset srd-5.2.1-combat v7, PCG32, map 2.0.0.
+        // Comparable only under the same identity: ruleset srd-5.2.1-combat v7, PCG32, map 3.0.0.
         Assert.Equal("srd-5.2.1-combat", Ruleset.Identity.Ruleset.Id);
         Assert.Equal(7, Ruleset.Identity.Ruleset.Version);
         Assert.Equal(2, Ruleset.Identity.ReplaySchema.Version);
         Assert.Equal(RulesKernel.Identity.RandomAlgorithmId.Pcg32SetSeq64XshRr32, Ruleset.Identity.RandomAlgorithm);
         Assert.StartsWith(
-            "identity srd-5.2.1-combat v7 schema 2 map RulesFactory.Maps.Srd52Combat 2.0.0\n",
+            "identity srd-5.2.1-combat v7 schema 2 map RulesFactory.Maps.Srd52Combat 3.0.0\n",
             Encoding.UTF8.GetString(bytes),
             StringComparison.Ordinal);
 
@@ -131,7 +133,7 @@ public class SeededInitiativeReplayTests
     private static byte[] Render(InitiativeRolls rolls, TurnOrder order)
     {
         using var provenance = JsonDocument.Parse(EngineProvenance.ReadBytes());
-        var map = provenance.RootElement.GetProperty("map");
+        var map = provenance.RootElement.GetProperty("maps")[0];
         var identity = Ruleset.Identity;
         var text = new StringBuilder();
         text.Append($"identity {identity.Ruleset.Id} v{identity.Ruleset.Version} schema {identity.ReplaySchema.Version} ")

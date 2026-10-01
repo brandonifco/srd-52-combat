@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MountedCombatEntryPointTests.An_unwilling_creature_and_one_not_at_least_one_size_larger_cannot_serve_as_a_mount_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Eligible ignored the willingness statement (`if (false && !willing.Willing)`), so an unwilling creature reached the anatomy decline instead of being refused; this test went red and no other did. It went red too when \"at least one size larger\" counted the rider's own size as larger (`steps < 0` for `steps < 1`)."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_willing_creature_a_size_larger_turns_on_the_anatomy_and_declines_citing_appropriate_anatomy",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.AppropriateAnatomy read an unstated anatomy as appropriate (`if (false && anatomy.Verdict == AnatomyVerdict.NotStated)`), so this creature was a mount instead of declining; this test went red, and so did appropriate-anatomy's own decline test."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_willing_larger_creature_the_GM_calls_appropriately_shaped_can_serve_as_a_mount_naming_the_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Eligible ignored the GM's determination and asked the anatomy rule as though nothing were stated (`AppropriateAnatomy(AnatomyStatement.NotStated(candidate, anatomy.StatedBy))`), so a willing creature a size larger declined whatever the GM said; this test went red and no other did."
+    }
+  ]
+}

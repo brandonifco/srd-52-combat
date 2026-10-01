@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MakingAnAttackEntryPointTests.Determining_modifiers_names_the_Cover_the_Advantage_and_Disadvantage_and_the_other_effects_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Modifiers dropped the determinations it was given from the answer (`[]` for `[.. determinations]`); this test went red and no other did. It went red too when the step determined Cover of no obstacle at all (`CoverRules.Degree([])`), which also turned the Cover decline red, and under cover-degree's Three-Quarters mutation."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.Determining_modifiers_declines_where_the_degree_of_Cover_is_the_open_question",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Modifiers determined Cover of no obstacle at all (`CoverRules.Degree([])`), so the step answered where cover-degree declines; this test went red, and so did the step's answering test. It went red too under cover-degree's mutation that reads a creature by the object rows."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the AttackSources handler defaulted a missing Incapacitated statement (`request.Incapacitated ?? IncapacitatedStatement.IsNot(\"default\")`); this test went red and no other did. It went red too when the AttackResolution handler defaulted a missing DamageRules, and when the AttackModifiers handler defaulted a missing Other to `[]`."
+    }
+  ]
+}

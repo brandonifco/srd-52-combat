@@ -1,0 +1,44 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "RoundEntryPointTests.The_fight_continues_to_the_next_round_once_everyone_has_taken_a_turn_and_neither_side_is_defeated",
+      "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound named this round as the one that follows (`Next: round`); this test went red and no other did. It went red too when a second turn by the same combatant in a round was accepted (`if (false && !taken.Add(id))`)."
+    },
+    {
+      "test": "RoundEntryPointTests.Before_everyone_has_taken_a_turn_the_round_is_not_over",
+      "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound treated every round as over (`waiting.Length > 99`); this test went red and no other did. It went red too when a second turn by the same combatant was accepted (`if (false && !taken.Add(id))`)."
+    },
+    {
+      "test": "RoundEntryPointTests.A_defeated_side_ends_the_round_without_another_following",
+      "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound continued the fight with a side defeated (`return false ? ...`); this test went red, and so did the both-sides-agree decline. It went red too under the accepted-second-turn mutation."
+    },
+    {
+      "test": "RoundEntryPointTests.Both_sides_agreeing_with_neither_defeated_ends_the_combat_naming_the_owners_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound skipped the ruled case (`if (false && !defeat.ASideIsDefeated && agreement.AgreedToEnd)`), so the fight continued to another round as p. 13 alone would have it; this test went red and no other did."
+    },
+    {
+      "test": "RoundEntryPointTests.The_owners_ruling_is_named_only_where_both_sides_agreed_and_neither_was_defeated",
+      "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.NextRound named the ruling on the ordinary continuing round too (`[OwnerRulings.AgreementEndsTheCombat]` in the last arm); this test went red and no other did."
+    }
+  ],
+  "rulings": [
+    {
+      "id": "next-round/agreement-ends-it",
+      "span": "p. 13 says the fight continues to the next round if neither side is defeated; p. 14 (Ending Combat) says combat can also end when both sides agree to end it, which is a case where neither side is defeated. When both sides agree and neither is defeated, does another round begin (p. 13) or does combat end (p. 14)?",
+      "answer": "Combat ends: where both sides agree to end it and neither side is defeated, no further round begins.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-15",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "tests": [
+        "RoundEntryPointTests.Both_sides_agreeing_with_neither_defeated_ends_the_combat_naming_the_owners_ruling",
+        "RoundEntryPointTests.The_owners_ruling_is_named_only_where_both_sides_agreed_and_neither_was_defeated"
+      ]
+    }
+  ],
+  "declines": []
+}

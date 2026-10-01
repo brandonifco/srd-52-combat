@@ -1,0 +1,25 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MountedCombatEntryPointTests.A_controlled_mount_takes_the_riders_Initiative_and_has_only_Dash_Disengage_and_Dodge_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn dropped Dodge from the action options; this test went red and no other did. It went red too when the mount's Initiative did not change to match the rider's (`InitiativeMatchesTheRider: false`), and under mount-control-requires-training's mule-only mutation."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.What_one_of_the_three_action_options_does_declines_citing_the_Actions_table",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn answered the turn instead of declining for what an action does (`if (false && askingWhatAnActionDoes is { } asked)`); this test went red and no other did."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_controlled_mounts_turn_declines_where_nothing_states_the_mounts_training",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control declined only a stated lack of training (`if (creature.Training == MountTraining.NotTrained)`), so a mount whose training nothing states was controlled; this test went red, and so did mount-control-requires-training's own tests."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_controlled_mount_trained_by_the_callers_statement_carries_that_ruling_into_its_turn",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.ControlledTurn dropped the rulings its input relied on (`OwnerRulings.None` in place of `OwnerRulings.InOrder(control.Rulings)`), so a turn resting on Brandon's ruling named none; this test went red and no other did."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MountedCombatEntryPointTests.An_independent_mount_retains_its_place_in_the_Initiative_order_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Independent took the mount out of the Initiative order (`RetainsItsPlaceInTheInitiativeOrder: false`); this test went red and no other did."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_mount_that_takes_the_riders_direction_is_not_independent",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Independent read a mount that takes the rider's direction as independent (`if (false && behaviour.Behaviour == MountBehaviour.TakesYourDirection)`); this test went red and no other did."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.What_makes_a_mount_independent_and_what_it_does_are_unresolved_and_decline",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Independent read an unstated behaviour as independence (`if (false && behaviour.Behaviour == MountBehaviour.NotStated)`); this test went red and no other did. It went red too when the rule answered which moves and actions the mount takes (`if (false && askingWhatItDoes)`)."
+    }
+  ]
+}

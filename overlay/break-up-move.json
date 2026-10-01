@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "TurnEntryPointTests.A_move_is_broken_up_around_an_action_and_what_is_left_is_the_remainder_not_a_fresh_Speed",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.BreakUp gave each part of the move a fresh Speed (`Math.Max(0, speed - step.Feet)`) instead of the remainder; this test went red, and so did the move broken around a Bonus Action and a Reaction. It went red too when a part no longer recorded what it follows (`after = null`), when a move beyond the Speed was not named as such (`used > speed + 99`), and under the movement-counted-only-before-the-action mutation above."
+    },
+    {
+      "test": "TurnEntryPointTests.A_move_broken_around_a_Bonus_Action_and_a_Reaction_costs_neither_the_move_nor_the_action",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules counted a Bonus Action and a Reaction as actions (`steps.Count(s => s.Kind != TurnStepKind.Move)`); this test went red, and so did the turn-budget test. It went red too under the fresh-Speed and dropped-`after` mutations of BreakUp above."
+    }
+  ]
+}

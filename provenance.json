@@ -1,197 +1,332 @@
 {
-  "provenanceFormat": 3,
+  "provenanceFormat": 9,
+  "verification": {
+    "verified": true,
+    "ran": [
+      "restore",
+      "provenance",
+      "build",
+      "test",
+      "gate"
+    ]
+  },
   "engine": {
     "name": "Srd52Combat"
   },
+  "repository": {
+    "enginePath": null,
+    "automation": []
+  },
+  "distribution": "public",
   "factory": {
-    "version": "0.7.0",
-    "commit": "069780809543a66d5556d713e337d850ef405b41",
+    "version": "0.0.0-dev+d992dd73c005",
+    "commit": "d992dd73c005f3710c9c18b45749a2e957ddbae2",
     "dirty": false
   },
-  "map": {
-    "packageId": "RulesFactory.Maps.Srd52Combat",
-    "version": "2.0.0",
-    "nupkgSha256": "b4d20a821c9585106eb5e8612d600c951e2fc0c76a4d054a5c3810552f12f6cf",
-    "files": [
-      {
-        "role": "map",
-        "path": "map/corpus-map.json",
-        "sha256": "228de0dbdfb0900a098ae611a2c72c1142254980ce3c57d66474bc3b4f834ec1"
-      },
-      {
-        "role": "manifest",
-        "path": "map/corpus-manifest.json",
-        "sha256": "aedebbb6a68f84213013706d63be470ce49bbd0396405959a8b53d30418a612d"
-      },
-      {
-        "role": "checker",
-        "path": "tools/check-map.py",
-        "sha256": "3198b323fbad84c6c7b284b88dce188d02c16b7bdd569c31ad090c58491e37c8"
-      }
-    ]
-  },
-  "corpus": {
-    "sourceId": "srd-5.2.1",
-    "contentHash": "c55926cb77bc7ea09096fc652db1411d763eae89d430c52221ed8709a075b100",
-    "hashDerivation": "srd-5.2.1-pdftotext-24.02.0-page-marked",
-    "asOf": null,
-    "recomputed": true
-  },
+  "maps": [
+    {
+      "packageId": "RulesFactory.Maps.Srd52Combat",
+      "version": "3.0.0",
+      "nupkgSha256": "3fe54b15569e03d44a98955ef43d2e66e2cf024f084aea248f84a166a4095d76",
+      "files": [
+        {
+          "role": "map",
+          "path": "map/corpus-map.json",
+          "sha256": "09131449f3e18104644581e328579e4c1ea6026644dcd0379e3a612b05c4db62"
+        },
+        {
+          "role": "manifest",
+          "path": "map/corpus-manifest.json",
+          "sha256": "aedebbb6a68f84213013706d63be470ce49bbd0396405959a8b53d30418a612d"
+        },
+        {
+          "role": "checker",
+          "path": "tools/check-map.py",
+          "sha256": "e51ab4de773f7cdff859514856e3956622f0aaf43c36ee5977f9eba9086baa82"
+        },
+        {
+          "role": "verification",
+          "path": "map/verification.json",
+          "sha256": "4d1a16449c916aebaa09ebad585bf682baa72693f2588ea307de160c7f94f7b2"
+        }
+      ]
+    }
+  ],
+  "supersedes": [],
+  "corpora": [
+    {
+      "sourceId": "srd-5.2.1",
+      "contentHash": "c55926cb77bc7ea09096fc652db1411d763eae89d430c52221ed8709a075b100",
+      "hashDerivation": "srd-5.2.1-pdftotext-24.02.0-page-marked",
+      "asOf": null,
+      "path": "corpus/srd-5.2.1.txt",
+      "principal": true,
+      "recomputed": true
+    }
+  ],
   "kernel": {
     "packageId": "RulesKernel",
-    "version": "0.3.0"
+    "version": "1.0.0"
   },
   "packs": [],
   "recipes": {
     "files": [
       {
         "path": "tools/check-map.py",
-        "sha256": "3198b323fbad84c6c7b284b88dce188d02c16b7bdd569c31ad090c58491e37c8"
+        "sha256": "e51ab4de773f7cdff859514856e3956622f0aaf43c36ee5977f9eba9086baa82"
       },
       {
         "path": "tools/factory/__main__.py",
-        "sha256": "e36697ae5b26a375f45c1c1dd6afab54f096162c7bb06003a257236a6a5db996"
+        "sha256": "a900026a1084fc270be3b8d3089d74242a9fcb54106d3303c1ba0f493abca7c2"
+      },
+      {
+        "path": "tools/factory/agentrails.py",
+        "sha256": "609331810ed102c17453e0de5a773398e4fbc0f3f058ba8c82f115f03976a608"
       },
       {
         "path": "tools/factory/backlog.py",
-        "sha256": "43027c085a9dc027016118a81f0159d2e09b33340ee402fc26415b31d972ed7f"
+        "sha256": "64208c9464b221e13041cb3299c46b8017a53ffaf6cff1159477e7d0327b7a91"
+      },
+      {
+        "path": "tools/factory/compose.py",
+        "sha256": "1adaaf6b893a60337754a6c758dd38d6a43f6c6617ff3101c6d29687c0da9f18"
+      },
+      {
+        "path": "tools/factory/contracts.py",
+        "sha256": "6f719acb7426c7b7d932385abdc817ca68784fc7e3c4753b1933846fe41e829a"
+      },
+      {
+        "path": "tools/factory/correspondence.py",
+        "sha256": "1247d9b3bd2b15ad2537acfe714583c27bebfc0a0c8ae130f1e89d3abf749e30"
+      },
+      {
+        "path": "tools/factory/csharp.py",
+        "sha256": "f6b4be5d76dac11f922cf84fefaaaa81d58cd21b6c8f213e79103c602693c1b6"
+      },
+      {
+        "path": "tools/factory/entries.py",
+        "sha256": "9383e7b3513e8a6e6ab2ab0c360628e2c721b0afcea302b3b46844472e6dc26c"
       },
       {
         "path": "tools/factory/gate.py",
-        "sha256": "3af31278d127048660d6f8ef9f4c9d7ad4ba136e87c7ebd4fd3d9d736cca326b"
+        "sha256": "d02b67b09fca32a3a9e15625d0da9da5e4077f91bf2a91cd5e1ce2466e0f892d"
       },
       {
         "path": "tools/factory/generate.py",
-        "sha256": "afcea250d2dbd23390f156ece985824714ac68c65e8f4551c51323397c2388bb"
+        "sha256": "ca5f9f116c2d4dc18ae50096991c9b07760e74a071da617c623ab692ca794146"
       },
       {
         "path": "tools/factory/intake.py",
-        "sha256": "002730b82e965e2ef2d70d5cd51855e01e8052f940a40cb591f2c26a26a5a7b9"
+        "sha256": "df923af440fa12e5bc05e96e7a79d2248b46bcc00f950b659261bc910675d8ab"
       },
       {
-        "path": "tools/factory/licensed-copy-operators.json",
-        "sha256": "0559c7b769660eff9a23f03de6619b9084a6dc0e8ce4d0ca511d868da38bfff9"
-      },
-      {
-        "path": "tools/factory/licensed_copy.py",
-        "sha256": "020549331fc45f0d08817cb55ab628a20d02b3db00f35e91aef9a25fe56b0d23"
+        "path": "tools/factory/overlay.py",
+        "sha256": "418c313977e2d209ca35651aa4a95cb93f202b7809064499c04484eef858bde9"
       },
       {
         "path": "tools/factory/ownership.py",
-        "sha256": "799fd376c652954a4d371b329cc1bfdb8cd32c43e2eb3ed971ba028f6655240a"
+        "sha256": "f32892a8ae844c4f1fac3cf51f1b1413bcf32f1fb245fc4b383b7b723427cc60"
+      },
+      {
+        "path": "tools/factory/pins.py",
+        "sha256": "28078f5b61d5918e60083f9bd34112f86186d409de612320b8386c6bacbe8b8c"
       },
       {
         "path": "tools/factory/provenance.py",
-        "sha256": "715ae6898c9e370589d32f38a32b8bb8ace2b144281b19bdbcac9b6eff403f98"
+        "sha256": "bfe89f109e80901b72e1c2a875232009e5e45e3789833b577d077471a276b994"
+      },
+      {
+        "path": "tools/factory/rails.py",
+        "sha256": "c6ce3c601083e64e17f1b55de4820f3190dae600a372ab61a8345d952362c596"
       },
       {
         "path": "tools/factory/recipe/engine-gate.py",
-        "sha256": "6bdfc491088584d5dbca128692e4d3fb7182655d24f9b24c2b45e641b605ffdb"
+        "sha256": "40076ad702419d05e148a1a364da7d7008cd22a9ccd45aa64bf4e9d4bcf77866"
       },
       {
         "path": "tools/factory/recipe/map-overlay.py",
-        "sha256": "11cb78f15f1e6a1ccc8a08542d5fd59beecb30bb8e0a6c903460d6b041129714"
+        "sha256": "d2d7974eb22dbd19641ad17a5e6026ed76f39d74ab9d680650e3286a9b2097a0"
+      },
+      {
+        "path": "tools/factory/recipe/rails/AGENTS.md",
+        "sha256": "0fc0caeb0b289d9a4ed6c3cc397529b746f07ed7ac3bebbd8cc219f85e5f51f0"
+      },
+      {
+        "path": "tools/factory/recipe/rails/CLAUDE.md",
+        "sha256": "04c07ad36e742fa60efafeca54d20bd96d16b6e338a44e46fad2b679ab8dfd9f"
+      },
+      {
+        "path": "tools/factory/recipe/rails/adversarial-self-review.md",
+        "sha256": "9faff906492d809a701516c2a741fb89d5563e646b7a759e0d27bb64f08c3b06"
+      },
+      {
+        "path": "tools/factory/recipe/rails/agent-team.md",
+        "sha256": "e1fd3fe7e2a27ba99d485e946a00b893b2e2e39b6fece2cca001b1f9fd82c40d"
+      },
+      {
+        "path": "tools/factory/recipe/rails/agents/engine-dev.md",
+        "sha256": "10ac2f2159b2b93d65f6665274453902fa252c56f2d2cd0707ac76fda2e2d9fe"
+      },
+      {
+        "path": "tools/factory/recipe/rails/agents/repo-steward.md",
+        "sha256": "df19aaa2a13662ff88c556e11b49b4033c4efa188386e5528631142aa7579834"
+      },
+      {
+        "path": "tools/factory/recipe/rails/agents/rules-conformance.md",
+        "sha256": "a86b4d07daccede53261077c430114fae3236d7611e7dfc287431caded6ecc04"
+      },
+      {
+        "path": "tools/factory/recipe/rails/editorconfig",
+        "sha256": "4109d1ef55053ef656e536d7818934deb73016fbe950f153bae6b2a163591cb2"
+      },
+      {
+        "path": "tools/factory/recipe/rails/hooks/primary-checkout-guard.py",
+        "sha256": "2f15d7192c5328376c1cd1836229c699d1d48f90ef35b451e48fa79b7fbef238"
+      },
+      {
+        "path": "tools/factory/recipe/rails/pull_request_template.md",
+        "sha256": "3a343651e908d6b6bc36594fa663c2aee9e88996147516173c39e3bea63ede78"
+      },
+      {
+        "path": "tools/factory/recipe/rails/review-evidence.md",
+        "sha256": "acd33f7680250b25b17620781c9cb0eff18b05f6fe693f55fd878e459651c3dd"
+      },
+      {
+        "path": "tools/factory/recipe/rails/settings.json",
+        "sha256": "4d410acd10ba5b6ed2d3c6a016cc2cfde1cf8e621da54424755376a80da30aa0"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/agent-doctor.py",
+        "sha256": "04b0ebbffc8638fa322543a8591096abb54ef5c5a7e5be4151de6e4066fff4ff"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/conformance-gate.py",
+        "sha256": "efa4ebba282b25abe388aea2721633d8565de22faaf591e09361c2ac1759c031"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/dispatch-agent.sh",
+        "sha256": "c34826d451b6f8602a31b7e838d68f24baf1b276adb3f7e8e6b319b1a86b7b51"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/entry-packet.py",
+        "sha256": "0f37570f3995218e4ca893f254ce3476290e4b96429ee5bd4152cfe223f63cdc"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/mutate.py",
+        "sha256": "d33f7ddedc923388af4582ffb6c04a1434c09f695738ca34f191839f21847901"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/new-issue.sh",
+        "sha256": "2830ba6458df4c34378538d73eadc4d522fb5f5cb7dbb945ef89097d66c9b9ee"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/orchestrator-status.py",
+        "sha256": "8ddba7efbe89b47166928c6d6ac1d366f80234e914de5b3745b6211b25ba64de"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/pr-policy.py",
+        "sha256": "a68e3e9603684143232a8badf4e36642ce2762a20a38fbed5e33f7255d2629ac"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/re-produce.sh",
+        "sha256": "9c0eb1c3178b16fd3799037316554ca8256f0ccebf82998d69658d781b1526b2"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/record-verdict.py",
+        "sha256": "9dc1d7aafa536a37278bf526693893e106a43c43183bdcccddceac4e8fe45231"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/repair-packet.py",
+        "sha256": "67e36ff58616171e5222ac3449bee618b13bba840f376069ecfcc7d577f8bc9f"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/requeue-gate.py",
+        "sha256": "df937ba5ee305f52097406fa556c98ad0a98d4e6f76bb4a554ce0802fae1e952"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/review-packet.py",
+        "sha256": "09a783f9e0a7a6e995167389f0c8398da73d3e4f44653fe451e2a8e47cacc291"
+      },
+      {
+        "path": "tools/factory/recipe/rails/tools/review-scope.py",
+        "sha256": "84a69642db7a30efe6729d9557725794567462354072655ff4c223c7f6cbccf4"
+      },
+      {
+        "path": "tools/factory/recipe/rails/workflows/conformance-gate.yml",
+        "sha256": "d66ae8a37a37874369ac962fbecbf9ac1b98cf0246541a61ea5089b23f8ea702"
+      },
+      {
+        "path": "tools/factory/recipe/rails/workflows/pr-policy.yml",
+        "sha256": "caa3394a473d5fdd45b274176d8e28c48d9f5425176318194ba68fbea8453fa2"
+      },
+      {
+        "path": "tools/factory/recipe/rails/workflows/verdict-requeue.yml",
+        "sha256": "8ab0d0de2df9777f3e545fedb66c118816e3c658a0fce87db63261967332780a"
       },
       {
         "path": "tools/factory/recipe/validate.sh",
-        "sha256": "c28695c10c0b4e966b895d9cd7bb0ac36a1b02dd6a7778d57257093023d2cff1"
+        "sha256": "500f45c408581908737206860868e5cfb30b67f52b6dfe1dd6efdbe0bf391321"
       },
       {
         "path": "tools/factory/recipe/validate.yml",
-        "sha256": "f7720e2d2a26d65bb738c77d6be6fb84a46960a3e7230a75ed27ab66ce1b0033"
+        "sha256": "c0ff0ca60d5d875d49c66417b06da72df819529d2c73eed12cadab2ca007e56f"
+      },
+      {
+        "path": "tools/factory/registry.py",
+        "sha256": "8b4a714acdbfc71694db10649413e6cb5241a89111f816f5532723dd232e2437"
+      },
+      {
+        "path": "tools/factory/repository.py",
+        "sha256": "016ebf6ce89886b4fc1add7a0c9dcfacaec7ced4eacdc15bee1dba1ad19fe5b1"
+      },
+      {
+        "path": "tools/factory/reviewscope.py",
+        "sha256": "24019953e52e8e2732414171df2debac118d757d6f6fba3618f2219ca0848105"
+      },
+      {
+        "path": "tools/factory/rulescorpus.py",
+        "sha256": "b4e402985061df59df946eb2276c1cdda47cc7e99ec137fc10f8ff923fa4afd9"
       },
       {
         "path": "tools/factory/rulings.py",
-        "sha256": "cd99fde18b6c9b031e6669d36d3d2af7030afbc686c3fdd8e7c40a0fc07e5fe2"
+        "sha256": "6cbf313d23a2243b8a20d9ab8c7c5613744604aad31635b81dfaf4b25464b373"
+      },
+      {
+        "path": "tools/factory/scaffold.py",
+        "sha256": "570e95a110f34224913ce8b8ab5089313a47f8f5bf815e2249784b7dfa439c2f"
+      },
+      {
+        "path": "tools/factory/semantics.py",
+        "sha256": "28d64330fb1034e15eb177baaf498c368ffa5cc9bb326c76f7038cbe46a677d4"
       },
       {
         "path": "tools/factory/transaction.py",
-        "sha256": "554d2b30826cb5c828bd1bb3dfb5b2888846a8fa22aa0982f4f5c5576cfd1e1a"
+        "sha256": "6b85edc10b43fe4d24e247c6ace6c25bcba0406057f4f5ca3363214fedbc4695"
       },
       {
         "path": "tools/factory/verify.py",
-        "sha256": "ff188e0da339ed80599065ceaf81be45818590d4a91b1534aa709ce6dcf2c964"
+        "sha256": "20d9199e2aa0f7df2be6357e704022750735998243fe7e70cd8e3ada9ae58a41"
       }
     ],
     "digestRule": "sha256 over UTF-8 lines '<sha256>  <path>\\n', one per recipe file, in ascending byte order of path",
-    "digest": "1ddbbfea919b4fde8f98fe7d7973a4d1e6472fc6825e425f57c15a7b7d17ed0a"
+    "digest": "a8dad34375d17ec09d012d9efb86d5edcd317e37afec1742e81d002f8b3a51ad"
   },
   "generated": [
     {
       "path": ".github/workflows/validate.yml",
-      "sha256": "f7720e2d2a26d65bb738c77d6be6fb84a46960a3e7230a75ed27ab66ce1b0033"
+      "sha256": "c0ff0ca60d5d875d49c66417b06da72df819529d2c73eed12cadab2ca007e56f"
     },
     {
       "path": "RulesFactory.Packages.g.props",
-      "sha256": "f8b5f485a8a11a1661ef483b349db9b924122a067560503147ce33643fe76ec7"
+      "sha256": "f4597bb402b54f48202fcebf221fc6ff6661fa8deb625c7f5d374e857d5a1118"
     },
     {
-      "path": "backlog/001-combat-rounds.md",
-      "sha256": "0cfbf3cf0664ed4aab890387a0e063f528c0df80d2faa9c2f7ab6d9e7aeb32a5"
+      "path": "corpus/srd-5.2.1.corpus.build.json",
+      "sha256": "df93a644386e3b7b3ceaa6b26cec7d8f735f653563d73004f05891892e082433"
     },
     {
-      "path": "backlog/002-round-duration.md",
-      "sha256": "16735fd8377795883ce5d3f4b7c678663a7f1ce55be79a338b95f6fb3f20a67f"
-    },
-    {
-      "path": "backlog/003-brief-or-extended-communication.md",
-      "sha256": "abee0581289b29e03b5e572b44cad583e29ebbb0b1a2396d636701d6bd16afb3"
-    },
-    {
-      "path": "backlog/004-side-defeated.md",
-      "sha256": "69f9036a5ba687fa50790b31dd9b1afc241107ee012f36b56115f3476597512e"
-    },
-    {
-      "path": "backlog/005-sides-agree-to-end.md",
-      "sha256": "c09e3edcec0f9f5ba97376354529f85437811da7802215989776d0b6e0abcf27"
-    },
-    {
-      "path": "backlog/006-combat-end.md",
-      "sha256": "cc56e50846abf64e7802a58ff7f393f17bd21c90cbf437b86386f22bdc83b780"
-    },
-    {
-      "path": "backlog/007-grid-play.md",
-      "sha256": "62eb1d3cd8136ee25353409de3fa46a49a970c42626f48752c595c420a27cf78"
-    },
-    {
-      "path": "backlog/008-grid-range.md",
-      "sha256": "13afe8f5d11dcb1fffafac92ed0f699fe3caaa6937481ec432520b6f1d998488"
-    },
-    {
-      "path": "backlog/009-creature-size-space.md",
-      "sha256": "8be90c24daa3c688dbe3fe95eda976d0e099ee0e6a7867a1d83906a42d7344c0"
-    },
-    {
-      "path": "backlog/010-cover-origin.md",
-      "sha256": "72a7e7216669066685a5e26ccc3c3e7405238576950ae6fa0c6978cf614e5c3c"
-    },
-    {
-      "path": "backlog/011-cover-bonuses.md",
-      "sha256": "06a3672adda615d69a6a862b5ba5fa3a1f9592735d62ceb857e885005f7d5cb2"
-    },
-    {
-      "path": "backlog/012-total-cover.md",
-      "sha256": "01d3280549defe2f833f2e9d1477929b21ba5ebdaf34bf985bce9f59e02f1f7f"
-    },
-    {
-      "path": "backlog/013-cover-no-stacking.md",
-      "sha256": "1fb1a5de573a946e99b38af0f0b6bde6cd30b4632107a99985d5c08996776932"
-    },
-    {
-      "path": "backlog/014-difficult-terrain.md",
-      "sha256": "fd0e5601a75fe6d3d56687e6bfcab3e618721e3fec46ff9a0c37966e20dcd115"
-    },
-    {
-      "path": "backlog/015-difficult-terrain-cost.md",
-      "sha256": "faa5febbb777159957434e16c733fd4f659cb4f7b3cc2e2cb1147f2d6723fd2d"
-    },
-    {
-      "path": "backlog/016-surprised.md",
-      "sha256": "bc5543c44d2e46c687b1766cc09918aa62a798a8b718bc0057be6b93db1da852"
-    },
-    {
-      "path": "backlog/README.md",
-      "sha256": "b94aa0664e00fe4ba0e2890d5f2c350b902a43b89741ef15ee7871aa24422b3e"
+      "path": "corpus/srd-5.2.1.corpus.expect.json",
+      "sha256": "e9657b72087c40088bc1e09614922a950285b219e2daaecfbe3cbab180e5d265"
     },
     {
       "path": "corpus/srd-5.2.1.txt",
@@ -199,70 +334,182 @@
     },
     {
       "path": "scripts/engine-gate.py",
-      "sha256": "6bdfc491088584d5dbca128692e4d3fb7182655d24f9b24c2b45e641b605ffdb"
+      "sha256": "40076ad702419d05e148a1a364da7d7008cd22a9ccd45aa64bf4e9d4bcf77866"
+    },
+    {
+      "path": "scripts/factory/agentrails.py",
+      "sha256": "609331810ed102c17453e0de5a773398e4fbc0f3f058ba8c82f115f03976a608"
+    },
+    {
+      "path": "scripts/factory/compose.py",
+      "sha256": "1adaaf6b893a60337754a6c758dd38d6a43f6c6617ff3101c6d29687c0da9f18"
+    },
+    {
+      "path": "scripts/factory/contracts.py",
+      "sha256": "6f719acb7426c7b7d932385abdc817ca68784fc7e3c4753b1933846fe41e829a"
+    },
+    {
+      "path": "scripts/factory/correspondence.py",
+      "sha256": "1247d9b3bd2b15ad2537acfe714583c27bebfc0a0c8ae130f1e89d3abf749e30"
+    },
+    {
+      "path": "scripts/factory/csharp.py",
+      "sha256": "f6b4be5d76dac11f922cf84fefaaaa81d58cd21b6c8f213e79103c602693c1b6"
+    },
+    {
+      "path": "scripts/factory/entries.py",
+      "sha256": "9383e7b3513e8a6e6ab2ab0c360628e2c721b0afcea302b3b46844472e6dc26c"
     },
     {
       "path": "scripts/factory/generate.py",
-      "sha256": "afcea250d2dbd23390f156ece985824714ac68c65e8f4551c51323397c2388bb"
+      "sha256": "ca5f9f116c2d4dc18ae50096991c9b07760e74a071da617c623ab692ca794146"
     },
     {
       "path": "scripts/factory/intake.py",
-      "sha256": "002730b82e965e2ef2d70d5cd51855e01e8052f940a40cb591f2c26a26a5a7b9"
+      "sha256": "df923af440fa12e5bc05e96e7a79d2248b46bcc00f950b659261bc910675d8ab"
+    },
+    {
+      "path": "scripts/factory/overlay.py",
+      "sha256": "418c313977e2d209ca35651aa4a95cb93f202b7809064499c04484eef858bde9"
     },
     {
       "path": "scripts/factory/ownership.py",
-      "sha256": "799fd376c652954a4d371b329cc1bfdb8cd32c43e2eb3ed971ba028f6655240a"
+      "sha256": "f32892a8ae844c4f1fac3cf51f1b1413bcf32f1fb245fc4b383b7b723427cc60"
+    },
+    {
+      "path": "scripts/factory/pins.py",
+      "sha256": "28078f5b61d5918e60083f9bd34112f86186d409de612320b8386c6bacbe8b8c"
     },
     {
       "path": "scripts/factory/provenance.py",
-      "sha256": "715ae6898c9e370589d32f38a32b8bb8ace2b144281b19bdbcac9b6eff403f98"
+      "sha256": "bfe89f109e80901b72e1c2a875232009e5e45e3789833b577d077471a276b994"
+    },
+    {
+      "path": "scripts/factory/registry.py",
+      "sha256": "8b4a714acdbfc71694db10649413e6cb5241a89111f816f5532723dd232e2437"
+    },
+    {
+      "path": "scripts/factory/reviewscope.py",
+      "sha256": "24019953e52e8e2732414171df2debac118d757d6f6fba3618f2219ca0848105"
+    },
+    {
+      "path": "scripts/factory/rulescorpus.py",
+      "sha256": "b4e402985061df59df946eb2276c1cdda47cc7e99ec137fc10f8ff923fa4afd9"
     },
     {
       "path": "scripts/factory/rulings.py",
-      "sha256": "cd99fde18b6c9b031e6669d36d3d2af7030afbc686c3fdd8e7c40a0fc07e5fe2"
+      "sha256": "6cbf313d23a2243b8a20d9ab8c7c5613744604aad31635b81dfaf4b25464b373"
+    },
+    {
+      "path": "scripts/factory/scaffold.py",
+      "sha256": "570e95a110f34224913ce8b8ab5089313a47f8f5bf815e2249784b7dfa439c2f"
+    },
+    {
+      "path": "scripts/factory/semantics.py",
+      "sha256": "28d64330fb1034e15eb177baaf498c368ffa5cc9bb326c76f7038cbe46a677d4"
     },
     {
       "path": "scripts/map-overlay.py",
-      "sha256": "11cb78f15f1e6a1ccc8a08542d5fd59beecb30bb8e0a6c903460d6b041129714"
+      "sha256": "d2d7974eb22dbd19641ad17a5e6026ed76f39d74ab9d680650e3286a9b2097a0"
     },
     {
       "path": "scripts/validate.sh",
-      "sha256": "9d048b2c6fb7d3389ba4c170cfcb1382065081d7917eb69d4b42b08722296dc9"
+      "sha256": "d3ddac2e4c9a9cd3400cd32f904e60f27d1effc0460f65d5313cabf23f8101b0"
     },
     {
       "path": "src/Srd52Combat/Generated/Contracts.g.cs",
-      "sha256": "afb992052e7065f3cab2936b1a982023d03b105804bb74cf3ca7ed1aa0ac005b"
+      "sha256": "2b194687e8bfd23bf2f5ea2579c2565235b15792e895f38487b69c89fd78d2fd"
     },
     {
       "path": "src/Srd52Combat/Generated/MapEntries.g.cs",
-      "sha256": "83b3a9d799966f79c5011473ab1b43744983086b7baa69b67208d38e3f32c2a0"
+      "sha256": "8b76a21fa48057501be84631936922e3bfdced1add448748814804686ff51810"
     },
     {
       "path": "src/Srd52Combat/Generated/Provenance.g.cs",
-      "sha256": "a22768800b0282f2cc1409903f434734ab81ebe59e45e4001b17ab226e859f99"
+      "sha256": "50589a01e1c58a530146001a3cbf51aefb776d5a88f10f1b1ccbba10bcbe39c1"
     },
     {
       "path": "src/Srd52Combat/Generated/Registry.g.cs",
-      "sha256": "270e8b961fe747ceb56f0ff1b368f4ef45f4838b8774e618a3fd6992f0cb67b6"
+      "sha256": "95873118861b4cfd316cae287c5cfb8b3f57d859525b37cc99fb7de7e6ca428d"
     },
     {
       "path": "src/Srd52Combat/Generated/Requests.g.cs",
-      "sha256": "9e39fd44805b43fb68eaa3a4bdd13ce83987023e7bd119484140727cb31bf7ad"
+      "sha256": "01703bca6ae0635b66bef056e750ecc9074a6697363c4fd7f57a3c3a8bda218f"
     },
     {
       "path": "src/Srd52Combat/Generated/Rulings.g.cs",
-      "sha256": "b3cbd742f92578491e8cd0b003b3a91d095d0e81a2f0b9d71d0ec3e034d68ece"
+      "sha256": "f40a1958aae60a70e17ff0b0836437aff0fcadd2caaa948ef59d3561bd2aa5b6"
     },
     {
       "path": "tests/Srd52Combat.Tests/Generated/CorrespondenceTests.g.cs",
-      "sha256": "314e76221d9aa6c18d9db674add977b78df7a2fc3ef26bc8e33ce0257d08f9d4"
+      "sha256": "94d94540cee007df26aaca9eee62f614f7ce797baa39ffc083b03d56d9ae7196"
     },
     {
       "path": "tests/Srd52Combat.Tests/Generated/ProvenanceTests.g.cs",
-      "sha256": "344c9eb3f937289c84f0e161bc339abce5435a00a01cdd3d36ade9b32e59f8b2"
+      "sha256": "b031d96704ff1733b5b94814e506e4959fef88b5e0956f8b409bf8803de5ff0e"
     }
   ],
   "managed": [
+    {
+      "path": ".claude/agents/engine-dev.md",
+      "recipeVersion": 11,
+      "sha256": "10ac2f2159b2b93d65f6665274453902fa252c56f2d2cd0707ac76fda2e2d9fe"
+    },
+    {
+      "path": ".claude/agents/repo-steward.md",
+      "recipeVersion": 4,
+      "sha256": "df19aaa2a13662ff88c556e11b49b4033c4efa188386e5528631142aa7579834"
+    },
+    {
+      "path": ".claude/agents/rules-conformance.md",
+      "recipeVersion": 7,
+      "sha256": "a86b4d07daccede53261077c430114fae3236d7611e7dfc287431caded6ecc04"
+    },
+    {
+      "path": ".claude/hooks/primary-checkout-guard.py",
+      "recipeVersion": 3,
+      "sha256": "2f15d7192c5328376c1cd1836229c699d1d48f90ef35b451e48fa79b7fbef238"
+    },
+    {
+      "path": ".claude/settings.json",
+      "recipeVersion": 1,
+      "sha256": "4d410acd10ba5b6ed2d3c6a016cc2cfde1cf8e621da54424755376a80da30aa0"
+    },
+    {
+      "path": ".editorconfig",
+      "recipeVersion": 1,
+      "sha256": "4109d1ef55053ef656e536d7818934deb73016fbe950f153bae6b2a163591cb2"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "recipeVersion": 5,
+      "sha256": "3a343651e908d6b6bc36594fa663c2aee9e88996147516173c39e3bea63ede78"
+    },
+    {
+      "path": ".github/workflows/conformance-gate.yml",
+      "recipeVersion": 2,
+      "sha256": "d66ae8a37a37874369ac962fbecbf9ac1b98cf0246541a61ea5089b23f8ea702"
+    },
+    {
+      "path": ".github/workflows/pr-policy.yml",
+      "recipeVersion": 1,
+      "sha256": "caa3394a473d5fdd45b274176d8e28c48d9f5425176318194ba68fbea8453fa2"
+    },
+    {
+      "path": ".github/workflows/verdict-requeue.yml",
+      "recipeVersion": 2,
+      "sha256": "8ab0d0de2df9777f3e545fedb66c118816e3c658a0fce87db63261967332780a"
+    },
+    {
+      "path": "AGENTS.md",
+      "recipeVersion": 27,
+      "sha256": "0fc0caeb0b289d9a4ed6c3cc397529b746f07ed7ac3bebbd8cc219f85e5f51f0"
+    },
+    {
+      "path": "CLAUDE.md",
+      "recipeVersion": 1,
+      "sha256": "04c07ad36e742fa60efafeca54d20bd96d16b6e338a44e46fad2b679ab8dfd9f"
+    },
     {
       "path": "Directory.Build.props",
       "recipeVersion": 2,
@@ -274,12 +521,101 @@
       "sha256": "e53f00efe0e550fb452b2e1d8d3b1e2f0cdd1de86628eff7d60a813ebfa1818f"
     },
     {
+      "path": "docs/adversarial-self-review.md",
+      "recipeVersion": 1,
+      "sha256": "9faff906492d809a701516c2a741fb89d5563e646b7a759e0d27bb64f08c3b06"
+    },
+    {
+      "path": "docs/agent-team.md",
+      "recipeVersion": 10,
+      "sha256": "e1fd3fe7e2a27ba99d485e946a00b893b2e2e39b6fece2cca001b1f9fd82c40d"
+    },
+    {
+      "path": "docs/review-evidence.md",
+      "recipeVersion": 1,
+      "sha256": "acd33f7680250b25b17620781c9cb0eff18b05f6fe693f55fd878e459651c3dd"
+    },
+    {
       "path": "global.json",
       "recipeVersion": 1,
       "sha256": "12f1cf1c3eef038f55de570dc8f5e321f4ff5306a9281106c43cc60a1f78a371"
+    },
+    {
+      "path": "tools/agent-doctor.py",
+      "recipeVersion": 8,
+      "sha256": "04b0ebbffc8638fa322543a8591096abb54ef5c5a7e5be4151de6e4066fff4ff"
+    },
+    {
+      "path": "tools/conformance-gate.py",
+      "recipeVersion": 5,
+      "sha256": "efa4ebba282b25abe388aea2721633d8565de22faaf591e09361c2ac1759c031"
+    },
+    {
+      "path": "tools/dispatch-agent.sh",
+      "recipeVersion": 6,
+      "sha256": "c34826d451b6f8602a31b7e838d68f24baf1b276adb3f7e8e6b319b1a86b7b51"
+    },
+    {
+      "path": "tools/entry-packet.py",
+      "recipeVersion": 7,
+      "sha256": "0f37570f3995218e4ca893f254ce3476290e4b96429ee5bd4152cfe223f63cdc"
+    },
+    {
+      "path": "tools/mutate.py",
+      "recipeVersion": 1,
+      "sha256": "d33f7ddedc923388af4582ffb6c04a1434c09f695738ca34f191839f21847901"
+    },
+    {
+      "path": "tools/new-issue.sh",
+      "recipeVersion": 2,
+      "sha256": "2830ba6458df4c34378538d73eadc4d522fb5f5cb7dbb945ef89097d66c9b9ee"
+    },
+    {
+      "path": "tools/orchestrator-status.py",
+      "recipeVersion": 3,
+      "sha256": "8ddba7efbe89b47166928c6d6ac1d366f80234e914de5b3745b6211b25ba64de"
+    },
+    {
+      "path": "tools/pr-policy.py",
+      "recipeVersion": 14,
+      "sha256": "a68e3e9603684143232a8badf4e36642ce2762a20a38fbed5e33f7255d2629ac"
+    },
+    {
+      "path": "tools/re-produce.sh",
+      "recipeVersion": 8,
+      "sha256": "9c0eb1c3178b16fd3799037316554ca8256f0ccebf82998d69658d781b1526b2"
+    },
+    {
+      "path": "tools/record-verdict.py",
+      "recipeVersion": 6,
+      "sha256": "9dc1d7aafa536a37278bf526693893e106a43c43183bdcccddceac4e8fe45231"
+    },
+    {
+      "path": "tools/repair-packet.py",
+      "recipeVersion": 6,
+      "sha256": "67e36ff58616171e5222ac3449bee618b13bba840f376069ecfcc7d577f8bc9f"
+    },
+    {
+      "path": "tools/requeue-gate.py",
+      "recipeVersion": 2,
+      "sha256": "df937ba5ee305f52097406fa556c98ad0a98d4e6f76bb4a554ce0802fae1e952"
+    },
+    {
+      "path": "tools/review-packet.py",
+      "recipeVersion": 17,
+      "sha256": "09a783f9e0a7a6e995167389f0c8398da73d3e4f44653fe451e2a8e47cacc291"
+    },
+    {
+      "path": "tools/review-scope.py",
+      "recipeVersion": 1,
+      "sha256": "84a69642db7a30efe6729d9557725794567462354072655ff4c223c7f6cbccf4"
     }
   ],
   "engineOwned": [
+    {
+      "path": ".github/agent-policy.json",
+      "adopted": false
+    },
     {
       "path": "Directory.Packages.props",
       "adopted": false
@@ -289,7 +625,219 @@
       "adopted": false
     },
     {
-      "path": "corpus-map.overlay.json",
+      "path": "overlay/appropriate-anatomy.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/attack-modifiers.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/attack-resolution.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/attack-sources.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/attack-structure.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/attack-target.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/break-up-move.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/combat-steps.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/communication-cost.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/controlled-mount-turn.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/cover-degree.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/creature-space-difficult-terrain.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/doing-nothing.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/dropping-prone.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/ending-turn-in-occupied-space.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/falling-off.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/free-object-interaction.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/gm-requires-action.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/grid-corners.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/grid-entering-square.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/grid-speed-in-squares.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/grid-square-size.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/group-initiative.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/hidden-attacker-revealed.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/independent-mount.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/initiative-order.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/initiative-roll.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/initiative-ties-uncovered.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/initiative-ties.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/melee-within-reach.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/mount-control-requires-training.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/mount-eligibility.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/mounting-cost.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/move-up-to-speed.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/movement-deduction.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/movement-modes.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/moving-through-creatures.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/next-round.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/no-willing-end-in-occupied-space.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/normal-and-long-range.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/opportunity-attack-avoidance.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/opportunity-attack.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/ranged-in-close-combat.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/reach.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/single-range.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/size-categories.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/surprise-disadvantage.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/turn-move-and-action.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/underwater-fire-resistance.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/underwater-melee.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/underwater-ranged.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/unseen-attacker-advantage.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/unseen-target-disadvantage.json",
+      "adopted": false
+    },
+    {
+      "path": "overlay/wrong-location-misses.json",
       "adopted": false
     },
     {
@@ -311,6 +859,10 @@
   ],
   "buildInputs": [
     {
+      "path": ".github/agent-policy.json",
+      "sha256": "f7cf1e1fde837af49da2997b314ff9c61ff3507f62db4bf7ae34a17bb6f0b756"
+    },
+    {
       "path": "Directory.Packages.props",
       "sha256": "cc050d75bad8c3d1f39a4ee0db912e2bdc9beef763c6bbbf39ec70777c112989"
     },
@@ -319,8 +871,220 @@
       "sha256": "e3e7ab796b858932f47b1c25a6b1b9804d4dbf7bc33ee0612e5246450b7b011d"
     },
     {
-      "path": "corpus-map.overlay.json",
-      "sha256": "6e33fd2eb1c60f9d79ff4c5ec4201bb674e473a71847f9c062b1d99ade45ac8c"
+      "path": "overlay/appropriate-anatomy.json",
+      "sha256": "bab591d1122665cd111edf1115164f1d80aa813cd08cc71cd0939919449118f0"
+    },
+    {
+      "path": "overlay/attack-modifiers.json",
+      "sha256": "36f51de7ef32e3ea1d8a37a40281761a8fd214c52544ffb26db7c0e55994a696"
+    },
+    {
+      "path": "overlay/attack-resolution.json",
+      "sha256": "a760ff2aed2d4c755b3598e712f2f547af4600ad4288d720ae69eeeafb475ff6"
+    },
+    {
+      "path": "overlay/attack-sources.json",
+      "sha256": "0748b8b8521e124cb080fffcc9854184fee3b1d14c9e5b0b1b0ece0f75b85c87"
+    },
+    {
+      "path": "overlay/attack-structure.json",
+      "sha256": "7a6e3c026e3b9484f398cf184d666b5f0eec35f8b53360c325e22574a875d194"
+    },
+    {
+      "path": "overlay/attack-target.json",
+      "sha256": "f1aea515a80ad4d674a6cc4e13ce4892313171eb474c4789b11d64905b841911"
+    },
+    {
+      "path": "overlay/break-up-move.json",
+      "sha256": "0971d5f1f53a1aacda4c4b492a10fffbc0540cc55f67e7f97c847f50e6847339"
+    },
+    {
+      "path": "overlay/combat-steps.json",
+      "sha256": "8cd45d279e3e6d8f8e54888fe87bf7d08a7f8ac1cdf87a2b3540365a65118604"
+    },
+    {
+      "path": "overlay/communication-cost.json",
+      "sha256": "6e5780ebc6d76a6fd456edbf404fe32584ce7bad57c325d425fd48d6a111cd1b"
+    },
+    {
+      "path": "overlay/controlled-mount-turn.json",
+      "sha256": "32d8d65fd8c6ad850e3bfc15659911f183803a6905924363536c9e945ea04f48"
+    },
+    {
+      "path": "overlay/cover-degree.json",
+      "sha256": "af6437e21842770d81cd42f130f4aa213e90d4b7d170037e46689ac01d43a1fb"
+    },
+    {
+      "path": "overlay/creature-space-difficult-terrain.json",
+      "sha256": "3a68ce852bbd1e46fa4dde657d5bab0416f9b1e09ce9dfc8f584704837065d44"
+    },
+    {
+      "path": "overlay/doing-nothing.json",
+      "sha256": "6fd478d6ea398ffb201611d84b9ea837c09400725c5c5a008122d558ec819248"
+    },
+    {
+      "path": "overlay/dropping-prone.json",
+      "sha256": "fcf33bd3e2a9ad94dd711d6e67aae8e00278fbd6828469692bc274fdee4409bc"
+    },
+    {
+      "path": "overlay/ending-turn-in-occupied-space.json",
+      "sha256": "a1b22f5886dc09a9986720efa86d454e6d4ac56b737ac16faf53fe39dd2255bb"
+    },
+    {
+      "path": "overlay/falling-off.json",
+      "sha256": "914e7d0647e42acb2f92430e8f0433ca0e67fba04981259c02ad05d7c1ccc59d"
+    },
+    {
+      "path": "overlay/free-object-interaction.json",
+      "sha256": "47ac8b75c59ebf34b884007348766b05579652741ccb392012fcb24af830126f"
+    },
+    {
+      "path": "overlay/gm-requires-action.json",
+      "sha256": "68bb65abd7db70d03535a1dd10b485b5519519fd7392f238c3e3760cdd21f6e6"
+    },
+    {
+      "path": "overlay/grid-corners.json",
+      "sha256": "c1b7bb7633a23fbb287722af3c98c7100ea98094b9fd28ec4b61b39392aee748"
+    },
+    {
+      "path": "overlay/grid-entering-square.json",
+      "sha256": "8cef26e3c20d07fc56f01c17df5f677ac8e6101a545dba207033ef551a01cc77"
+    },
+    {
+      "path": "overlay/grid-speed-in-squares.json",
+      "sha256": "7f1d06682ec30cdba20c4ddfaf8ac8cbcd093104d23f0720f920aef3faeb2ec7"
+    },
+    {
+      "path": "overlay/grid-square-size.json",
+      "sha256": "999942904fd36bb66f389d2a2a5af9b42234d9f94b4421a321e6cc68ae87b50f"
+    },
+    {
+      "path": "overlay/group-initiative.json",
+      "sha256": "21dde6bc52fd51044330a1bbb2178c3690e7684653cc46d86b5ff23c13390215"
+    },
+    {
+      "path": "overlay/hidden-attacker-revealed.json",
+      "sha256": "b3940361ebce177c330a584cd62f383b588e739fcad121f22586f33357876260"
+    },
+    {
+      "path": "overlay/independent-mount.json",
+      "sha256": "36228e8f39af65a3b3cdc41a05164c5ddf04fa3f7e164ec33ddd7d00126cc447"
+    },
+    {
+      "path": "overlay/initiative-order.json",
+      "sha256": "5310c38b2ab0d646efc2aefff02f7ecf7fc2a821d4bce97e3edbdb278c3cc63a"
+    },
+    {
+      "path": "overlay/initiative-roll.json",
+      "sha256": "b6e08c351a4efd5ce171cf293ec4ed5d666f65ba552730aafb976877d685289a"
+    },
+    {
+      "path": "overlay/initiative-ties-uncovered.json",
+      "sha256": "0023a732a92b3f12fdb58a691717716a28eed5df54d925b4cd9128382d031f56"
+    },
+    {
+      "path": "overlay/initiative-ties.json",
+      "sha256": "a7d2946e2b0655efe6ae6b73aa902f919d011cbbcb49339259f11278ef83c17a"
+    },
+    {
+      "path": "overlay/melee-within-reach.json",
+      "sha256": "ab47042f4c3e58da70ad36a98d8de8c5782116ae45da0f288b8ae229d9deea06"
+    },
+    {
+      "path": "overlay/mount-control-requires-training.json",
+      "sha256": "7f02c8bf2d3f3b72626e445a5676ca480afecdd5ae0651aa5eed15d3815a3e08"
+    },
+    {
+      "path": "overlay/mount-eligibility.json",
+      "sha256": "b9df22eba4f8407b901c0b04f5d450cc6d93011d96cf2e14cf9a2689c012ae8d"
+    },
+    {
+      "path": "overlay/mounting-cost.json",
+      "sha256": "3eb36568140e5f1ab8ca10856564b5370d3d921308e4d2ddc6f2249c78db8ab1"
+    },
+    {
+      "path": "overlay/move-up-to-speed.json",
+      "sha256": "e825ce5b7a555b136b661351627e6f09a7d8263f73fb10331da6c3b0b0562fcf"
+    },
+    {
+      "path": "overlay/movement-deduction.json",
+      "sha256": "24694dd1eb9297c003811b4ff2d2aae4727920f11a6ae51766c82fff36de914b"
+    },
+    {
+      "path": "overlay/movement-modes.json",
+      "sha256": "db8e41ff3be30a6f546a79cac61139e506c851c07726d304da04b1f6d7589eed"
+    },
+    {
+      "path": "overlay/moving-through-creatures.json",
+      "sha256": "c08ebdc78d12d080c1b5818c5b1e74b0379ee3108efa85437ed3513df6cd5531"
+    },
+    {
+      "path": "overlay/next-round.json",
+      "sha256": "c02fa98adeb0170656e23f2f549297c83cba175ee7df5eb861c293c89f824124"
+    },
+    {
+      "path": "overlay/no-willing-end-in-occupied-space.json",
+      "sha256": "d9af6cb3c0e53f162049b679c8975f2cbb98e42f379261258ba8cc2167d42b3b"
+    },
+    {
+      "path": "overlay/normal-and-long-range.json",
+      "sha256": "d763be294fec1446cfa3a3dee6c492533dd5bd1cfd7395789ad0436b76b55960"
+    },
+    {
+      "path": "overlay/opportunity-attack-avoidance.json",
+      "sha256": "e4688af52736b667eb2ed66e42a41319cd7cc51cf3c1e2dc0fff9057c853304e"
+    },
+    {
+      "path": "overlay/opportunity-attack.json",
+      "sha256": "caa43542351b9632942e971da2fc2e71aca5a18c2938a77577cdce7d5b8c439a"
+    },
+    {
+      "path": "overlay/ranged-in-close-combat.json",
+      "sha256": "98876f95eb78163e60ba851bd7579c44f94d2ec3314c4ef6ea7258c1fc543e8e"
+    },
+    {
+      "path": "overlay/reach.json",
+      "sha256": "7565f6a8f796de8e55156871678a0a42c4c5ffbcb5e81c27d52dd85f3bf690f4"
+    },
+    {
+      "path": "overlay/single-range.json",
+      "sha256": "783cd5685986ff0da8a0328ae373da9edf7001ab54a3ed99454a05aea1c2d95e"
+    },
+    {
+      "path": "overlay/size-categories.json",
+      "sha256": "07f518c0566ffafe04bb94878d108500e8edff7520073ec8479e7c9beab7a472"
+    },
+    {
+      "path": "overlay/surprise-disadvantage.json",
+      "sha256": "6dcb9458e2ba31640708c798b589be6b1cbfeff53b218a4d1945c037c424672c"
+    },
+    {
+      "path": "overlay/turn-move-and-action.json",
+      "sha256": "cd78efa463d02ce91e7762e97347a64d388e93644ce6cd4940133fdb9ac0cb5a"
+    },
+    {
+      "path": "overlay/underwater-fire-resistance.json",
+      "sha256": "db8f250dc7c7414628f5b671487f6fad3d9f889687be1120b0abb890c1f0fd9d"
+    },
+    {
+      "path": "overlay/underwater-melee.json",
+      "sha256": "8230a4f3c757a176a56892e16e67b989bcc53ed898b45979fb19da1c07da3437"
+    },
+    {
+      "path": "overlay/underwater-ranged.json",
+      "sha256": "730adc58f964034dcb3f2e254fae307df83d518137e7aaf2864a4a6178bf8026"
+    },
+    {
+      "path": "overlay/unseen-attacker-advantage.json",
+      "sha256": "770187ca1c321154aaec7d78a48b654e79c9997df63abd9b3d1779962e798fdf"
+    },
+    {
+      "path": "overlay/unseen-target-disadvantage.json",
+      "sha256": "ababc4fa9c03c055f8f7fa9968278960380c895792f4fbc2c64291dd910683f9"
+    },
+    {
+      "path": "overlay/wrong-location-misses.json",
+      "sha256": "003887ba766e0fe0e163a05abf321912cfb048df455de1d3e1e025e7630e6125"
     },
     {
       "path": "src/Srd52Combat/Srd52Combat.csproj",
@@ -328,7 +1092,7 @@
     },
     {
       "path": "src/Srd52Combat/packages.lock.json",
-      "sha256": "1a6d868df3d4f2f103944750ab5b86c692dca0f418cffb882a321af94a677e70"
+      "sha256": "aa5fa29f5c83e41b370e0df9a63976e01f635e57bd3fbf4e6a32f61e22a67fb3"
     },
     {
       "path": "tests/Srd52Combat.Tests/Srd52Combat.Tests.csproj",
@@ -336,21 +1100,11 @@
     },
     {
       "path": "tests/Srd52Combat.Tests/packages.lock.json",
-      "sha256": "01e6ee82cfaaaf040c0323eef960b62837a0fbbd2ed84d4ede7db6642e04382c"
+      "sha256": "079faf4fc3cc103c6283a0b1807ed018a9f74e478ae5a18529919612f2cb464b"
     }
   ],
   "randomness": "seeded",
   "rulings": [
-    {
-      "id": "moving-through-creatures/two-or-more",
-      "entry": "moving-through-creatures",
-      "span": "Does “a creature that is two sizes larger or smaller than you” mean exactly two sizes, or two or more? Read literally, a Medium creature can pass through a Huge creature's space and not a Gargantuan one's.",
-      "answer": "Two or more: a creature two or more sizes larger or smaller than you may be passed through, so a Medium creature passes through a Huge or a Gargantuan one.",
-      "ruledBy": "Brandon",
-      "ruledOn": "2026-09-16",
-      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
-      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
-    },
     {
       "id": "next-round/agreement-ends-it",
       "entry": "next-round",
@@ -368,6 +1122,16 @@
       "answer": "Every creature rolls its own Initiative: the engine never groups identical creatures, whatever the caller states.",
       "ruledBy": "Brandon",
       "ruledOn": "2026-09-15",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
+    },
+    {
+      "id": "moving-through-creatures/two-or-more",
+      "entry": "moving-through-creatures",
+      "span": "Does “a creature that is two sizes larger or smaller than you” mean exactly two sizes, or two or more? Read literally, a Medium creature can pass through a Huge creature's space and not a Gargantuan one's.",
+      "answer": "Two or more: a creature two or more sizes larger or smaller than you may be passed through, so a Medium creature passes through a Huge or a Gargantuan one.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
       "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
       "recordSha256": "0120ca2799855ba349117e8920b764276e7b10de3befd8bb8a238dace635e865"
     },

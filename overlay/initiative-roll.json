@@ -1,0 +1,45 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "InitiativeRollEntryPointTests.Every_participant_rolls_one_d20_plus_their_Dexterity_check_modifier_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll dropped the stated Dexterity check modifier (`new RolledInitiative(..., 0)`); this test went red, and so did the seeded replay. It went red too when the d20s were drawn in reverse participant order (`participants.Reverse()`), and when the die was a d19 (`InRange(source, 1, D20Faces - 1)`)."
+    },
+    {
+      "test": "InitiativeRollEntryPointTests.Faces_cover_one_to_twenty_and_nothing_else",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll drew a d19 (`UniformInt.InRange(source, 1, D20Faces - 1)`); this test went red."
+    },
+    {
+      "test": "InitiativeRollEntryPointTests.While_the_GM_uses_Initiative_scores_nothing_is_rolled_and_it_declines_citing_page_184",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll ignored the Initiative-score statement (`if (false && scoreOption.InUse)`), rolling anyway; this test went red and no other did."
+    },
+    {
+      "test": "InitiativeRollEntryPointTests.A_group_of_identical_creatures_rolls_one_d20_each_naming_group_initiatives_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll restored version 6's decline for a stated group (`if (!identicalCreatures.Groups.IsEmpty) return Decline(UnresolvedReason.RequiresInterpretation, ...)`), so nothing was drawn; this test went red, and so did group-initiative's ruling test and the seeded record that names the ruling."
+    },
+    {
+      "test": "InitiativeRollEntryPointTests.A_roll_with_Advantage_or_Disadvantage_declines_citing_page_7_without_drawing",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll declined only Advantage (`p.Roll == D20Mode.Advantage`), rolling a Disadvantage roll as one d20; this test went red (the Disadvantage case)."
+    },
+    {
+      "test": "InitiativeRollEntryPointTests.A_roll_with_both_Advantage_and_Disadvantage_declines_citing_page_7_without_drawing",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll rolled a roll with both as one d20, as map 2.0.0's draws counts it (`p.Roll is not (D20Mode.Straight or D20Mode.AdvantageAndDisadvantage)`); this test went red and no other did."
+    },
+    {
+      "test": "InitiativeRollEntryPointTests.A_statement_left_out_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the InitiativeRoll handler defaulted a missing ScoreOption to `InitiativeScoreOptionStatement.Rolling(\"default\")`; this test went red. It went red too when a missing IdenticalCreatures defaulted to `IdenticalCreaturesStatement.None(\"default\")`."
+    },
+    {
+      "test": "SeededInitiativeReplayTests.A_seeded_Initiative_replays_byte_for_byte_from_its_seed_and_its_recorded_tie_breaks",
+      "mutation": "In a throwaway copy, net10.0 suite run; Ruleset.Identity named version 4, the version before this batch; this test went red on the rendered identity and the pinned SHA-256, and no other did. Under map 2.0.0 it went red too when the map's assertedBy word for the players was not the engine's (`TieDecider.Players => \"the players\"`), when the map's assertedBy for initiative-ties was narrowed to [\"GM\"], and when the GM decided only all-monster ties. Under map 1.0.0 it went red under the dropped-modifier, reverse-draw-order and d19 mutations above, and under the ascending-order and tie-breaks-ignored mutations of initiative-order. The version mutation is re-run at every bump: under ruleset version 2 it was version 3, under version 3 (the movement and space batch) version 4, and under version 4 (the attacks batch) version 5; each time this test went red on the rendered identity and the pinned SHA-256, and no other did. Under version 5 (the turn and round batch) it was version 6, and under version 6 (the mounted-combat, underwater and gap-closing batch) version 7; each time this test went red on the rendered identity and the pinned SHA-256, and no other did."
+    },
+    {
+      "test": "SeededInitiativeReplayTests.A_recorded_combat_whose_rolls_rest_on_the_owners_ruling_names_it_in_the_record",
+      "mutation": "In a throwaway copy, net10.0 suite run; InitiativeRules.Roll named no ruling on a roll made under a stated group (`OwnerRulings.None`), so the recorded combat carried `rulings none` and a reader could not tell which of it was Brandon's; this test went red, and so did the two tests that assert the ruling on the roll itself."
+    }
+  ]
+}

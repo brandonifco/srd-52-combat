@@ -1,0 +1,13 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "ReachAndRangeEntryPointTests.A_ranged_attack_with_one_range_cannot_target_beyond_it_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; TargetingRules.SingleRange read \"beyond this range\" as inclusive (`distanceFeet < rangeFeet`), so a target at exactly the range could not be attacked; this test went red, and so did attack-target's test of the two alternatives."
+    }
+  ]
+}

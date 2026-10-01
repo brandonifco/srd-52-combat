@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "YourTurnEntryPointTests.Brief_communication_is_free_and_extended_communication_requires_an_action",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Communicates swapped the two costs, making brief communication cost an action and extended communication free (`communication.Kind == CommunicationKind.Extended`); this test went red, and so did the requirement-naming-an-object-interaction test."
+    },
+    {
+      "test": "YourTurnEntryPointTests.A_GM_requirement_naming_the_communication_declines_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Communicates answered a communication the GM's requirement names instead of declining (`if (false && requirement.Requires(ActivityKind.Communication, ...))`); this test went red and no other did. It went red too when the handler defaulted the unasserted requirement to `GmActionRequirement.None(\"default\")`."
+    },
+    {
+      "test": "YourTurnEntryPointTests.A_GM_requirement_naming_only_an_object_interaction_leaves_communication_as_it_is",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Communicates declined whenever the requirement named any communication at all (`requirement.Activities.Any(a => a.Kind == ActivityKind.Communication)`), not this one; this test went red and no other did. It went red too under the swapped-costs mutation above."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MakingAnAttackEntryPointTests.On_a_hit_damage_is_rolled_and_the_rule_that_rolls_it_is_named_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Resolve named no rule for the damage roll on a hit (`DamageAuthority: null` for `MapEntries.DamageRolls.Locator`); this test went red and no other did."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.On_a_miss_no_damage_is_rolled",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Resolve rolled damage on a miss too (`if (false && !outcome.Hit)`); this test went red and no other did."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.An_attack_whose_own_rules_specify_otherwise_rolls_no_damage_on_a_hit",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Resolve ignored the attack's own rules (`return false && damageRules.SpecifiesOtherwise`), rolling damage anyway; this test went red and no other did."
+    },
+    {
+      "test": "MakingAnAttackEntryPointTests.A_statement_an_attack_step_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the AttackSources handler defaulted a missing Incapacitated statement (`request.Incapacitated ?? IncapacitatedStatement.IsNot(\"default\")`); this test went red and no other did. It went red too when the AttackResolution handler defaulted a missing DamageRules, and when the AttackModifiers handler defaulted a missing Other to `[]`."
+    }
+  ]
+}

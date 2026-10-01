@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "TurnEntryPointTests.A_turn_can_forgo_moving_acting_or_doing_anything_at_all",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Forgo reported nothing as forgone (`new ForgoneTurn(taken, false, false, ...)`); this test went red, and so did forgoing only the move or only the action. It went red too when doing nothing at all was reported as not permitted (`Permitted => !Everything`)."
+    },
+    {
+      "test": "TurnEntryPointTests.Forgoing_only_the_move_or_only_the_action_is_permitted_and_leaves_the_rest_of_the_turn",
+      "mutation": "In a throwaway copy, net10.0 suite run; TurnRules.Forgo reported nothing as forgone (`new ForgoneTurn(taken, false, false, ...)`); this test went red, and so did forgoing everything."
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "GridEnteringSquareEntryPointTests.Entering_an_unoccupied_adjacent_square_costs_one_square_diagonally_as_orthogonally_citing_page_13",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter charged a diagonal step one square more (`+ (adjacency == SquareAdjacency.Diagonal ? 1 : 0)`); this test went red, and so did the occupied-square cost test."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.A_square_of_Difficult_Terrain_costs_two_squares_to_enter",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`); this test went red, and so did the occupied-square, ally-on-Difficult-Terrain and movement-left tests."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.A_square_held_by_a_creature_that_is_neither_Tiny_nor_your_ally_is_Difficult_Terrain_and_costs_two",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`); this test went red. It went red too when a diagonal step cost one square more."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.A_square_held_by_a_Tiny_creature_or_an_ally_declines_RequiresInterpretation_citing_the_entry",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced the occupied square the rule leaves out at 1 instead of declining (`if (false && !difficultTerrain)`); this test went red and no other did. It went red too when MovementRules.SpaceOf dropped the ally exception."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.A_square_that_is_both_held_by_an_ally_and_Difficult_Terrain_costs_two",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`); this test went red."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.Entering_needs_enough_movement_left_to_pay_for_it",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.Enter priced every square at 1 (`int cost = PlainCost`), so one square of movement paid for Difficult Terrain; this test went red."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.Off_the_grid_entering_a_square_declines_citing_grid_play",
+      "mutation": "In a throwaway copy, net10.0 suite run; GridRules.OffTheGrid ignored the grid-play statement (`true` for `play.OnASquareGrid`); this test went red, and so did the other grid rules' off-the-grid test."
+    },
+    {
+      "test": "GridEnteringSquareEntryPointTests.A_statement_about_the_square_left_out_is_refused_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the GridEnteringSquare handler defaulted a missing square to an unoccupied one (`request.Square ?? SquareStatement.Unoccupied(\"default\")`); this test went red and no other did."
+    }
+  ]
+}

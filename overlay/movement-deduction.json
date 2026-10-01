@@ -1,0 +1,21 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MovementBudgetEntryPointTests.Each_part_of_a_move_is_deducted_from_the_Speed_in_the_order_stated",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementBudgetRules.Deduct took the parts in reverse order (`parts.Reverse()`); this test went red, and so did the test of a part the movement left does not cover."
+    },
+    {
+      "test": "MovementBudgetEntryPointTests.A_part_the_movement_left_does_not_cover_is_not_taken_and_neither_is_what_follows",
+      "mutation": "In a throwaway copy, net10.0 suite run; MovementBudgetRules.Deduct took a part the movement left did not cover (`usedUp && !UpToSpeed(...)` for `usedUp || !UpToSpeed(...)`); this test went red, and so did mounting-cost's test of a rider with less movement left than the cost. It went red too when the rule stopped reading turn-move-and-action (`bool allowed = true` in UpToSpeed), and under the reverse-order mutation."
+    },
+    {
+      "test": "MovementBudgetEntryPointTests.A_figure_a_movement_rule_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the MoveUpToSpeed handler defaulted a missing DistanceFeet to 0 (`request.DistanceFeet ?? 0`); this test went red and no other did. It went red too when that handler defaulted a missing StatedBy, and when the MovementDeduction handler defaulted missing Parts to `[]`."
+    }
+  ]
+}

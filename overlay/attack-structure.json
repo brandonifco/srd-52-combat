@@ -1,0 +1,13 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MakingAnAttackEntryPointTests.An_attack_is_three_steps_in_order_choose_a_target_determine_modifiers_resolve_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; AttackRules.Structure put Determine Modifiers first and Choose a Target second; this test went red and no other did."
+    }
+  ]
+}

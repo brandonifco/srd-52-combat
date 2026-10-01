@@ -1,0 +1,36 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "MountedCombatEntryPointTests.A_domesticated_horse_or_a_mule_has_the_training_a_controlled_mount_needs_citing_page_16",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountCreatureStatement.NamedByTheCorpus named only the mule (`Kind == MountCreatureKind.Mule`), so a domesticated horse declined; this test went red, and so did controlled-mount-turn's."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.With_no_stated_training_a_creature_the_corpus_does_not_name_declines",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control declined only where the caller stated the creature was not trained (`if (creature.Training == MountTraining.NotTrained)`), so an unstated training was read as untrained; this test went red, and so did controlled-mount-turn's decline and both of the tests for a stated training."
+    },
+    {
+      "test": "MountedCombatEntryPointTests.A_creature_the_corpus_does_not_name_is_trained_when_the_caller_states_it_naming_the_owners_ruling",
+      "mutation": "In a throwaway copy, net10.0 suite run; MountRules.Control ignored the caller's stated training and declined for every creature the corpus does not name (`if (creature.Training != MountTraining.FromTheCorpus)`), which is version 6's behaviour; this test went red, and so did controlled-mount-turn's carrying of the ruling."
+    }
+  ],
+  "rulings": [
+    {
+      "id": "mount-control-requires-training/training-is-stated",
+      "span": "Which creatures have been trained to accept a rider? The corpus gives instances (“Domesticated horses, mules, and similar creatures”) and no definition, and “similar” states no measure. For a creature not named, nothing in the slice says whether it is trained or who decides.",
+      "answer": "The caller states it: training to accept a rider is a fact the caller supplies, and the horse and the mule the corpus names are trained without being told.",
+      "ruledBy": "Brandon",
+      "ruledOn": "2026-09-16",
+      "record": "docs/decisions/0007-brandons-rulings-on-six-open-questions-are-ruleset-version-seven.md",
+      "tests": [
+        "MountedCombatEntryPointTests.A_creature_the_corpus_does_not_name_is_trained_when_the_caller_states_it_naming_the_owners_ruling",
+        "MountedCombatEntryPointTests.With_no_stated_training_a_creature_the_corpus_does_not_name_declines"
+      ]
+    }
+  ],
+  "declines": []
+}

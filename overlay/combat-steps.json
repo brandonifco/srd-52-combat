@@ -1,0 +1,17 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "RoundEntryPointTests.Combat_unfolds_in_three_steps_positions_Initiative_then_turns_in_Initiative_order",
+      "mutation": "In a throwaway copy, net10.0 suite run; RoundRules.Steps returned the three steps in reverse (`[.. steps.Reverse()]`); this test went red and no other did."
+    },
+    {
+      "test": "RoundEntryPointTests.No_turn_is_taken_before_Initiative_is_rolled",
+      "mutation": "In a throwaway copy, net10.0 suite run; the CombatSteps handler defaulted a missing Initiative order to an empty one (`request.Order ?? new TurnOrder([], [], MapEntries.InitiativeOrder.Locator)`), so the steps were built and turns taken with no Initiative rolled; this test went red and no other did."
+    }
+  ]
+}

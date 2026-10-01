@@ -1,0 +1,41 @@
+{
+  "status": "implemented",
+  "implementedIn": {
+    "ruleset": "srd-5.2.1-combat",
+    "version": 7
+  },
+  "tests": [
+    {
+      "test": "OpportunityAttackEntryPointTests.A_seen_creature_leaving_your_reach_offers_one_melee_attack_taken_as_a_Reaction_right_before_it_leaves_citing_page_15",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make offered two melee attacks (`Attacks: 2`); this test went red and no other did."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.A_creature_the_attacker_cannot_see_offers_no_Opportunity_Attack",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make ignored whether the attacker can see the creature (`if (false && sight.CannotSee)`); this test went red and no other did."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.While_avoidance_holds_no_Opportunity_Attack_is_provoked",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make consulted avoidance only for a creature leaving by its action (`&& leaving.Means == DepartureMeans.OwnAction`), so Disengage, a Teleport and an explosion all provoked; this test went red and no other did."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.While_the_attackers_Reaction_is_spent_it_declines_citing_reactions",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make ignored a spent Reaction (`if (false && !reaction.Available)`); this test went red and no other did."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.While_the_attacker_is_Incapacitated_it_declines_citing_the_condition",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make ignored the Incapacitated condition (`if (false && incapacitated.Incapacitated)`); this test went red and no other did."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.A_creature_leaving_reach_by_none_of_the_means_the_glossary_lists_declines_citing_the_glossary",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make answered for a creature leaving reach by none of the means the glossary lists (`if (false && leaving.Means == DepartureMeans.ByNoneOfThose)`); this test went red and no other did."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.A_statement_an_Opportunity_Attack_needs_is_refused_when_left_out_never_inferred",
+      "mutation": "In a throwaway copy, net10.0 suite run; the OpportunityAttack handler defaulted a missing Reaction statement (`request.Reaction ?? ReactionAvailability.Has(\"default\")`); this test went red and no other did. It went red too when a missing Incapacitated statement defaulted, and when the OpportunityAttackAvoidance handler defaulted a missing LeavingReach."
+    },
+    {
+      "test": "OpportunityAttackEntryPointTests.An_offer_refused_because_the_creature_Disengaged_names_the_engines_decision",
+      "mutation": "In a throwaway copy, net10.0 suite run; OpportunityAttackRules.Make dropped the avoidance verdict's decisions from the offer (`OpportunityAttackOffer.None(verdict.Because, verdict.Authority)`), so a refusal resting on the engine's decision named none; this test went red and no other did."
+    }
+  ]
+}
