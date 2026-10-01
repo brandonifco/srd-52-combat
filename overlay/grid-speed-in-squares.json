@@ -16,6 +16,14 @@
     {
       "test": "GridEntryPointTests.A_grid_statement_left_out_is_refused_never_inferred",
       "mutation": "In a throwaway copy, net10.0 suite run; the GridSquareSize handler defaulted a missing statement to a grid (`request.Play ?? GridPlayStatement.OnAGrid(\"default\")`); this test went red and no other did."
+    },
+    {
+      "test": "RoundDownEntryPointTests.A_Speed_in_squares_rounds_down_even_when_the_fraction_is_one_half_or_greater",
+      "mutation": "tools/mutate.py, Debug, both frameworks; GridRules.SpeedInSquares rounded to nearest (`(speedInFeet + (square.Feet / 2)) / square.Feet`), so 8 and 9 feet were 2 squares and 4 feet was 1; this test went red at 4, 8, 9 feet and int.MaxValue, and the existing twelve-feet test stayed green because 2.4 is below one-half."
+    },
+    {
+      "test": "RoundDownEntryPointTests.A_negative_Speed_is_refused_before_any_rounding",
+      "mutation": "tools/mutate.py, Debug, both frameworks; GridRules.SpeedInSquares without `ArgumentOutOfRangeException.ThrowIfNegative(speedInFeet)`, so a Speed of -1 feet answered 0 squares; this test went red at -1 and int.MinValue."
     }
   ]
 }

@@ -27,7 +27,9 @@ public class SeededInitiativeReplayTests
     /// this seed differently, which is a decision about the ruleset version, not a number to update
     /// until green. Re-pinned for ruleset version 7 and replay schema 2 (<c>docs/decisions/0007</c>):
     /// the identity line moved, and the record gained its <c>rulings</c> line. The d20s and the order
-    /// are unchanged — this combat states no group, so no ruling touches it.
+    /// are unchanged — this combat states no group, so no ruling touches it. Re-pinned again for map
+    /// 3.0.0 (#75): the identity line names the map version, and that is all that moved; with 2.0.0 put
+    /// back the record hashes to the previous pin, cf5bf4bb….
     /// </summary>
     private const string RecordedReplaySha256 = "9fc4b7d499d1f0967e5a358693ebe8fc41f2f7b5c281c9ebcbb229a1ba1e195d";
 

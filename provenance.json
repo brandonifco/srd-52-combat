@@ -952,7 +952,7 @@
     },
     {
       "path": "overlay/grid-speed-in-squares.json",
-      "sha256": "ea875a98de07cb1b4d7c806fbc55569032f456fcfb0b38aa17444384fd13b775"
+      "sha256": "7f1d06682ec30cdba20c4ddfaf8ac8cbcd093104d23f0720f920aef3faeb2ec7"
     },
     {
       "path": "overlay/grid-square-size.json",
