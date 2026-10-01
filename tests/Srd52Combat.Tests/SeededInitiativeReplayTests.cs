@@ -131,7 +131,7 @@ public class SeededInitiativeReplayTests
     private static byte[] Render(InitiativeRolls rolls, TurnOrder order)
     {
         using var provenance = JsonDocument.Parse(EngineProvenance.ReadBytes());
-        var map = provenance.RootElement.GetProperty("map");
+        var map = provenance.RootElement.GetProperty("maps")[0];
         var identity = Ruleset.Identity;
         var text = new StringBuilder();
         text.Append($"identity {identity.Ruleset.Id} v{identity.Ruleset.Version} schema {identity.ReplaySchema.Version} ")

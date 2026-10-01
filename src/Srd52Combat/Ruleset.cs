@@ -16,7 +16,7 @@ public static class Ruleset
     /// answers changed, one of them a roll. Schema 2 is the <c>rulings</c> line a recorded combat now
     /// carries, which is the rulings its answers relied on (rules-factory decision 0027 § 4).
     /// </remarks>
-    public static ReplayCompatibilityIdentity Identity { get; } = new(
+    public static EngineIdentity Identity { get; } = new(
         ruleset: new RulesetVersion("srd-5.2.1-combat", 7),
         replaySchema: new ReplaySchemaVersion(2),
         sourceBaselines: [MapEntries.Baseline],
