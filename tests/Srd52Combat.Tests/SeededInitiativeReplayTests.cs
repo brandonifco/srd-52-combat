@@ -29,7 +29,7 @@ public class SeededInitiativeReplayTests
     /// the identity line moved, and the record gained its <c>rulings</c> line. The d20s and the order
     /// are unchanged — this combat states no group, so no ruling touches it.
     /// </summary>
-    private const string RecordedReplaySha256 = "cf5bf4bb41275ba86e2dcbd196f97c26202c9f5c618a4fd7126aa768b695273c";
+    private const string RecordedReplaySha256 = "9fc4b7d499d1f0967e5a358693ebe8fc41f2f7b5c281c9ebcbb229a1ba1e195d";
 
     private static readonly Combatant[] Participants =
     [
@@ -58,13 +58,13 @@ public class SeededInitiativeReplayTests
         var (other, _) = Run(new CountingSource(Pcg32.FromSeed(Seed + 1, stream: 1)), decisions: null);
         Assert.NotEqual(first.Rolls.Rolls.Select(r => r.D20), other.Rolls.Rolls.Select(r => r.D20));
 
-        // Comparable only under the same identity: ruleset srd-5.2.1-combat v7, PCG32, map 2.0.0.
+        // Comparable only under the same identity: ruleset srd-5.2.1-combat v7, PCG32, map 3.0.0.
         Assert.Equal("srd-5.2.1-combat", Ruleset.Identity.Ruleset.Id);
         Assert.Equal(7, Ruleset.Identity.Ruleset.Version);
         Assert.Equal(2, Ruleset.Identity.ReplaySchema.Version);
         Assert.Equal(RulesKernel.Identity.RandomAlgorithmId.Pcg32SetSeq64XshRr32, Ruleset.Identity.RandomAlgorithm);
         Assert.StartsWith(
-            "identity srd-5.2.1-combat v7 schema 2 map RulesFactory.Maps.Srd52Combat 2.0.0\n",
+            "identity srd-5.2.1-combat v7 schema 2 map RulesFactory.Maps.Srd52Combat 3.0.0\n",
             Encoding.UTF8.GetString(bytes),
             StringComparison.Ordinal);
 
