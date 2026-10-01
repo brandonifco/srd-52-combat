@@ -413,7 +413,7 @@ python3 tools/factory produce --package RulesFactory.Maps.Srd52Combat@3.0.0 \
   --corpus <this repository>/corpus/srd-5.2.1.txt --name Srd52Combat --out <this repository>
 ```
 
-`provenance.json` records the run: rules-factory `0.0.0-dev+d992dd73c005` (commit `d992dd7`, clean). After changing only the overlay, run `produce` again too: the generated correspondence
+`provenance.json` records the run: rules-factory `0.0.0-dev+0f894dd47c31` (commit `0f894dd`, clean). After changing only the overlay, run `produce` again too: the generated correspondence
 tests read the merged statuses, and `provenance.json` hashes the overlay. To check the record against the tree, from a rules-factory checkout at that commit:
 
 ```bash
